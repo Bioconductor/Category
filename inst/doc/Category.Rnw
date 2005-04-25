@@ -112,6 +112,7 @@ library("hgu95av2")
 library("KEGG")
 library("genefilter")
 library("Category")
+library("ALL")
 @
 
 Let's consider the comparison of two different groups, or phenotypes
@@ -296,7 +297,7 @@ permutation approach to assess significance.
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}%
+\caption{\label{fig:mn}
 The mean plot for the category with the smallest p-value.}
 \end{figure}
 
@@ -328,7 +329,7 @@ spcol <- ifelse(eS$mol.biol=="BCR/ABL", "goldenrod", "skyblue")
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}%
+\caption{\label{fig:KEGG2}
 The mean plot for the category with the smallest p-value.}
 \end{figure}
 
@@ -342,7 +343,7 @@ The mean plot for the category with the smallest p-value.}
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}%
+\caption{\label{fig:KEGG3}
 The mean plot for the category with the smallest p-value.}
 \end{figure}
 
@@ -358,11 +359,6 @@ color the sidebar according to sex, (green for males and slate for
 females) we see that these probes almost exactly separate the males
 and females.
 
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}%
-The mean plot for the category with the smallest p-value.}
-\end{figure}
-
 \begin{figure}[tp]
   \centering
 <<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
@@ -375,9 +371,9 @@ The mean plot for the category with the smallest p-value.}
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}%
+\caption{\label{fig:KEGG4}%
 A heatmap of the selected probes for mRNA in the Ribosome pathway. The
-color bar is green for males and grey for females.
+color bar is green for males and grey for females.}
 \end{figure}
 
 So we have found something that appears to be real, at least
@@ -507,18 +503,6 @@ Unfortunately, as we can see from the visualizations none of these
 category plots are especially compelling. If we return to the category
 \Sexpr{KEGGPATHID2NAME[[byTT]]} then we see that the permutation
 $p$-value is \Sexpr{pvals[byTT, 2]}.
-
-
-
-<<sanityCheck, echo=FALSE, results=hide>>=
-stopifnot(pwtt$statistic[mostI] > 4.5)
-stopifnot(whpw == "04610")
-
-@
-
-We see that the category which has the largest $t$-test statistic is
-\Sexpr{ KEGGPATHID2NAME[[whpw]]} and could explore this further.
-
 
 \section{Using other functions}
 
