@@ -5,5 +5,5 @@ Author: R. Gentleman
 Description: A collection of tools for performing category analysis. 
 Maintainer: R. Gentleman <rgentlem@fhcrc.org>
 License: CPL 
-Depends: KEGG, hgu95av2, genefilter
+Depends: Biobase, KEGG, hgu95av2, genefilter
 Suggests: EBarrays, ALL
