@@ -3,7 +3,7 @@
 % likely to be overwritten.
 %
 % \VignetteIndexEntry{Using Categories to Analyze Microarray Data}
-%\VignetteDepends{Biobase, genefilter, hgu95av2 }
+%\VignetteDepends{Biobase, genefilter, hgu95av2, RColorBrewer}
 %\VignetteSuggests{Rgraphviz}
 %\VignetteKeywords{EDA, graphs, ontology, visualization}
 %\VignettePackage{GOstats}
