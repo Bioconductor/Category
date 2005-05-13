@@ -24,7 +24,7 @@ getPathNames(iPW)
 
 \author{R. Gentleman }
 
-\seealso{\code{\link{KEGGPATHID2NAME}} }
+\seealso{\code{\link[KEGG]{KEGGPATHID2NAME}} }
 \examples{
 
  nms = "00031"
