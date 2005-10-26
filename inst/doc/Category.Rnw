@@ -124,7 +124,7 @@ favorite methods. We refer readers to \cite{WileyEncy} or
 \cite{Smyth2004} for a general discussion of some of the issues
 involved in gene filtering. Here we will use a $t$-test.
 
-First we subse the ALL data to the two phenotypes that we would like
+First we subset the ALL data to the two phenotypes that we would like
 to compare, those with BCR/ABL and those with no cytogenetic
 abnormalities, labeled NEG.
 
