@@ -10,9 +10,12 @@
 applyByCategory(stats, Amat, FUN = mean, ...)
 }
 \arguments{
-  \item{stats}{Test statistics of interest. }
-  \item{Amat}{A matrix with columns corresponding to values in
-    \code{stats} and rows defining categorizations. }
+  \item{stats}{Numeric vector with test statistics of interest. }
+  \item{Amat}{A matrix whose columns correspond to values in
+    \code{stats}, whose rows correspond to the different
+    categorizations. Matrix element \code{[i,j]} codes the
+    category membership of test statistic \code{stats[j]} in the
+    \code{i}-th categorization.}
   \item{FUN}{A function to apply to the splits of \code{stats} by
     categories.}
   \item{\dots}{Extra parameters passed to \code{lapply} and used by
@@ -23,7 +26,7 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 }
 \value{
  The return value is a list of length equal to \code{nrow(Amat)}. Each
- element of which corresponds to the values obtained by \code{split}ing
+ element of the list corresponds to the values obtained by \code{split}ing
  the vector \code{stats} according to the categories defined for that
  row and then \code{apply}ing \code{FUN} to each resultant set.
 }
