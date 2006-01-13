@@ -1,0 +1,4 @@
+export("applyByCategory",  "ttperm",
+ "cateGOryMatrix", "findAMstats",
+ "findLargest", "getPathNames",
+ "makeEBcontr", "probes2Path")     
