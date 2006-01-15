@@ -57,8 +57,19 @@ cateGOry  = function(x, categ, sparse=TRUE) {
 
     ## Really the graph is a bipartite graph, but I use graphNEL for now.
     ## The fastest way to construct it seems to be via the from-to matrix ft
-    ft = do.call("rbind", args=mapply(cbind, x, categAnc))
 
+    ## This code is elegant but slow:
+    ##   ft = do.call("rbind", args=mapply(cbind, x, categAnc))
+    ## This is a bit explicit but seems much faster:
+    cs = cumsum(listLen(categAnc))
+    ft = matrix("", nrow=cs[length(cs)], ncol=2)
+    rg = c(0, cs)
+    for(j in 1:length(x)) {
+      cat(j, "")
+      ft[ (rg[j]+1):rg[j+1], 1] = x[j]
+      ft[ (rg[j]+1):rg[j+1], 2] = categAnc[[j]]
+    }
+    
     ## remove duplicated edges
     ft = ft[!duplicated(paste(ft[,1], ft[,2])), ]
     res = ftM2graphNEL(ft, edgemode="undirected")
