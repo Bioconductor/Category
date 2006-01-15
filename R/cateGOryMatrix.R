@@ -60,12 +60,11 @@ cateGOry  = function(x, categ, sparse=TRUE) {
 
     ## This code is elegant but slow:
     ##   ft = do.call("rbind", args=mapply(cbind, x, categAnc))
+    ##
     ## This is a bit explicit but seems much faster:
-    cs = cumsum(listLen(categAnc))
-    ft = matrix("", nrow=cs[length(cs)], ncol=2)
-    rg = c(0, cs)
+    rg = c(0, cumsum(listLen(categAnc)))
+    ft = matrix("", nrow=rg[length(rg)], ncol=2)
     for(j in 1:length(x)) {
-      cat(j, "")
       ft[ (rg[j]+1):rg[j+1], 1] = x[j]
       ft[ (rg[j]+1):rg[j+1], 2] = categAnc[[j]]
     }
