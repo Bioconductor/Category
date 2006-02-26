@@ -32,10 +32,11 @@ applyByCategory = function(stats, Amat, FUN=mean, ...)
       stop("'Amat' must be a matrix or a graphNEL object.")
     if(is.null(names(stats)))
       stop("'stats' must be named, and names must correspond to the node names in 'Amat'")
+    if(!identical(nodes(Amat), names(edges(Amat))))
+      stop("'nodes(Amat)' and 'names(edges(Amat))' are not identical".)
     isGene = nodes(Amat) %in% names(stats)
     if(!any(isGene))
       warning("node names of 'Amat' do not match any of the names of 'stats'")
-
     res = sapply(edges(Amat)[!isGene], function(x) FUN(stats[x], ...))
   }
   return(res)  
