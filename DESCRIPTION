@@ -1,7 +1,7 @@
 Package: Category
 Title: Category Analysis
-Version: 1.3.4
-Date: Sonntag 15 Jaenner 2006
+Version: 1.3.5
+Date: 13 March 2006
 Author: R. Gentleman
 Description: A collection of tools for performing category analysis.
 Maintainer: R. Gentleman <rgentlem@fhcrc.org>

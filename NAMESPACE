@@ -1,4 +1,3 @@
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
- "findLargest", "getPathNames",
- "makeEBcontr", "probes2Path")     
+ "getPathNames", "makeEBcontr", "probes2Path")     

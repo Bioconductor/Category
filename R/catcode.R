@@ -1,14 +1,3 @@
-findLargest = function(gN, testStat, data="hgu133plus2") {
-    LLe = get(paste(data, "LOCUSID", sep=""))
-    lls = unlist(mget(gN, LLe))
-    if(length(testStat) != length(gN) )
-        stop("testStat and gN must be the same length")
-    if( is.null(names(testStat)) )
-        names(testStat) = gN
-    tSsp = split.default(testStat, lls)
-    sapply(tSsp, function(x) names(which.max(x)))
-}
-
 ##take an adjacency matrix, where the genes are columns, and a test
 ##stat vector and find the interesting sums
 findAMstats = function(Amat, tstats) {
