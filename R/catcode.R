@@ -3,6 +3,7 @@
 findAMstats = function(Amat, tstats) {
     pwLens = rowSums(Amat)
     expDE = Amat %*% tstats
+    names(expDE) <- rownames(Amat)
     pw1s = pwLens > 1
     return(list(eDE = expDE[pw1s], lens=pwLens[pw1s]))
 }
