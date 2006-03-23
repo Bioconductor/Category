@@ -1,3 +1,18 @@
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
  "getPathNames", "makeEBcontr", "probes2Path")     
+
+exportClasses("GeneCategoryHyperGeoTestParams",
+              "GeneGoHyperGeoTestParams",
+              "GeneKeggHyperGeoTestParams",
+
+              "GeneCategoryHyperGeoTestResult")
+
+exportMethods("geneCategoryHyperGeoTest",
+              
+              "universeBuilder",
+              "categoryToEntrezBuilder",
+              
+              "show")
+
+export(geneGoHyperGeoTest, geneKeggHyperGeoTest, GOHyperG)
