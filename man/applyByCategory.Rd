@@ -53,8 +53,6 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 
 \seealso{ \code{\link{split}}, \code{\link{apply}} }
 \examples{
-## FIXME
-if (FALSE) {
  set.seed(123)
  st = rnorm(20)
 
@@ -62,13 +60,12 @@ if (FALSE) {
  rownames(aM) = paste("category", 1:3, sep="")
  colnames(aM) = names(st) = paste("g", 1:20, sep="")
 
- bpg = as(new("graphAM", aM), "graphNEL")
+ bpg = aM2bpG(aM)
 
  a1 = applyByCategory(st, aM, median)
  a2 = applyByCategory(st, bpg, median)
 
  stopifnot( identical(a2, a1) )
-}
 }
 
 \keyword{manip}
