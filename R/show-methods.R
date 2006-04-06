@@ -9,3 +9,11 @@ setMethod("show", signature(object="GeneCategoryHyperGeoTestResult"),
               cat("    Gene universe size:", object@universeMappedCount, "\n")
               cat("    Annotation package:", object@annotation, "\n")
           })
+
+
+setMethod("show", signature(object="GeneGoHyperGeoTestParams"),
+          function(object) {
+              cat("A", class(object), "instance\n")
+              cat("  category:", object@categoryName, "\n")
+              cat("annotation:", object@annotation, "\n")
+          })
