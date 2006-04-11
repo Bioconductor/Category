@@ -1,6 +1,7 @@
 \name{GeneGoHyperGeoTestParams-class}
 \docType{class}
 \alias{GeneGoHyperGeoTestParams-class}
+\alias{show,GeneGoHyperGeoTestParams-method}
 
 \title{Class "GeneGoHyperGeoTestParams"}
 
