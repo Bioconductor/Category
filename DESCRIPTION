@@ -14,4 +14,5 @@ Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
          universeBuilder-methods.R utils.R
          MAPcode.R catcode.R cateGOryMatrix.R 
          zzz.R
+biocViews: Statistics, Annotation, GO, Pathways
 
