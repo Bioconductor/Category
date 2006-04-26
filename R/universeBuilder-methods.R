@@ -20,9 +20,12 @@ getUniverseViaGo <- function(lib, ontology="BP", entrezIds=NULL) {
           return(FALSE)
         ## Normally, would do sapply here, but we only want to know if
         ## at least one is TRUE.  It is a lot faster to stop short.
-        for (goid in goids)
-            if (goid$Ontology == ontology)
+        for (goid in goids) {
+            ## use identical in case the GO data is borked
+            ## and Ontology is NA
+            if (identical(goid$Ontology, ontology))
                 return(TRUE)
+        }
         FALSE
     })
     probe2go <- probe2go[unlist(probe2go)]
