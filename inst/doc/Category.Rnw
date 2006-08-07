@@ -156,7 +156,7 @@ cols = brewer.pal(10, "RdBu")
 @
 
 
-\subsection{Category Analysis}
+\subsection*{Category Analysis}
 
 We have a set of data where there have been $G$ measurements on each
 of $n$ samples. We use $\Emat$ to denote the $G$ by $n$ data
@@ -170,7 +170,7 @@ matrix $\Amat$, where $a[i,j] =1$ if entity $j$ is in category
 $i$. The question of interest is the identification of the elements of
 $\zvec = \Amat \xvec$ that are unusually large or small.
 
-\subsection{Implementation}
+\subsection*{Implementation}
 
 Consider the two-sample problem. Assume that there are $n$ microarrays
 available, and that they have collected data on $n$ samples under two
@@ -186,7 +186,7 @@ induces a distribution on $\zvec$, where $\zvec^b = \Amat
 whether that particular $z_i$ is extreme relative to the joint
 distribution.
 
-\subsubsection{Parametric Assumptions}
+\subsubsection*{Parametric Assumptions}
 
 Suppose that $\Xvec$ is multivariate $N(\mu, \Sigma)$.  The statistics
 are computed as $\Zvec = \Amat \Xvec$, and hence $\Zvec$ also follows
@@ -369,7 +369,7 @@ with the relationship between BCR/ABL and NEG cytogenetics and hence
 we will sometimes find effects that may be more correctly attributed
 to sex.
 
-\subsection{A permutation distribution}
+\subsection*{A permutation distribution}
 
 <<setupperms, results=hide, echo=FALSE>>=
 NPERM = 500
@@ -489,7 +489,7 @@ category plots are especially compelling. If we return to the category
 \Sexpr{KEGGPATHID2NAME[[byTT]]} then we see that the permutation
 $p$-value is \Sexpr{pvals[byTT, 2]}.
 
-\section{Using other functions}
+\section*{Using other functions}
 
 In the examples above we used, perhaps the simplest form of per
 category statistic, the summation. Extending the model to deal with
