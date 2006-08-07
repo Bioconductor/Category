@@ -271,7 +271,8 @@ Figure~\ref{fig:qq}.
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-qqplot}
 \caption{\label{fig:qq}%
-The per category qq-plot.}
+A qq-plot where each point represents a different category (in this
+  case a pathway).}
 \end{figure}
 
 In Figure~\ref{fig:qq} we see that there is one pathway for which the
@@ -290,18 +291,18 @@ permutation approach to assess significance.
 
 \begin{figure}[tp]
   \centering
-<<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<KEGGmnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
     KEGGmnplot(byTT, eS, group=eS$mol, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[byTT], 3)), sep="\n"))
 
 @
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:mn}
-The mean plot for the category with the smallest p-value.}
+\includegraphics[width=1.25\smallfigwidth]{Category-KEGGmnplot}
+\caption{\label{fig:KEGGmn}
+The mean plot for the category with the smallest aggregate statistic.}
 \end{figure}
 
-Figure~\ref{fig:mn} suggests that the level of activity among genes
+Figure~\ref{fig:KEGGmn} suggests that the level of activity among genes
 involved in the Ribosome pathway seems larger in those labeled NEG
 than the samples from patients with BCR/ABL. Perhaps indicating that
 ribosomal activity is suppressed in those with BCR/ABL.
@@ -321,30 +322,16 @@ spcol <- ifelse(eS$mol.biol=="BCR/ABL", "goldenrod", "skyblue")
 
 \begin{figure}[tp]
   \centering
-<<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<Ribosomeheatmap, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
     tmp1 = KEGG2heatmap(byTT, eS, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[byTT], 3)), sep="\n"), col=hmcol,
                  ColSideColors=spcol)
 
 @
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
+\includegraphics[width=1.25\smallfigwidth]{Category-Ribosomeheatmap}
 \caption{\label{fig:KEGG2}
-The mean plot for the category with the smallest p-value.}
-\end{figure}
-
-\begin{figure}[tp]
-  \centering
-<<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
-    tmp2 = KEGG2heatmap(byTT, esetA, data="hgu95av2",
-               main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
-               round(tA[byTT], 3)), sep="\n"), col=hmcol,
-                 ColSideColors=spcol)
-
-@
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
-\caption{\label{fig:KEGG3}
-The mean plot for the category with the smallest p-value.}
+The heatmap for the category with the Ribosome pathway.}
 \end{figure}
 
 Here the patterns of expression do not seem to corroborate the
@@ -361,7 +348,7 @@ and females.
 
 \begin{figure}[tp]
   \centering
-<<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<HMbysex, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
 
   spcol2 <- ifelse(eS$sex=="M", "lightgreen", "slategrey")
     tmp2 = KEGG2heatmap(byTT, eS, data="hgu95av2",
@@ -370,7 +357,7 @@ and females.
                  ColSideColors=spcol2)
 
 @
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
+\includegraphics[width=1.25\smallfigwidth]{Category-HMbysex}
 \caption{\label{fig:KEGG4}%
 A heatmap of the selected probes for mRNA in the Ribosome pathway. The
 color bar is green for males and grey for females.}
@@ -446,21 +433,21 @@ before. These are shown in Figures~\ref{fig:mn1} through \ref{fig:mn3}.
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot1}
 \caption{\label{fig:mn1}%
-The per category mnplot for pathways that are deemed to be
+The per category mean plot for pathways that are deemed to be
 differentially expressed using a permutation approach.}
 \end{figure}
 
 
 \begin{figure}[tp]
   \centering
-<<mnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<mnplotX, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
     tmp2 = KEGG2heatmap(highC[lnhC-2], eS, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[highC[lnhC-2]], 3)), sep="\n"), col=hmcol,
                  ColSideColors=spcol)
 
 @
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplot}
+\includegraphics[width=1.25\smallfigwidth]{Category-mnplotX}
 \caption{\label{fig:mn}%
 The mean plot for the category with the smallest p-value.}
 \end{figure}
@@ -493,11 +480,9 @@ differentially expressed using a permutation approach.}
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-mnplot3}
 \caption{\label{fig:mn3}%
-The per category mnplot pathway that are deemed to be
+The per category mean plot pathway that are deemed to be
 differentially expressed using a permutation approach.}
 \end{figure}
-
-
 
 Unfortunately, as we can see from the visualizations none of these
 category plots are especially compelling. If we return to the category
