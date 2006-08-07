@@ -272,7 +272,7 @@ Figure~\ref{fig:qq}.
 \includegraphics[width=1.25\smallfigwidth]{Category-qqplot}
 \caption{\label{fig:qq}%
 A qq-plot where each point represents a different category (in this
-  case a pathway).}
+  case a pathway). There is one pathway with a remarkably low value. }
 \end{figure}
 
 In Figure~\ref{fig:qq} we see that there is one pathway for which the
@@ -299,7 +299,10 @@ permutation approach to assess significance.
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-KEGGmnplot}
 \caption{\label{fig:KEGGmn}
-The mean plot for the category with the smallest aggregate statistic.}
+The mean plot for the \Sexpr{KEGGPATHID2NAME[[byTT]]} pathway. Each
+point represents a gene in the pathway and the $x$-value is determined
+by the mean expression in the BCR/ABL group while the $y$-value is
+determined by the mean in the NEG group.}
 \end{figure}
 
 Figure~\ref{fig:KEGGmn} suggests that the level of activity among genes
@@ -310,14 +313,14 @@ ribosomal activity is suppressed in those with BCR/ABL.
 We can further investigate the relationship between gene expression
 and the Ribosome pathway by examining heatmaps for this
 pathway. First, we examine the heatmap for those genes that were
-selected by our filtering approach, Figure~\ref{fig:hmRib1}, and then
-we examine the heatmap for all genes that are on the chip and
-annotated at the ribosome pathway, Figure~\ref{fig:hmRib2}.
+selected by our filtering approach, Figure~\ref{fig:hmRib1}, the colors
+in the top bar for Figure~\ref{fig:hmRib1} are gold for BCR/ABL and
+blue for NEG, while in Figure~\ref{fig:hmRib2} they are green for
+males and grey for females.
 
 <<setupHMcols, results=hide, echo=FALSE>>=
 hmcol <- rev(colorRampPalette(brewer.pal(10, "RdBu"))(256))
 spcol <- ifelse(eS$mol.biol=="BCR/ABL", "goldenrod", "skyblue")
-#hmout = heatmap(pAC, col=hmcol, ColSideColors=spcol, keep.dendro=TRUE)
 @
 
 \begin{figure}[tp]
@@ -330,8 +333,8 @@ spcol <- ifelse(eS$mol.biol=="BCR/ABL", "goldenrod", "skyblue")
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-Ribosomeheatmap}
-\caption{\label{fig:KEGG2}
-The heatmap for the category with the Ribosome pathway.}
+\caption{\label{fig:hmRib1}
+The heatmap for the category with the Ribosome pathway, using all gene.}
 \end{figure}
 
 Here the patterns of expression do not seem to corroborate the
@@ -344,7 +347,7 @@ and the probe is \verb+41214_at+, which corresponds to RPS4Y1, which
 is a sex-linked ribosomal protein. If we then redraw the heatmap but
 color the sidebar according to sex, (green for males and slate for
 females) we see that these probes almost exactly separate the males
-and females.
+and females (and suggest that there may be some errors in the meta-data).
 
 \begin{figure}[tp]
   \centering
@@ -358,16 +361,21 @@ and females.
 
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-HMbysex}
-\caption{\label{fig:KEGG4}%
+\caption{\label{fig:hmRib2}%
 A heatmap of the selected probes for mRNA in the Ribosome pathway. The
 color bar is green for males and grey for females.}
 \end{figure}
 
 So we have found something that appears to be real, at least
-biological, but is also uninteresting. Gender is slightly confounded
-with the relationship between BCR/ABL and NEG cytogenetics and hence
-we will sometimes find effects that may be more correctly attributed
-to sex.
+biological, but which may well be uninteresting. Gender is slightly
+confounded with the relationship between BCR/ABL and NEG cytogenetics
+and hence we will sometimes find effects that may be more correctly
+attributed to sex.  To better understand this effect it will be
+necessary to modify the testing procedure so that sex can be adjusted
+for.  This is reasonably straightforward and involves fitting a per
+gene linear model, with both a BCR/ABL effect and a sex effect and
+then using the standardized coefficients for the BCR/ABL effect in the
+GSEA analysis.
 
 \subsection*{A permutation distribution}
 
@@ -376,7 +384,9 @@ NPERM = 500
 set.seed(444)
 
 @
- It is important to assess the significance of
+
+If you are uncomfortable with the Normal-theory argument given in the
+previous section then it is important to assess the significance of
 the observed test statistics with respect to a reference
 distribution. To that end, we consider permuting the sample labels
 (that is which of the two groups, \verb+BCR/ABL+ or \verb+NEG+, a
@@ -408,19 +418,27 @@ lowC = (row.names(pvals)[ord1])[pvals[ord1,1]< 0.05]
 
 highC = row.names(pvals)[pvals[,2] < 0.05]
 
+
  getPathNames(lowC)
+@
 
- getPathNames(highC)
+<<setupHC, echo=FALSE, results=hide>>=
+lnhC = length(highC)
+@
 
- lnhC = length(highC)
+There are \Sexpr{lnhC} pathways that have $p$-values less than $0.05$
+where the mean is higher in the BCR/ABL group. We print the
+
+<<getHighNames>>=
+ getPathNames(highC)[1:5]
+
 @
 
 Notice that we have used quite a large $p$-value, although our
 adjustment should be for the \Sexpr{nCats} categories that we are
-testing, and so is will not be too dramatic.
-
-We can visualize the differences in group means, just as we did
-before. These are shown in Figures~\ref{fig:mn1} through \ref{fig:mn3}.
+testing, and so it will not be too dramatic.  We can visualize the
+differences in group means, just as we did before. These are shown in
+Figures~\ref{fig:mn1} through \ref{fig:mn3}.
 
 \begin{figure}[tp]
   \centering
@@ -435,21 +453,6 @@ before. These are shown in Figures~\ref{fig:mn1} through \ref{fig:mn3}.
 \caption{\label{fig:mn1}%
 The per category mean plot for pathways that are deemed to be
 differentially expressed using a permutation approach.}
-\end{figure}
-
-
-\begin{figure}[tp]
-  \centering
-<<mnplotX, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
-    tmp2 = KEGG2heatmap(highC[lnhC-2], eS, data="hgu95av2",
-               main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
-               round(tA[highC[lnhC-2]], 3)), sep="\n"), col=hmcol,
-                 ColSideColors=spcol)
-
-@
-\includegraphics[width=1.25\smallfigwidth]{Category-mnplotX}
-\caption{\label{fig:mn}%
-The mean plot for the category with the smallest p-value.}
 \end{figure}
 
 
@@ -488,6 +491,23 @@ Unfortunately, as we can see from the visualizations none of these
 category plots are especially compelling. If we return to the category
 \Sexpr{KEGGPATHID2NAME[[byTT]]} then we see that the permutation
 $p$-value is \Sexpr{pvals[byTT, 2]}.
+
+%%FIXME: this one is a heatmap so I needed to move it
+
+\begin{figure}[tp]
+  \centering
+<<HMperm, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+    tmp2 = KEGG2heatmap(highC[lnhC-2], eS, data="hgu95av2",
+               main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
+               round(tA[highC[lnhC-2]], 3)), sep="\n"), col=hmcol,
+                 ColSideColors=spcol)
+
+@
+\includegraphics[width=1.25\smallfigwidth]{Category-HMperm}
+\caption{\label{fig:HMperm}%
+}
+\end{figure}
+
 
 \section*{Using other functions}
 
