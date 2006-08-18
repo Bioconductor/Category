@@ -10,7 +10,7 @@
  genes (as indicated by the Entrez Gene ids).
 }
 \usage{
-GOHyperG(x, lib="hgu95av2", what="MF", universe=NULL)
+GOHyperG(x, lib, what="MF", universe=NULL)
 }
 \arguments{
   \item{x}{A character vector of unique Entrez Gene identifiers. }
@@ -113,7 +113,7 @@ w2<-unique(unlist(w1))
 set.seed(123)
 #pick a hundred interesting genes
  myLL <- sample(w2, 100)
- xx<-GOHyperG(myLL)
+ xx<-GOHyperG(myLL, lib="hgu95av2", what="MF")
 xx$numLL
 xx$numInt
 sum(xx$pvalues < 0.01)

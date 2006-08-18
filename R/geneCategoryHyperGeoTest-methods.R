@@ -41,7 +41,7 @@ geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
 }
 
 
-GOHyperG <- function(x, lib="hgu95av2", what="MF", universe=NULL)
+GOHyperG <- function(x, lib, what="MF", universe=NULL)
 {
     if (missing(universe) || is.null(universe))
       universe <- character(0)
@@ -50,6 +50,8 @@ GOHyperG <- function(x, lib="hgu95av2", what="MF", universe=NULL)
                   universeGeneIds=universe,
                   annotation=lib,
                   ontology=what)
+    if (missing(lib) || !is.character(lib))
+      stop("argument ", sQuote("lib"), " must be character")
 
     res <- geneCategoryHyperGeoTest(params)
     go2Affy <- mget(names(res@pvalues), getDataEnv("GO2ALLPROBES", lib))
