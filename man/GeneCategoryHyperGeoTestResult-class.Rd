@@ -35,6 +35,10 @@ Objects can be created by calls of the form \code{new("GeneCategoryHyperGeoTestR
       vector of gene identifiers passed to the testing method.}
     \item{\code{testName}:}{A string identifying the testing method
       used.}
+    \item{\code{pvalue.cutoff}:}{Numeric value used a a p-value
+        cutoff.  Used by the \code{show} method to count number of
+        significant terms.
+    }
   }
 }
 \section{Methods}{

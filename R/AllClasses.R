@@ -24,4 +24,6 @@ setClass("GeneCategoryHyperGeoTestResult",
                         geneMappedCount="integer",
                         annotation="character",
                         geneIds="ANY",
-                        testName="character"))
+                        testName="character",
+                        pvalue.cutoff="numeric"),
+         prototype=prototype(pvalue.cutoff=0.01))

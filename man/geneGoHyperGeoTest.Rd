@@ -5,9 +5,9 @@
 
 \description{
   Given a set of unique Entrez Gene Identifiers, a microarray annotation
-  data package name, and the GO category of interest, this function will
+  data package name, and the GO ontology of interest, this function will
   compute Hypergeomtric p-values for overrepresentation of each GO term
-  in the specified category among the GO annotations for the interesting
+  in the specified ontology among the GO annotations for the interesting
   genes (as indicated by the Entrez Gene ids).
 }
 
