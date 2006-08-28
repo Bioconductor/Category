@@ -49,7 +49,7 @@ getUniverseHelper <- function(probes, lib, entrezIds) {
     else
       univ <- unique(unlist(mget(probes, getDataEnv("LOCUSID", lib))))
     if (!missing(entrezIds) && !is.null(entrezIds) && length(entrezIds) > 0)
-      univ <- intersect(univ, entrezIds)
+      univ <- intersect(univ, unlist(entrezIds))
     if (length(univ) < 1) ##FIXME: improve error msg
       stop("No Entrez Gene ids left in universe")
     univ

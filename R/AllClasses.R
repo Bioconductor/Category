@@ -3,27 +3,38 @@ setClass("GeneCategoryHyperGeoTestParams",
                         universeGeneIds="ANY",
                         annotation="character",
                         cateogrySubsetIds="ANY",
-                        categoryName="character"),
+                        categoryName="character",
+                        pvalue.cutoff="numeric"),
+         prototype=prototype(pvalue.cutoff=0.01),  ## FIXME: add validity check
          contains="VIRTUAL")
 
 
-setClass("GeneGoHyperGeoTestParams", representation(ontology="character"),
+setClass("GeneGoHyperGeoTestParams",
+         representation(ontology="character",
+                        conditional="logical"),
          contains="GeneCategoryHyperGeoTestParams",
-         prototype=prototype(categoryName="GO"))
+         prototype=prototype(categoryName="GO",
+           conditional=FALSE))
 
 
-setClass("GeneKeggHyperGeoTestParams", contains="GeneCategoryHyperGeoTestParams",
+setClass("GeneKeggHyperGeoTestParams",
+         contains="GeneCategoryHyperGeoTestParams",
          prototype=prototype(categoryName="KEGG"))
 
 
-setClass("GeneCategoryHyperGeoTestResult",
-         representation(pvalues="numeric",
-                        geneCounts="integer",
-                        universeCounts="integer",
-                        universeMappedCount="integer",
-                        geneMappedCount="integer",
-                        annotation="character",
+setClass("GeneCategoryHyperGeoTestResultBase",
+         representation(annotation="character",
                         geneIds="ANY",
                         testName="character",
                         pvalue.cutoff="numeric"),
+         contains="VIRTUAL",
          prototype=prototype(pvalue.cutoff=0.01))
+
+
+setClass("GeneCategoryHyperGeoTestResult",
+         contains="GeneCategoryHyperGeoTestResultBase",
+         representation=representation(pvalues="numeric",
+           geneCounts="integer",
+           universeCounts="integer",
+           catToGeneId="list"))
+

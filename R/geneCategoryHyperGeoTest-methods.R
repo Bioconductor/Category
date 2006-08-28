@@ -20,11 +20,11 @@ setMethod("geneCategoryHyperGeoTest",
                   pvalues=pvals[ord],
                   geneCounts=numFound[ord],
                   universeCounts=numAtCat[ord],
-                  universeMappedCount=length(p@universeGeneIds),
-                  geneMappedCount=length(p@geneIds),
+                  catToGeneId=cat2Entrez,
                   annotation=p@annotation,
-                  geneIds=origGeneIds,
-                  testName=p@categoryName)
+                  geneIds=p@geneIds,
+                  testName=categoryName(p),
+                  pvalue.cutoff=p@pvalue.cutoff)
           })
 
 
@@ -40,6 +40,18 @@ geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
     geneCategoryHyperGeoTest(params)
 }
 
+resultToGOHyperG <- function(res, origIds) {
+    go2Affy <- mget(names(pvalues(res)),
+                    getDataEnv("GO2ALLPROBES", annotation(res)))
+    list(pvalues=pvalues(res),
+         goCounts=universeCounts(res),
+         intCounts=geneCounts(res),
+         numLL=universeMappedCount(res),
+         numInt=geneMappedCount(res),
+         chip=annotation(res),
+         intLLs=origIds,
+         go2Affy=go2Affy)
+}
 
 GOHyperG <- function(x, lib, what="MF", universe=NULL)
 {
@@ -54,15 +66,7 @@ GOHyperG <- function(x, lib, what="MF", universe=NULL)
       stop("argument ", sQuote("lib"), " must be character")
 
     res <- geneCategoryHyperGeoTest(params)
-    go2Affy <- mget(names(res@pvalues), getDataEnv("GO2ALLPROBES", lib))
-    list(pvalues=res@pvalues,
-         goCounts=res@universeCounts,
-         intCounts=res@geneCounts,
-         numLL=res@universeMappedCount,
-         numInt=res@geneMappedCount,
-         chip=res@annotation,
-         intLLs=res@geneIds,
-         go2Affy=go2Affy)
+    resultToGOHyperG(res, origIds=x)
 }
 
 

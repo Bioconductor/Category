@@ -2,6 +2,9 @@
 \docType{class}
 \alias{GeneCategoryHyperGeoTestParams-class}
 
+\alias{categoryName}
+\alias{categoryName,GeneCategoryHyperGeoTestParams-method}
+
 \title{Class "GeneCategoryHyperGeoTestParams"}
 \description{
   An abstract (VIRTUAL) parameter class for representing all parameters
@@ -31,6 +34,11 @@ Objects of this class cannot be instantiated directly.
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
       Usually set automatically by subclasses.  For example "GO".}
+
+    \item{\code{pvalue.cutoff}:}{The p-value to use as a cutoff for
+        significance for testing methods that require it.  This value
+        will also be passed on to the result instance and used for
+        display and counting of significant results.  The default is 0.01.}
   }
 }
 \section{Methods}{

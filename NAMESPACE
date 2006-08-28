@@ -1,3 +1,5 @@
+importMethodsFrom("Biobase", "annotation")
+
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
  "getPathNames", "makeEBcontr", "probes2Path")     
@@ -6,12 +8,26 @@ exportClasses("GeneCategoryHyperGeoTestParams",
               "GeneGoHyperGeoTestParams",
               "GeneKeggHyperGeoTestParams",
 
+              "GeneCategoryHyperGeoTestResultBase",
               "GeneCategoryHyperGeoTestResult")
 
 exportMethods("geneCategoryHyperGeoTest",
               
               "universeBuilder",
               "categoryToEntrezBuilder",
+
+              "categoryName",
+
+              ## accessors for GeneCategoryHyperGeoTestResult
+              "pvalues",
+              "geneCounts",
+              "universeCounts",
+              "universeMappedCount",
+              "geneMappedCount",
+              "annotation",
+              "geneIds",
+              "testName",
+              "pvalueCutoff",
               
               "show")
 

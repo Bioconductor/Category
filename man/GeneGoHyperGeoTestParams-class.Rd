@@ -2,6 +2,7 @@
 \docType{class}
 \alias{GeneGoHyperGeoTestParams-class}
 \alias{show,GeneGoHyperGeoTestParams-method}
+\alias{categoryName,GeneGoHyperGeoTestParams-method}
 
 \title{Class "GeneGoHyperGeoTestParams"}
 
@@ -18,6 +19,8 @@ Objects can be created by calls of the form \code{new("GeneGoHyperGeoTestParams"
   \describe{
     \item{\code{ontology}:}{A string specifying the GO ontology to use.
       Must be one of "BP", "CC", or "MF".}
+    \item{\code{conditional}:}{A logical indicating whether the
+      calculation should condition on the GO structure.}
     \item{\code{geneIds}:}{Object of class \code{"ANY"}: A vector of
       gene identifiers.  Numeric and character vectors are probably the
       only things that make sense.  These are the gene ids for the

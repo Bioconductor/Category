@@ -31,7 +31,14 @@ Objects can be created by calls of the form \code{new("GeneKeggHyperGeoTestParam
       category ids to include in the test instead of all possible
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
-      This will be automatically set to "KEGG" via the class's prototype.}
+      This will be automatically set to "KEGG" via the class's
+      prototype.}
+
+    \item{\code{pvalue.cutoff}:}{The p-value to use as a cutoff for
+        significance for testing methods that require it.  This value
+        will also be passed on to the result instance and used for
+        display and counting of significant results.  The default is 0.01.}
+
   }
 }
 \section{Extends}{

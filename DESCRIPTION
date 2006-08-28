@@ -1,6 +1,6 @@
 Package: Category
 Title: Category Analysis
-Version: 1.5.3
+Version: 1.5.4
 Date: 23 August 2006
 Author: R. Gentleman
 Description: A collection of tools for performing category analysis.
@@ -10,8 +10,9 @@ Depends: Biobase, KEGG, hgu95av2, genefilter, GO, graph, annotate
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
-         geneCategoryHyperGeoTest-methods.R show-methods.R
-         universeBuilder-methods.R utils.R
+         categoryName-methods.R geneCategoryHyperGeoTest-methods.R
+         GeneCategoryHyperGeoTestResult-accessors.R
+         show-methods.R universeBuilder-methods.R utils.R
          MAPcode.R catcode.R cateGOryMatrix.R 
          zzz.R
 biocViews: Statistics, Annotation, GO, Pathways
