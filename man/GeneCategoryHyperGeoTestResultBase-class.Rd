@@ -44,6 +44,10 @@
              methods use this.  Also used by the \code{show} method to
              count number of significant terms.  }
 
+         \item{\code{test.direction}:}{A string indicating whether the test
+             performed was for overrepresentation (\code{"over"}) or
+             underrepresentation(\code{"under"}).}
+
   }
 }
 \section{Methods}{

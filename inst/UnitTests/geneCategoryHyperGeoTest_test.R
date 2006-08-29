@@ -17,7 +17,8 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
                   annotation="hgu95av2", 
                   ontology="BP",
                   pvalue.cutoff=0.05,
-                  conditional=TRUE)
+                  conditional=TRUE,
+                  test.direction="over")
     params
 }
     

@@ -1,19 +1,29 @@
 setMethod("categoryToEntrezBuilder",
           signature(p="GeneKeggHyperGeoTestParams"),
           function(p) {
+              keep.all <- switch(p@test.direction,
+                                 over=FALSE,
+                                 under=TRUE,
+                                 stop("Bad test.direction slot"))
               getKeggToEntrezMap(p@geneIds, p@annotation, NULL, 
-                                 p@universeGeneIds)
+                                 p@universeGeneIds,
+                                 keep.all=keep.all)
           })
 
 setMethod("categoryToEntrezBuilder",
           signature(p="GeneGoHyperGeoTestParams"),
           function(p) {
+              keep.all <- switch(p@test.direction,
+                                 over=FALSE,
+                                 under=TRUE,
+                                 stop("Bad test.direction slot"))
               getGoToEntrezMap(p@geneIds, p@annotation, p@ontology, 
-                               p@universeGeneIds)
+                               p@universeGeneIds, keep.all=keep.all)
           })
 
 
-getGoToEntrezMap <- function(selected, lib, ontology, universe) {
+getGoToEntrezMap <- function(selected, lib, ontology, universe,
+                             keep.all) {
     ## Return a list mapping GO ids to the Entrez Gene ids annotated
     ## at the GO id.  Only those GO ids that are in the specified
     ## ontology and have at least one annotation in the set of 
@@ -22,23 +32,29 @@ getGoToEntrezMap <- function(selected, lib, ontology, universe) {
     probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
     ## Map to Entrez Gene and flag GO ids that don't have any
     ## annotations in our selected set.  No sense testing these.
-    probeToEntrezMapHelper(probeAnnot, selected, lib, universe)
+    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+                           keep.all=keep.all)
 }
 
 
-getKeggToEntrezMap <- function(selected, lib, ontology, universe) {
+getKeggToEntrezMap <- function(selected, lib, ontology, universe,
+                               keep.all) {
     kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
     probeAnnot <- getKeggToProbeMap(kegg2allprobes)
-    probeToEntrezMapHelper(probeAnnot, selected, lib, universe)
+    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+                           keep.all=keep.all)
 }
 
 
-probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe) {
+probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
+                                   keep.all=FALSE) {
     ## Given a list 'probeAnnot' mapping category => probe, convert the probe
     ## ids to Entrez Gene ids (unless we are using YEAST, in which case we skip
     ## this step).  Then reduce the Entrez Gene ids to the specified universe
     ## and only keep those entries in the list that have a non-empty
-    ## intersection with the selected genes.
+    ## intersection with the selected genes.  If keep.all is TRUE, then we keep
+    ## entries even if the list of gene IDs includes no gene ID from the
+    ## selected list.
     egAnnot <- lapply(probeAnnot, function(x) {
         ## YEAST doesn't use Entrez Gene, everybody else does
         z <- unique(x)
@@ -46,7 +62,7 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe) {
           z <- unique(unlist(mget(unique(x), getDataEnv("LOCUSID", lib))))
         z  <- intersect(z, universe)
         ## would be nice to have a short-circuiting way to do this
-        if (length(z) > 0 && any(selected %in% z)) {
+        if (length(z) > 0 && (keep.all || any(selected %in% z))) {
               return(z)
         }
         NULL

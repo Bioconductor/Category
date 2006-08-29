@@ -38,7 +38,12 @@ Objects of this class cannot be instantiated directly.
     \item{\code{pvalue.cutoff}:}{The p-value to use as a cutoff for
         significance for testing methods that require it.  This value
         will also be passed on to the result instance and used for
-        display and counting of significant results.  The default is 0.01.}
+        display and counting of significant results.  The default is
+        0.01.}
+
+      \item{\code{test.direction}:}{A string indicating whether the
+          test should be for overrepresentation (\code{"over"}) or
+          underrepresentation (\code{"under"}).}
   }
 }
 \section{Methods}{
