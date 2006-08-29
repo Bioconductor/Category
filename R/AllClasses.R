@@ -6,7 +6,10 @@ setClass("GeneCategoryHyperGeoTestParams",
                         categoryName="character",
                         pvalue.cutoff="numeric",
                         test.direction="character"),
-         prototype=prototype(pvalue.cutoff=0.01),  ## FIXME: add validity check
+         prototype=prototype(
+           pvalue.cutoff=0.01,
+           test.direction="over"
+           ),  ## FIXME: add validity check
          contains="VIRTUAL")
 
 
