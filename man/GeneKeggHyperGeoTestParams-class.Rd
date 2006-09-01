@@ -39,6 +39,10 @@ Objects can be created by calls of the form \code{new("GeneKeggHyperGeoTestParam
         will also be passed on to the result instance and used for
         display and counting of significant results.  The default is 0.01.}
 
+    \item{\code{test.direction}:}{A string indicating whether the
+      test should be for overrepresentation (\code{"over"}) or
+      underrepresentation (\code{"under"}).}
+
   }
 }
 \section{Extends}{
