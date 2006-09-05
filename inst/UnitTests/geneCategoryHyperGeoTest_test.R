@@ -17,7 +17,7 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
                   annotation="hgu95av2", 
                   ontology="BP",
                   pvalue.cutoff=0.05,
-                  conditional=TRUE,
+                  conditional=FALSE,
                   test.direction="over")
     params
 }
@@ -25,8 +25,6 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
 
 test_basic_regression <- function() {
     p <- makeSimpleGeneGoHyperGeoTestParams()
-    p@conditional <- FALSE
-
     res <- geneCategoryHyperGeoTest(p)
     checkEquals(18, sum(pvalues(res) < res@pvalue.cutoff))
 
@@ -46,16 +44,4 @@ test_basic_regression <- function() {
     checkEquals(22, geneMappedCount(res))
     checkEquals("hgu95av2", annotation(res))
     checkEquals(c("GO", "BP"), testName(res))
-
-    ## Use same test to save time
-
-    ## Check conversion to GOHyperG output format
-    ## We use a serialized result and test only the first
-    ## 10 entries (otherwise the saved result is too large).
-    ghg <- Category:::resultToGOHyperG(res, p@geneIds)
-    load(system.file("UnitTests/ghgans10.rda",
-                     package="Category"))
-    ghg10_expected <- ghgans10 ## from load
-    ghg10 <- lapply(ghg, function(x) if (length(x) > 11) x[1:10] else x)
-    checkEquals(ghg10_expected, ghg10)
 }

@@ -1,3 +1,5 @@
+import("methods")
+
 importMethodsFrom("Biobase", "annotation")
 
 export("applyByCategory",  "ttperm",
@@ -31,4 +33,4 @@ exportMethods("geneCategoryHyperGeoTest",
               
               "show")
 
-export(geneGoHyperGeoTest, geneKeggHyperGeoTest, GOHyperG)
+export(geneGoHyperGeoTest, geneKeggHyperGeoTest)
