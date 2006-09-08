@@ -13,6 +13,9 @@
 \alias{pvalueCutoff}
 \alias{pvalueCutoff,GeneCategoryHyperGeoTestResultBase-method}
 
+\alias{testDirection}
+\alias{testDirection,GeneCategoryHyperGeoTestResultBase-method}
+
 \alias{show,GeneCategoryHyperGeoTestResultBase-method}
 
 \alias{testName}
@@ -39,12 +42,12 @@
              identifying the testing method used.
            }
 
-         \item{\code{pvalue.cutoff}:}{Numeric value used by the
+         \item{\code{pvalueCutoff}:}{Numeric value used by the
              testing method as a p-value cutoff.  Not all testing
              methods use this.  Also used by the \code{show} method to
              count number of significant terms.  }
 
-         \item{\code{test.direction}:}{A string indicating whether the test
+         \item{\code{testDirection}:}{A string indicating whether the test
              performed was for overrepresentation (\code{"over"}) or
              underrepresentation(\code{"under"}).}
 
@@ -68,7 +71,14 @@
 
     \item{pvalueCutoff}{\code{signature(r =
           "GeneCategoryHyperGeoTestResultBase")}: accessor for the
-        \code{pvalue.cutoff} slot. }
+        \code{pvalueCutoff} slot. }
+
+    \item{testDirection}{\code{signature(r =
+          "GeneCategoryHyperGeoTestResultBase")}: accessor for the
+        \code{testDirection} slot.  Contains a string indicating
+        whether the test was for \code{"over"} or \code{"under"}
+        representation of the categories.}
+
 
     \item{show}{\code{signature(object =
           "GeneCategoryHyperGeoTestResultBase")}: display an instance. }

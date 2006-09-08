@@ -27,5 +27,8 @@ setMethod("testName", signature(r="GeneCategoryHyperGeoTestResultBase"),
           function(r) r@testName)
 
 setMethod("pvalueCutoff", signature(r="GeneCategoryHyperGeoTestResultBase"),
-          function(r) r@pvalue.cutoff)
+          function(r) r@pvalueCutoff)
+
+setMethod("testDirection", signature(r="GeneCategoryHyperGeoTestResultBase"),
+          function(r) r@testDirection)
 

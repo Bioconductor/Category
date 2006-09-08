@@ -31,3 +31,5 @@ setGeneric("geneIds", function(r) standardGeneric("geneIds"))
 setGeneric("testName", function(r) standardGeneric("testName"))
 
 setGeneric("pvalueCutoff", function(r) standardGeneric("pvalueCutoff"))
+
+setGeneric("testDirection", function(r) standardGeneric("testDirection"))

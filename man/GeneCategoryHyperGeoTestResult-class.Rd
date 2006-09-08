@@ -49,7 +49,7 @@ Objects can be created by calls of the form \code{new("GeneCategoryHyperGeoTestR
       character vectors depending on the annotation package.}
     \item{\code{testName}:}{A string identifying the testing method
       used.}
-    \item{\code{pvalue.cutoff}:}{Numeric value used a a p-value
+    \item{\code{pvalueCutoff}:}{Numeric value used a a p-value
         cutoff.  Used by the \code{show} method to count number of
         significant terms.
       }

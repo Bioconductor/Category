@@ -30,6 +30,7 @@ exportMethods("geneCategoryHyperGeoTest",
               "geneIds",
               "testName",
               "pvalueCutoff",
+              "testDirection",
               
               "show")
 

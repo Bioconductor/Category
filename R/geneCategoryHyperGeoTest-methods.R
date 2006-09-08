@@ -24,7 +24,7 @@ setMethod("geneCategoryHyperGeoTest",
                   annotation=p@annotation,
                   geneIds=p@geneIds,
                   testName=categoryName(p),
-                  pvalue.cutoff=p@pvalue.cutoff)
+                  pvalueCutoff=p@pvalueCutoff)
           })
 
 

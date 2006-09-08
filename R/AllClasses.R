@@ -4,11 +4,11 @@ setClass("GeneCategoryHyperGeoTestParams",
                         annotation="character",
                         cateogrySubsetIds="ANY",
                         categoryName="character",
-                        pvalue.cutoff="numeric",
-                        test.direction="character"),
+                        pvalueCutoff="numeric",
+                        testDirection="character"),
          prototype=prototype(
-           pvalue.cutoff=0.01,
-           test.direction="over"
+           pvalueCutoff=0.01,
+           testDirection="over"
            ),  ## FIXME: add validity check
          contains="VIRTUAL")
 
@@ -30,10 +30,10 @@ setClass("GeneCategoryHyperGeoTestResultBase",
          representation(annotation="character",
                         geneIds="ANY",
                         testName="character",
-                        pvalue.cutoff="numeric",
-                        test.direction="character"),
+                        pvalueCutoff="numeric",
+                        testDirection="character"),
          contains="VIRTUAL",
-         prototype=prototype(pvalue.cutoff=0.01))
+         prototype=prototype(pvalueCutoff=0.01))
 
 
 setClass("GeneCategoryHyperGeoTestResult",

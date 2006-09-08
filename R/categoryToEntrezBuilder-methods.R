@@ -1,10 +1,10 @@
 setMethod("categoryToEntrezBuilder",
           signature(p="GeneKeggHyperGeoTestParams"),
           function(p) {
-              keep.all <- switch(p@test.direction,
+              keep.all <- switch(p@testDirection,
                                  over=FALSE,
                                  under=TRUE,
-                                 stop("Bad test.direction slot"))
+                                 stop("Bad testDirection slot"))
               getKeggToEntrezMap(p@geneIds, p@annotation, NULL, 
                                  p@universeGeneIds,
                                  keep.all=keep.all)
@@ -13,10 +13,10 @@ setMethod("categoryToEntrezBuilder",
 setMethod("categoryToEntrezBuilder",
           signature(p="GeneGoHyperGeoTestParams"),
           function(p) {
-              keep.all <- switch(p@test.direction,
+              keep.all <- switch(p@testDirection,
                                  over=FALSE,
                                  under=TRUE,
-                                 stop("Bad test.direction slot"))
+                                 stop("Bad testDirection slot"))
               getGoToEntrezMap(p@geneIds, p@annotation, p@ontology, 
                                p@universeGeneIds, keep.all=keep.all)
           })

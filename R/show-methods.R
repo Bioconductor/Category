@@ -2,11 +2,11 @@ setMethod("show", signature(object="GeneCategoryHyperGeoTestResultBase"),
           function(object) {
               cat("Gene to", testName(object), 
                   "Category Association Test Result\n")
-              cat("Test direction:", object@test.direction,
+              cat("testDirection:", object@testDirection,
                   "representation\n")
-              nSig <- sum(pvalues(object) < object@pvalue.cutoff[1])
+              nSig <- sum(pvalues(object) < object@pvalueCutoff[1])
               cat(length(pvalues(object)), testName(object), "ids tested ")
-              cat("(", nSig, " have p < ", object@pvalue.cutoff[1],
+              cat("(", nSig, " have p < ", object@pvalueCutoff[1],
                   ")\n", sep="")
               cat("Selected gene set size:", geneMappedCount(object), "\n")
               cat("    Gene universe size:", universeMappedCount(object), "\n")

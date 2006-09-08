@@ -16,9 +16,9 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
                   universeGeneIds=entrezUniverse,
                   annotation="hgu95av2", 
                   ontology="BP",
-                  pvalue.cutoff=0.05,
+                  pvalueCutoff=0.05,
                   conditional=FALSE,
-                  test.direction="over")
+                  testDirection="over")
     params
 }
     
@@ -26,7 +26,7 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
 test_basic_regression <- function() {
     p <- makeSimpleGeneGoHyperGeoTestParams()
     res <- geneCategoryHyperGeoTest(p)
-    checkEquals(18, sum(pvalues(res) < res@pvalue.cutoff))
+    checkEquals(18, sum(pvalues(res) < res@pvalueCutoff))
 
     pvals <- round(c(0.01596240, 0.01825930, 0.02194761), 3)
     names(pvals) <- c("GO:0043170", "GO:0044265", "GO:0009057") 
