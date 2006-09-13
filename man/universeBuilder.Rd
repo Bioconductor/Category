@@ -20,7 +20,7 @@ universeBuilder(p)
 }
 \details{
   End users \bold{should not} call this directly.  This method gets
-  called from \code{geneCategoryHyperGeoTest}.  To add support for a new
+  called from \code{hyperGTest}.  To add support for a new
   category, a new method for this generic must be defined.  Its
   signature should match a subclass of
   \code{HyperGParams-class} appropriate for the new
@@ -32,7 +32,7 @@ universeBuilder(p)
 
 \author{S. Falcon}
 \seealso{
-  \code{\link{geneCategoryHyperGeoTest}}
+  \code{\link{hyperGTest}}
   \code{\link{HyperGParams-class}}
 }
 

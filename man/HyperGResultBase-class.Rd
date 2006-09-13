@@ -26,7 +26,7 @@
 \title{Class "HyperGResultBase"}
 \description{	 
   This VIRTUAL class represents common elements of the return values
-  of generic functions like \code{geneCategoryHyperGeoTest}.
+  of generic functions like \code{hyperGTest}.
 }
 \section{Objects from the Class}{A virtual Class: No objects may be created from it.}
 \section{Slots}{

@@ -8,7 +8,7 @@
 
 \description{
   A parameter class for representing all parameters needed for running
-  the \code{geneCategoryHyperGeoTest} method with one of the GO
+  the \code{hyperGTest} method with one of the GO
   ontologies (BP, CC, MF) as the category.
 }
 \section{Objects from the Class}{
@@ -46,7 +46,7 @@ Class \code{"HyperGParams"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{geneCategoryHyperGeoTest}{\code{signature(p =
+    \item{hyperGTest}{\code{signature(p =
         "HyperGParams")}: Perform hypergeometric tests to
       assess overrepresentation of category ids in the gene set.  See
       the documentation for the generic function for details.  This
@@ -61,7 +61,7 @@ Class \code{"HyperGParams"}, directly.
   \code{\link{HyperGResult-class}}
   \code{\link{GOHyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
-  \code{\link{geneCategoryHyperGeoTest}}
+  \code{\link{hyperGTest}}
 }
 
 \keyword{classes}

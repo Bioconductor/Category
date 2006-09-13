@@ -67,7 +67,7 @@ geneGoHyperGeoTest(entrezGeneIds, lib, ontology, universe=NULL)
   \code{\link{HyperGResult-class}}
   \code{\link{HyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
-  \code{\link{geneCategoryHyperGeoTest}}
+  \code{\link{hyperGTest}}
 }
 
 \examples{

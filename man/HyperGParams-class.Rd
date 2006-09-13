@@ -8,7 +8,7 @@
 \title{Class "HyperGParams"}
 \description{
   An abstract (VIRTUAL) parameter class for representing all parameters
-  needed by a method specializing the \code{geneCategoryHyperGeoTest}
+  needed by a method specializing the \code{hyperGTest}
   generic.  You should only use subclasses of this class directly.
 }
 \section{Objects from the Class}{
@@ -48,7 +48,7 @@ Objects of this class cannot be instantiated directly.
 }
 \section{Methods}{
   \describe{
-    \item{geneCategoryHyperGeoTest}{\code{signature(p =
+    \item{hyperGTest}{\code{signature(p =
     "HyperGParams")}: Perform hypergeometric tests to
     assess overrepresentation of category ids in the gene set.  See the
     documentation for the generic function for details.  This method
@@ -64,7 +64,7 @@ Objects of this class cannot be instantiated directly.
   \code{\link{GOHyperGParams-class}}
   \code{\link{KEGGHyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
-  \code{\link{geneCategoryHyperGeoTest}}
+  \code{\link{hyperGTest}}
 }
 
 \keyword{classes}

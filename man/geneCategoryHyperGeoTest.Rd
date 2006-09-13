@@ -1,17 +1,18 @@
-\name{geneCategoryHyperGeoTest}
+\name{hyperGTest}
 \docType{genericFunction}
 
-\alias{geneCategoryHyperGeoTest}
-\alias{geneCategoryHyperGeoTest,HyperGParams-method}
+\alias{hyperGTest}
+\alias{hyperGTest,HyperGParams-method}
 
-\title{Test for overrepresentation of category terms in a set of genes}
+\title{Hypergeometric Test for association of categories and genes}
+
 \description{
-  Given a subclass of \code{HyperGParams}, compute
-  Hypergeomtric p-values for overrepresentation of each term in the
+  Given a subclass of \code{HyperGParams}, compute Hypergeomtric
+  p-values for over or under-representation of each term in the
   specified category among the specified gene set.
 }
 \usage{
-geneCategoryHyperGeoTest(p)
+hyperGTest(p)
 }
 
 \arguments{
@@ -51,12 +52,12 @@ geneCategoryHyperGeoTest(p)
 
 \section{Implementation Notes}{
   In most cases, the provided method with signature matching any
-  subclass of \code{HyperGParams} is all that will be
-  needed.  This method follows a template pattern.  To add support for a
-  new FOO category type, a developer would need to create a
-  \code{GeneFooHyperGeoTestParams} subclass and then define two methods
+  subclass of \code{HyperGParams} is all that will be needed.  This
+  method follows a template pattern.  To add support for a new FOO
+  category type, a developer would need to create a
+  \code{FooHyperGParams} subclass and then define two methods
   specialized to the new subclass that get called from inside
-  \code{geneCategoryHyperGeoTest}: \code{universeBuilder} and
+  \code{hyperGTest}: \code{universeBuilder} and
   \code{categoryToEntrezBuilder}.
 }
 

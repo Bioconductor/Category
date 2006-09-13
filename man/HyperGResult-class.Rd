@@ -18,7 +18,7 @@
 \description{
   This class represents the results of a test for overrepresentation of
   categories among genes in a selected gene set based upon the
-  Hypergeometric distribution.  The \code{geneCategoryHyperGeoTest}
+  Hypergeometric distribution.  The \code{hyperGTest}
   generic function returns an instance of the
   \code{HyperGResult} class.
 }
