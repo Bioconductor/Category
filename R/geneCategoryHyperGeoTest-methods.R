@@ -1,6 +1,10 @@
 setMethod("geneCategoryHyperGeoTest",
           signature(p="GeneCategoryHyperGeoTestParams"), 
           function(p) {
+              ##FIXME: add code for over/under representation handling
+              ## also, reorg p-value calculation as in GOstats
+              if (p@testDirection != "over")
+                stop("unsupported test direction: ", p@testDirection)
               origGeneIds <- p@geneIds
               p@universeGeneIds <- universeBuilder(p)
               selected <- intersect(p@geneIds, p@universeGeneIds)
@@ -24,7 +28,8 @@ setMethod("geneCategoryHyperGeoTest",
                   annotation=p@annotation,
                   geneIds=p@geneIds,
                   testName=categoryName(p),
-                  pvalueCutoff=p@pvalueCutoff)
+                  pvalueCutoff=p@pvalueCutoff,
+                  testDirection=p@testDirection)
           })
 
 

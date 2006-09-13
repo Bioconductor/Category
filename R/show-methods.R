@@ -1,9 +1,6 @@
 setMethod("show", signature(object="GeneCategoryHyperGeoTestResultBase"),
           function(object) {
-              cat("Gene to", testName(object), 
-                  "Category Association Test Result\n")
-              cat("testDirection:", object@testDirection,
-                  "representation\n")
+              cat(description(object), "\n")
               nSig <- sum(pvalues(object) < object@pvalueCutoff[1])
               cat(length(pvalues(object)), testName(object), "ids tested ")
               cat("(", nSig, " have p < ", object@pvalueCutoff[1],

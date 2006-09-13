@@ -1,6 +1,6 @@
 import("methods")
 
-importMethodsFrom("Biobase", "annotation")
+importMethodsFrom("Biobase", "annotation", "description")
 
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
@@ -31,6 +31,7 @@ exportMethods("geneCategoryHyperGeoTest",
               "testName",
               "pvalueCutoff",
               "testDirection",
+              "description",
               
               "show")
 

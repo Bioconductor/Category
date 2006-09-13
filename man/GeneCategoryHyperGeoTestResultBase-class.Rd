@@ -18,6 +18,8 @@
 
 \alias{show,GeneCategoryHyperGeoTestResultBase-method}
 
+\alias{description,GeneCategoryHyperGeoTestResultBase-method}
+
 \alias{testName}
 \alias{testName,GeneCategoryHyperGeoTestResultBase-method}
 
@@ -79,6 +81,9 @@
         whether the test was for \code{"over"} or \code{"under"}
         representation of the categories.}
 
+    \item{description}{\code{signature(object =
+          "GeneCategoryHyperGeoTestResultBase")}: return a character
+        string description of the test result. }
 
     \item{show}{\code{signature(object =
           "GeneCategoryHyperGeoTestResultBase")}: display an instance. }

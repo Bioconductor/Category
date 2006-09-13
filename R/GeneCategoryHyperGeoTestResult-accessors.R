@@ -32,3 +32,12 @@ setMethod("pvalueCutoff", signature(r="GeneCategoryHyperGeoTestResultBase"),
 setMethod("testDirection", signature(r="GeneCategoryHyperGeoTestResultBase"),
           function(r) r@testDirection)
 
+setMethod("description",
+          signature(object="GeneCategoryHyperGeoTestResultBase"),
+          function(object) {
+              desc <- paste("Gene to %s Category Test for %s Representation",
+                            "Test Result")
+              desc <- sprintf(desc, paste(testName(object), collapse=" "),
+                              testDirection(object))
+              desc
+          })
