@@ -1,6 +1,6 @@
 setGeneric("hyperGTest", 
            function(p) standardGeneric("hyperGTest"),
-           valueClass="HyperGResult")
+           valueClass="HyperGResultBase")
 
 setGeneric("categoryToEntrezBuilder", 
            function(p) standardGeneric("categoryToEntrezBuilder"))
