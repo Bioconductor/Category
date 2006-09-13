@@ -1,6 +1,6 @@
 Package: Category
 Title: Category Analysis
-Version: 1.5.11
+Version: 1.5.12
 Date: 08 September 2006
 Author: R. Gentleman with contributions from S. Falcon
 Description: A collection of tools for performing category analysis.
@@ -12,8 +12,8 @@ Imports: methods, Biobase
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
          categoryName-methods.R geneCategoryHyperGeoTest-methods.R
-         GeneCategoryHyperGeoTestParams-accessors.R
-         GeneCategoryHyperGeoTestResult-accessors.R
+         HyperGParams-accessors.R
+         HyperGResult-accessors.R
          show-methods.R universeBuilder-methods.R utils.R
          MAPcode.R catcode.R cateGOryMatrix.R 
          zzz.R
