@@ -11,7 +11,7 @@ Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer
 Imports: methods, Biobase
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
-         categoryName-methods.R geneCategoryHyperGeoTest-methods.R
+         categoryName-methods.R hyperGTest-methods.R
          HyperGParams-accessors.R
          HyperGResult-accessors.R
          show-methods.R universeBuilder-methods.R utils.R
