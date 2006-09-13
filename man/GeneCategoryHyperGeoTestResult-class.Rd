@@ -1,30 +1,30 @@
-\name{GeneCategoryHyperGeoTestResult-class}
+\name{HyperGResult-class}
 \docType{class}
-\alias{GeneCategoryHyperGeoTestResult-class}
+\alias{HyperGResult-class}
 
 \alias{geneCounts}
-\alias{geneCounts,GeneCategoryHyperGeoTestResult-method}
+\alias{geneCounts,HyperGResult-method}
 
 \alias{pvalues}
-\alias{pvalues,GeneCategoryHyperGeoTestResult-method}
+\alias{pvalues,HyperGResult-method}
 
 \alias{universeCounts}
-\alias{universeCounts,GeneCategoryHyperGeoTestResult-method}
+\alias{universeCounts,HyperGResult-method}
 
 \alias{universeMappedCount}
-\alias{universeMappedCount,GeneCategoryHyperGeoTestResult-method}
+\alias{universeMappedCount,HyperGResult-method}
 
-\title{Class "GeneCategoryHyperGeoTestResult"}
+\title{Class "HyperGResult"}
 \description{
   This class represents the results of a test for overrepresentation of
   categories among genes in a selected gene set based upon the
   Hypergeometric distribution.  The \code{geneCategoryHyperGeoTest}
   generic function returns an instance of the
-  \code{GeneCategoryHyperGeoTestResult} class.
+  \code{HyperGResult} class.
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("GeneCategoryHyperGeoTestResult", ...)}.
+Objects can be created by calls of the form \code{new("HyperGResult", ...)}.
 }
 \section{Slots}{
 	 \describe{
@@ -57,27 +57,27 @@ Objects can be created by calls of the form \code{new("GeneCategoryHyperGeoTestR
   }
 
 \section{Extends}{
-Class \code{"GeneCategoryHyperGeoTestResultBase"}, directly.
+Class \code{"HyperGResultBase"}, directly.
 }
 \section{Methods}{
   \describe{
 
   \item{geneCounts}{\code{signature(r =
-        "GeneCategoryHyperGeoTestResult")}: return an \code{"integer"}
+        "HyperGResult")}: return an \code{"integer"}
       vector: for each category term tested, the number of genes from
       the gene set that are annotated at the term.}
 
   \item{pvalues}{\code{signature(r =
-        "GeneCategoryHyperGeoTestResult")}: return a \code{"numeric"}
+        "HyperGResult")}: return a \code{"numeric"}
       vector: the ordered p-values for each category term tested.}
 
   \item{universeCounts}{\code{signature(r =
-        "GeneCategoryHyperGeoTestResult")}: return an \code{"integer"}
+        "HyperGResult")}: return an \code{"integer"}
       vector: for each category term tested, the number of genes from
       the gene universe that are annotated at the term.}
 
   \item{universeMappedCount}{\code{signature(r =
-        "GeneCategoryHyperGeoTestResult")}: return an \code{"integer"}
+        "HyperGResult")}: return an \code{"integer"}
       vector of length one giving the size of the gene universe set. }
 
 
@@ -87,7 +87,7 @@ Class \code{"GeneCategoryHyperGeoTestResultBase"}, directly.
 \author{Seth Falcon}
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResultBase-class}}
+  \code{\link{HyperGResultBase-class}}
   \code{\link[GOstats]{GeneGoHyperGeoTestResult-class}}
 }
 

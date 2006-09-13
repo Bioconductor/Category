@@ -2,11 +2,11 @@
 \docType{genericFunction}
 
 \alias{geneCategoryHyperGeoTest}
-\alias{geneCategoryHyperGeoTest,GeneCategoryHyperGeoTestParams-method}
+\alias{geneCategoryHyperGeoTest,HyperGParams-method}
 
 \title{Test for overrepresentation of category terms in a set of genes}
 \description{
-  Given a subclass of \code{GeneCategoryHyperGeoTestParams}, compute
+  Given a subclass of \code{HyperGParams}, compute
   Hypergeomtric p-values for overrepresentation of each term in the
   specified category among the specified gene set.
 }
@@ -16,7 +16,7 @@ geneCategoryHyperGeoTest(p)
 
 \arguments{
   \item{p}{An instance of a subclass of
-  \code{GeneCategoryHyperGeoTestParams}.  This parameter object
+  \code{HyperGParams}.  This parameter object
   determines the category of interest (e.g., GO or KEGG) as well as the
   gene set.}
 }
@@ -46,12 +46,12 @@ geneCategoryHyperGeoTest(p)
   the right thing to do if you are working with a yeast microarray.
 }
 \value{
-  A \code{GeneCategoryHyperGeoTestResult} instance.
+  A \code{HyperGResult} instance.
 }
 
 \section{Implementation Notes}{
   In most cases, the provided method with signature matching any
-  subclass of \code{GeneCategoryHyperGeoTestParams} is all that will be
+  subclass of \code{HyperGParams} is all that will be
   needed.  This method follows a template pattern.  To add support for a
   new FOO category type, a developer would need to create a
   \code{GeneFooHyperGeoTestParams} subclass and then define two methods
@@ -62,9 +62,9 @@ geneCategoryHyperGeoTest(p)
 
 \author{S. Falcon}
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
-  \code{\link{GeneCategoryHyperGeoTestParams-class}}
-  \code{\link{GeneGoHyperGeoTestParams-class}}
-  \code{\link{GeneKeggHyperGeoTestParams-class}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{HyperGParams-class}}
+  \code{\link{GOHyperGParams-class}}
+  \code{\link{KEGGHyperGParams-class}}
 }
 \keyword{htest}

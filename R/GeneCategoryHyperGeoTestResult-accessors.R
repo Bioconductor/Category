@@ -1,39 +1,39 @@
-## Accessor methods for GeneCategoryHyperGeoTestResult class
+## Accessor methods for HyperGResult class
 
-setMethod("annotation", signature(object="GeneCategoryHyperGeoTestResultBase"),
+setMethod("annotation", signature(object="HyperGResultBase"),
           function(object) object@annotation)
 
-setMethod("pvalues", signature(r="GeneCategoryHyperGeoTestResult"),
+setMethod("pvalues", signature(r="HyperGResult"),
           function(r) r@pvalues)
 
-setMethod("geneCounts", signature(r="GeneCategoryHyperGeoTestResult"),
+setMethod("geneCounts", signature(r="HyperGResult"),
           function(r) r@geneCounts)
 
-setMethod("universeCounts", signature(r="GeneCategoryHyperGeoTestResult"),
+setMethod("universeCounts", signature(r="HyperGResult"),
           function(r) r@universeCounts)
 
-setMethod("universeMappedCount", signature(r="GeneCategoryHyperGeoTestResult"),
+setMethod("universeMappedCount", signature(r="HyperGResult"),
            function(r) length(unique(unlist(r@catToGeneId))))
 
-setMethod("geneMappedCount", signature(r="GeneCategoryHyperGeoTestResultBase"),
+setMethod("geneMappedCount", signature(r="HyperGResultBase"),
            function(r) length(r@geneIds))
 
 ## generic "annotation" defined in Biobase
 
-setMethod("geneIds", signature(r="GeneCategoryHyperGeoTestResultBase"),
+setMethod("geneIds", signature(r="HyperGResultBase"),
           function(r) r@geneIds)
 
-setMethod("testName", signature(r="GeneCategoryHyperGeoTestResultBase"),
+setMethod("testName", signature(r="HyperGResultBase"),
           function(r) r@testName)
 
-setMethod("pvalueCutoff", signature(r="GeneCategoryHyperGeoTestResultBase"),
+setMethod("pvalueCutoff", signature(r="HyperGResultBase"),
           function(r) r@pvalueCutoff)
 
-setMethod("testDirection", signature(r="GeneCategoryHyperGeoTestResultBase"),
+setMethod("testDirection", signature(r="HyperGResultBase"),
           function(r) r@testDirection)
 
 setMethod("description",
-          signature(object="GeneCategoryHyperGeoTestResultBase"),
+          signature(object="HyperGResultBase"),
           function(object) {
               desc <- paste("Gene to %s Category Test for %s Representation",
                             "Test Result")

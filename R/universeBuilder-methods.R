@@ -1,9 +1,9 @@
-setMethod("universeBuilder", signature(p="GeneKeggHyperGeoTestParams"),
+setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
           function(p) {
             getUniverseViaKegg(p@annotation, p@universeGeneIds)  
           })
 
-setMethod("universeBuilder", signature(p="GeneGoHyperGeoTestParams"),
+setMethod("universeBuilder", signature(p="GOHyperGParams"),
           function(p) {
             getUniverseViaGo(p@annotation, p@ontology, p@universeGeneIds)
         })

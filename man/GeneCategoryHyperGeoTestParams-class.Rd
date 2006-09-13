@@ -1,11 +1,11 @@
-\name{GeneCategoryHyperGeoTestParams-class}
+\name{HyperGParams-class}
 \docType{class}
-\alias{GeneCategoryHyperGeoTestParams-class}
+\alias{HyperGParams-class}
 
 \alias{categoryName}
-\alias{categoryName,GeneCategoryHyperGeoTestParams-method}
+\alias{categoryName,HyperGParams-method}
 
-\title{Class "GeneCategoryHyperGeoTestParams"}
+\title{Class "HyperGParams"}
 \description{
   An abstract (VIRTUAL) parameter class for representing all parameters
   needed by a method specializing the \code{geneCategoryHyperGeoTest}
@@ -49,20 +49,20 @@ Objects of this class cannot be instantiated directly.
 \section{Methods}{
   \describe{
     \item{geneCategoryHyperGeoTest}{\code{signature(p =
-    "GeneCategoryHyperGeoTestParams")}: Perform hypergeometric tests to
+    "HyperGParams")}: Perform hypergeometric tests to
     assess overrepresentation of category ids in the gene set.  See the
     documentation for the generic function for details.  This method
     must be called with a proper subclass of
-    \code{GeneCategoryHyperGeoTestParams}.}
+    \code{HyperGParams}.}
 }
 }
 
 \author{S. Falcon}
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
-  \code{\link{GeneGoHyperGeoTestParams-class}}
-  \code{\link{GeneKeggHyperGeoTestParams-class}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{GOHyperGParams-class}}
+  \code{\link{KEGGHyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
   \code{\link{geneCategoryHyperGeoTest}}
 }

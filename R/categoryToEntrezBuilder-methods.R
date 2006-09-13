@@ -1,5 +1,5 @@
 setMethod("categoryToEntrezBuilder",
-          signature(p="GeneKeggHyperGeoTestParams"),
+          signature(p="KEGGHyperGParams"),
           function(p) {
               keep.all <- switch(p@testDirection,
                                  over=FALSE,
@@ -11,7 +11,7 @@ setMethod("categoryToEntrezBuilder",
           })
 
 setMethod("categoryToEntrezBuilder",
-          signature(p="GeneGoHyperGeoTestParams"),
+          signature(p="GOHyperGParams"),
           function(p) {
               keep.all <- switch(p@testDirection,
                                  over=FALSE,

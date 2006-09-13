@@ -2,8 +2,8 @@
 \docType{genericFunction}
 
 \alias{categoryToEntrezBuilder}
-\alias{categoryToEntrezBuilder,GeneGoHyperGeoTestParams-method}
-\alias{categoryToEntrezBuilder,GeneKeggHyperGeoTestParams-method}
+\alias{categoryToEntrezBuilder,GOHyperGParams-method}
+\alias{categoryToEntrezBuilder,KEGGHyperGParams-method}
 
 
 \title{Return a list mapping category ids to Entrez Gene ids}
@@ -18,7 +18,7 @@ categoryToEntrezBuilder(p)
 }
 
 \arguments{
-  \item{p}{A subclass of \code{GeneCategoryHyperGeoTestParams-class}}
+  \item{p}{A subclass of \code{HyperGParams-class}}
 }
 
 \details{
@@ -26,7 +26,7 @@ categoryToEntrezBuilder(p)
   called from \code{geneCategoryHyperGeoTest}.  To add support for a new
   category, a new method for this generic must be defined.  Its
   signature should match a subclass of
-  \code{GeneCategoryHyperGeoTestParams-class} appropriate for the new
+  \code{HyperGParams-class} appropriate for the new
   category.
 }
 \value{
@@ -36,7 +36,7 @@ categoryToEntrezBuilder(p)
 \author{S. Falcon}
 \seealso{
   \code{\link{geneCategoryHyperGeoTest}}
-  \code{\link{GeneCategoryHyperGeoTestParams-class}}
+  \code{\link{HyperGParams-class}}
 }
 
 \keyword{manip}

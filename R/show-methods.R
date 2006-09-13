@@ -1,4 +1,4 @@
-setMethod("show", signature(object="GeneCategoryHyperGeoTestResultBase"),
+setMethod("show", signature(object="HyperGResultBase"),
           function(object) {
               cat(description(object), "\n")
               nSig <- sum(pvalues(object) < object@pvalueCutoff[1])
@@ -11,7 +11,7 @@ setMethod("show", signature(object="GeneCategoryHyperGeoTestResultBase"),
           })
 
 
-setMethod("show", signature(object="GeneGoHyperGeoTestParams"),
+setMethod("show", signature(object="GOHyperGParams"),
           function(object) {
               cat("A", class(object), "instance\n")
               cat("  category:", object@categoryName, "\n")

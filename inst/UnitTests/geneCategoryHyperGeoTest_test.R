@@ -1,4 +1,4 @@
-makeSimpleGeneGoHyperGeoTestParams <- function() {
+makeSimpleGOHyperGParams <- function() {
     set.seed(344)
     probeIds <- ls(hgu95av2LOCUSID)
     randProbeIds <- sample(probeIds, 500)
@@ -11,7 +11,7 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
 
     entrezUniverse <- entrezUniverse[!is.na(entrezUniverse)]
     selectedEntrezIds <- sample(entrezUniverse, 30)
-    params <- new("GeneGoHyperGeoTestParams",
+    params <- new("GOHyperGParams",
                   geneIds=selectedEntrezIds, 
                   universeGeneIds=entrezUniverse,
                   annotation="hgu95av2", 
@@ -24,7 +24,7 @@ makeSimpleGeneGoHyperGeoTestParams <- function() {
     
 
 test_basic_regression <- function() {
-    p <- makeSimpleGeneGoHyperGeoTestParams()
+    p <- makeSimpleGOHyperGParams()
     res <- geneCategoryHyperGeoTest(p)
     checkEquals(18, sum(pvalues(res) < res@pvalueCutoff))
 

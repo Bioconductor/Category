@@ -1,8 +1,8 @@
 \name{universeBuilder}
 \docType{genericFunction}
 \alias{universeBuilder}
-\alias{universeBuilder,GeneGoHyperGeoTestParams-method}
-\alias{universeBuilder,GeneKeggHyperGeoTestParams-method}
+\alias{universeBuilder,GOHyperGParams-method}
+\alias{universeBuilder,KEGGHyperGParams-method}
 
 \title{Return a vector of gene identifiers with category annotations}
 \description{
@@ -16,14 +16,14 @@ universeBuilder(p)
 }
 
 \arguments{
-  \item{p}{A subclass of \code{GeneCategoryHyperGeoTestParams-class}}
+  \item{p}{A subclass of \code{HyperGParams-class}}
 }
 \details{
   End users \bold{should not} call this directly.  This method gets
   called from \code{geneCategoryHyperGeoTest}.  To add support for a new
   category, a new method for this generic must be defined.  Its
   signature should match a subclass of
-  \code{GeneCategoryHyperGeoTestParams-class} appropriate for the new
+  \code{HyperGParams-class} appropriate for the new
   category.
 }
 \value{
@@ -33,7 +33,7 @@ universeBuilder(p)
 \author{S. Falcon}
 \seealso{
   \code{\link{geneCategoryHyperGeoTest}}
-  \code{\link{GeneCategoryHyperGeoTestParams-class}}
+  \code{\link{HyperGParams-class}}
 }
 
 \keyword{manip}

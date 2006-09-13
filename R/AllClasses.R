@@ -1,4 +1,4 @@
-setClass("GeneCategoryHyperGeoTestParams", 
+setClass("HyperGParams", 
          representation(geneIds="ANY",
                         universeGeneIds="ANY",
                         annotation="character",
@@ -13,22 +13,22 @@ setClass("GeneCategoryHyperGeoTestParams",
          contains="VIRTUAL")
 
 
-setClass("GeneGoHyperGeoTestParams",
+setClass("GOHyperGParams",
          representation(ontology="character",
                         conditional="logical"),
-         contains="GeneCategoryHyperGeoTestParams",
+         contains="HyperGParams",
          prototype=prototype(categoryName="GO",
            conditional=FALSE))
 
 
-setClass("GeneKeggHyperGeoTestParams",
-         contains="GeneCategoryHyperGeoTestParams",
+setClass("KEGGHyperGParams",
+         contains="HyperGParams",
          prototype=prototype(categoryName="KEGG"))
 
 
-setClass("GeneCategoryHyperGeoTestResultBase",
+setClass("HyperGResultBase",
          representation(annotation="character",
-                        geneIds="ANY",
+                         geneIds="ANY",
                         testName="character",
                         pvalueCutoff="numeric",
                         testDirection="character"),
@@ -36,8 +36,8 @@ setClass("GeneCategoryHyperGeoTestResultBase",
          prototype=prototype(pvalueCutoff=0.01))
 
 
-setClass("GeneCategoryHyperGeoTestResult",
-         contains="GeneCategoryHyperGeoTestResultBase",
+setClass("HyperGResult",
+         contains="HyperGResultBase",
          representation=representation(pvalues="numeric",
            geneCounts="integer",
            universeCounts="integer",

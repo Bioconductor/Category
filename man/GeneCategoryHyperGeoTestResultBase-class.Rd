@@ -1,29 +1,29 @@
-\name{GeneCategoryHyperGeoTestResultBase-class}
+\name{HyperGResultBase-class}
 \docType{class}
-\alias{GeneCategoryHyperGeoTestResultBase-class}
+\alias{HyperGResultBase-class}
 
-\alias{annotation,GeneCategoryHyperGeoTestResultBase-method}
+\alias{annotation,HyperGResultBase-method}
 
 \alias{geneIds}
-\alias{geneIds,GeneCategoryHyperGeoTestResultBase-method}
+\alias{geneIds,HyperGResultBase-method}
 
 \alias{geneMappedCount}
-\alias{geneMappedCount,GeneCategoryHyperGeoTestResultBase-method}
+\alias{geneMappedCount,HyperGResultBase-method}
 
 \alias{pvalueCutoff}
-\alias{pvalueCutoff,GeneCategoryHyperGeoTestResultBase-method}
+\alias{pvalueCutoff,HyperGResultBase-method}
 
 \alias{testDirection}
-\alias{testDirection,GeneCategoryHyperGeoTestResultBase-method}
+\alias{testDirection,HyperGResultBase-method}
 
-\alias{show,GeneCategoryHyperGeoTestResultBase-method}
+\alias{show,HyperGResultBase-method}
 
-\alias{description,GeneCategoryHyperGeoTestResultBase-method}
+\alias{description,HyperGResultBase-method}
 
 \alias{testName}
-\alias{testName,GeneCategoryHyperGeoTestResultBase-method}
+\alias{testName,HyperGResultBase-method}
 
-\title{Class "GeneCategoryHyperGeoTestResultBase"}
+\title{Class "HyperGResultBase"}
 \description{	 
   This VIRTUAL class represents common elements of the return values
   of generic functions like \code{geneCategoryHyperGeoTest}.
@@ -58,38 +58,38 @@
 \section{Methods}{
   \describe{
     \item{annotation}{\code{signature(object =
-          "GeneCategoryHyperGeoTestResultBase")}: return the name
+          "HyperGResultBase")}: return the name
         of the annotation data package used.  }
 
     \item{geneIds}{\code{signature(r =
-          "GeneCategoryHyperGeoTestResultBase")}: return the input
+          "HyperGResultBase")}: return the input
         vector of gene identifiers intersected with the universe of
         gene identifiers used in the computation. }
 
     \item{geneMappedCount}{\code{signature(r =
-          "GeneCategoryHyperGeoTestResultBase")}: return the size of
+          "HyperGResultBase")}: return the size of
         the selected gene set used in the computation.  This is simply
         the \code{length(geneIds(obj))}.}
 
     \item{pvalueCutoff}{\code{signature(r =
-          "GeneCategoryHyperGeoTestResultBase")}: accessor for the
+          "HyperGResultBase")}: accessor for the
         \code{pvalueCutoff} slot. }
 
     \item{testDirection}{\code{signature(r =
-          "GeneCategoryHyperGeoTestResultBase")}: accessor for the
+          "HyperGResultBase")}: accessor for the
         \code{testDirection} slot.  Contains a string indicating
         whether the test was for \code{"over"} or \code{"under"}
         representation of the categories.}
 
     \item{description}{\code{signature(object =
-          "GeneCategoryHyperGeoTestResultBase")}: return a character
+          "HyperGResultBase")}: return a character
         string description of the test result. }
 
     \item{show}{\code{signature(object =
-          "GeneCategoryHyperGeoTestResultBase")}: display an instance. }
+          "HyperGResultBase")}: display an instance. }
 
     \item{testName}{\code{signature(r =
-          "GeneCategoryHyperGeoTestResultBase")}: return a string
+          "HyperGResultBase")}: return a string
         describing the testing method used.}
 
 	 }
@@ -99,7 +99,7 @@
 
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
+  \code{\link{HyperGResult-class}}
   \code{\link[GOstats]{GeneGoHyperGeoTestResult-class}}
 }
 

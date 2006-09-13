@@ -1,10 +1,10 @@
-\name{GeneGoHyperGeoTestParams-class}
+\name{GOHyperGParams-class}
 \docType{class}
-\alias{GeneGoHyperGeoTestParams-class}
-\alias{show,GeneGoHyperGeoTestParams-method}
-\alias{categoryName,GeneGoHyperGeoTestParams-method}
+\alias{GOHyperGParams-class}
+\alias{show,GOHyperGParams-method}
+\alias{categoryName,GOHyperGParams-method}
 
-\title{Class "GeneGoHyperGeoTestParams"}
+\title{Class "GOHyperGParams"}
 
 \description{
   A parameter class for representing all parameters needed for running
@@ -12,7 +12,7 @@
   ontologies (BP, CC, MF) as the category.
 }
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("GeneGoHyperGeoTestParams", ...)}.
+Objects can be created by calls of the form \code{new("GOHyperGParams", ...)}.
 }
 
 \section{Slots}{
@@ -42,24 +42,24 @@ Objects can be created by calls of the form \code{new("GeneGoHyperGeoTestParams"
   }
 }
 \section{Extends}{
-Class \code{"GeneCategoryHyperGeoTestParams"}, directly.
+Class \code{"HyperGParams"}, directly.
 }
 \section{Methods}{
   \describe{
     \item{geneCategoryHyperGeoTest}{\code{signature(p =
-        "GeneCategoryHyperGeoTestParams")}: Perform hypergeometric tests to
+        "HyperGParams")}: Perform hypergeometric tests to
       assess overrepresentation of category ids in the gene set.  See
       the documentation for the generic function for details.  This
       method must be called with a proper subclass of
-      \code{GeneCategoryHyperGeoTestParams}.}
+      \code{HyperGParams}.}
   }
 }
 
 \author{S. Falcon}
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
-  \code{\link{GeneGoHyperGeoTestParams-class}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{GOHyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
   \code{\link{geneCategoryHyperGeoTest}}
 }

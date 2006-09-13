@@ -1,6 +1,6 @@
 setGeneric("geneCategoryHyperGeoTest", 
            function(p) standardGeneric("geneCategoryHyperGeoTest"),
-           valueClass="GeneCategoryHyperGeoTestResult")
+           valueClass="HyperGResult")
 
 setGeneric("categoryToEntrezBuilder", 
            function(p) standardGeneric("categoryToEntrezBuilder"))
@@ -11,7 +11,7 @@ setGeneric("universeBuilder",
 setGeneric("categoryName", function(p) standardGeneric("categoryName"))
 
 
-## Accessors for GeneCategoryHyperGeoTestResult objects
+## Accessors for HyperGResult objects
 setGeneric("pvalues", function(r) standardGeneric("pvalues"))
 
 setGeneric("geneCounts", function(r) standardGeneric("geneCounts"))

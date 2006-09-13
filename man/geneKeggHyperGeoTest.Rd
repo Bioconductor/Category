@@ -51,14 +51,14 @@ geneKeggHyperGeoTest(entrezGeneIds, lib, universe=NULL)
   right thing to do if you are working with a yeast microarray.
 }
 \value{
-  A \code{\link{GeneCategoryHyperGeoTestResult-class}} instance.
+  A \code{\link{HyperGResult-class}} instance.
 }
 
 \author{S. Falcon}
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
-  \code{\link{GeneCategoryHyperGeoTestParams-class}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{HyperGParams-class}}
   \code{\link{geneGoHyperGeoTest}}
   \code{\link{geneCategoryHyperGeoTest}}
 }

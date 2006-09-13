@@ -1,9 +1,9 @@
-setMethod("categoryName", signature(p="GeneCategoryHyperGeoTestParams"),
+setMethod("categoryName", signature(p="HyperGParams"),
           function(p) {
               p@categoryName
           })
 
-setMethod("categoryName", signature(p="GeneGoHyperGeoTestParams"),
+setMethod("categoryName", signature(p="GOHyperGParams"),
           function(p) {
               c(p@categoryName, p@ontology)
           })

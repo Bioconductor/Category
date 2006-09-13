@@ -1,5 +1,5 @@
 setMethod("geneCategoryHyperGeoTest",
-          signature(p="GeneCategoryHyperGeoTestParams"), 
+          signature(p="HyperGParams"), 
           function(p) {
               ##FIXME: add code for over/under representation handling
               ## also, reorg p-value calculation as in GOstats
@@ -20,7 +20,7 @@ setMethod("geneCategoryHyperGeoTest",
               pvals <- phyper(numFound-1, numAtCat, numNotAtCat, numDrawn,
                               lower.tail=FALSE)
               ord <- order(pvals)
-              new("GeneCategoryHyperGeoTestResult",
+              new("HyperGResult",
                   pvalues=pvals[ord],
                   geneCounts=numFound[ord],
                   universeCounts=numAtCat[ord],
@@ -37,7 +37,7 @@ geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
 {
     if (missing(universe) || is.null(universe))
       universe <- character(0)
-    params <- new("GeneGoHyperGeoTestParams",
+    params <- new("GOHyperGParams",
                   geneIds=entrezGeneIds,
                   universeGeneIds=universe,
                   annotation=lib,
@@ -50,7 +50,7 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
 {
     if (missing(universe) || is.null(universe))
       universe <- character(0)
-    params <- new("GeneKeggHyperGeoTestParams",
+    params <- new("KEGGHyperGParams",
                   geneIds=entrezGeneIds,
                   universeGeneIds=universe,
                   annotation=lib)

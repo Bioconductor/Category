@@ -58,14 +58,14 @@ geneGoHyperGeoTest(entrezGeneIds, lib, ontology, universe=NULL)
 }
 
 \value{
-  A \code{\link{GeneCategoryHyperGeoTestResult-class}} instance.
+  A \code{\link{HyperGResult-class}} instance.
 }
 
 \author{S. Falcon}
 
 \seealso{
-  \code{\link{GeneCategoryHyperGeoTestResult-class}}
-  \code{\link{GeneCategoryHyperGeoTestParams-class}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{HyperGParams-class}}
   \code{\link{geneKeggHyperGeoTest}}
   \code{\link{geneCategoryHyperGeoTest}}
 }
