@@ -1,5 +1,5 @@
-setGeneric("geneCategoryHyperGeoTest", 
-           function(p) standardGeneric("geneCategoryHyperGeoTest"),
+setGeneric("hyperGTest", 
+           function(p) standardGeneric("hyperGTest"),
            valueClass="HyperGResult")
 
 setGeneric("categoryToEntrezBuilder", 

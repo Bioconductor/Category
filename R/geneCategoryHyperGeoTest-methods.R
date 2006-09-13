@@ -1,4 +1,4 @@
-setMethod("geneCategoryHyperGeoTest",
+setMethod("hyperGTest",
           signature(p="HyperGParams"), 
           function(p) {
               ##FIXME: add code for over/under representation handling
@@ -35,6 +35,7 @@ setMethod("geneCategoryHyperGeoTest",
 
 geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
 {
+    .Deprecated("hyperGTest")
     if (missing(universe) || is.null(universe))
       universe <- character(0)
     params <- new("GOHyperGParams",
@@ -42,17 +43,18 @@ geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
                   universeGeneIds=universe,
                   annotation=lib,
                   ontology=ontology)
-    geneCategoryHyperGeoTest(params)
+    hyperGTest(params)
 }
 
 
 geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
 {
+    .Deprecated("hyperGTest")
     if (missing(universe) || is.null(universe))
       universe <- character(0)
     params <- new("KEGGHyperGParams",
                   geneIds=entrezGeneIds,
                   universeGeneIds=universe,
                   annotation=lib)
-    geneCategoryHyperGeoTest(params)
+    hyperGTest(params)
 }
