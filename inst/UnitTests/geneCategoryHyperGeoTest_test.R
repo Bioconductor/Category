@@ -25,8 +25,8 @@ makeSimpleGOHyperGParams <- function() {
 
 test_basic_regression <- function() {
     p <- makeSimpleGOHyperGParams()
-    res <- geneCategoryHyperGeoTest(p)
-    checkEquals(18, sum(pvalues(res) < res@pvalueCutoff))
+    res <- hyperGTest(p)
+    checkEquals(18, sum(pvalues(res) < pvalueCutoff(res)))
 
     pvals <- round(c(0.01596240, 0.01825930, 0.02194761), 3)
     names(pvals) <- c("GO:0043170", "GO:0044265", "GO:0009057") 

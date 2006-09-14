@@ -1,10 +1,10 @@
-setMethod("categoryName", signature(p="HyperGParams"),
-          function(p) {
-              p@categoryName
+setMethod("categoryName", signature(r="HyperGParams"),
+          function(r) {
+              r@categoryName
           })
 
-setMethod("categoryName", signature(p="GOHyperGParams"),
-          function(p) {
-              c(p@categoryName, p@ontology)
+setMethod("categoryName", signature(r="GOHyperGParams"),
+          function(r) {
+              c(r@categoryName, r@ontology)
           })
 

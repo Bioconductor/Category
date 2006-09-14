@@ -41,3 +41,7 @@ setMethod("description",
                               testDirection(object))
               desc
           })
+
+setMethod("isConditional", "HyperGResultBase",
+          function(r) FALSE)
+          

@@ -3,19 +3,19 @@ setMethod("hyperGTest",
           function(p) {
               ##FIXME: add code for over/under representation handling
               ## also, reorg p-value calculation as in GOstats
-              if (p@testDirection != "over")
-                stop("unsupported test direction: ", p@testDirection)
-              origGeneIds <- p@geneIds
-              p@universeGeneIds <- universeBuilder(p)
-              selected <- intersect(p@geneIds, p@universeGeneIds)
-              p@geneIds <- selected
+              if (testDirection(p) != "over")
+                stop("unsupported test direction: ", testDirection(p))
+              origGeneIds <- geneIds(p)
+              universeGeneIds(p) <- universeBuilder(p)
+              selected <- intersect(geneIds(p), universeGeneIds(p))
+              geneIds(p) <- selected
               cat2Entrez <- categoryToEntrezBuilder(p)
               numFound <- sapply(cat2Entrez, function(x) sum(selected %in% x))
               numDrawn <- length(selected)
               ## num white in urn
               numAtCat <- sapply(cat2Entrez, length)
               ## num black in urn
-              numNotAtCat <- length(p@universeGeneIds) - numAtCat
+              numNotAtCat <- length(universeGeneIds(p)) - numAtCat
               ## take the -1 because we want evidence for as extreme or more.
               pvals <- phyper(numFound-1, numAtCat, numNotAtCat, numDrawn,
                               lower.tail=FALSE)
@@ -25,11 +25,11 @@ setMethod("hyperGTest",
                   geneCounts=numFound[ord],
                   universeCounts=numAtCat[ord],
                   catToGeneId=cat2Entrez,
-                  annotation=p@annotation,
-                  geneIds=p@geneIds,
+                  annotation=annotation(p),
+                  geneIds=geneIds(p),
                   testName=categoryName(p),
-                  pvalueCutoff=p@pvalueCutoff,
-                  testDirection=p@testDirection)
+                  pvalueCutoff=pvalueCutoff(p),
+                  testDirection=testDirection(p))
           })
 
 
