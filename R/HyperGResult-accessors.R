@@ -6,11 +6,25 @@ setMethod("annotation", signature(object="HyperGResultBase"),
 setMethod("pvalues", signature(r="HyperGResult"),
           function(r) r@pvalues)
 
+setMethod("oddsRatios", signature(r="HyperGResult"),
+          function(r) r@oddsRatios)
+
+setMethod("expectedCounts", signature(r="HyperGResult"),
+          function(r) r@expectedCounts)
+
 setMethod("geneCounts", signature(r="HyperGResult"),
-          function(r) r@geneCounts)
+          function(r) {
+              sapply(r@catToGeneId, function(x) {
+                  sum(geneIds(r) %in% x)
+              })
+          })
 
 setMethod("universeCounts", signature(r="HyperGResult"),
-          function(r) r@universeCounts)
+          function(r) {
+              ans <- listLen(r@catToGeneId)
+              names(ans) <- names(r@catToGeneId)
+              ans
+          })
 
 setMethod("universeMappedCount", signature(r="HyperGResult"),
            function(r) length(unique(unlist(r@catToGeneId))))

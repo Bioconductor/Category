@@ -38,7 +38,10 @@ setClass("HyperGResultBase",
 
 setClass("HyperGResult",
          contains="HyperGResultBase",
-         representation=representation(pvalues="numeric",
+         representation=representation(
+           pvalues="numeric",
+           oddsRatios="numeric",
+           expectedCounts="numeric",
            geneCounts="integer",
            universeCounts="integer",
            catToGeneId="list"))

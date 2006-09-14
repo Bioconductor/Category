@@ -33,7 +33,14 @@ setGeneric("pvalueCutoff", function(r) standardGeneric("pvalueCutoff"))
 setGeneric("pvalueCutoff<-", function(r, value) standardGeneric("pvalueCutoff<-"))
 
 setGeneric("testDirection", function(r) standardGeneric("testDirection"))
-setGeneric("testDirection<-", function(r, value) standardGeneric("testDirection<-"))
+setGeneric("testDirection<-",
+           function(r, value) standardGeneric("testDirection<-"))
+
+setGeneric("oddsRatios", function(r) standardGeneric("oddsRatios"))
+
+setGeneric("expectedCounts",
+           function(r) standardGeneric("expectedCounts"))
+
 
 ## accoessors for HyperGParams
 setGeneric("categoryName", function(r) standardGeneric("categoryName"))
