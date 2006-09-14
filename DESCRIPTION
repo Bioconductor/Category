@@ -1,13 +1,13 @@
 Package: Category
 Title: Category Analysis
-Version: 1.5.14
+Version: 1.5.15
 Date: 08 September 2006
 Author: R. Gentleman with contributions from S. Falcon
 Description: A collection of tools for performing category analysis.
 Maintainer: R. Gentleman <rgentlem@fhcrc.org>
 License: CPL
-Depends: Biobase, KEGG, GO, graph, annotate, methods
-Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, hgu95av2, genefilter
+Depends: Biobase, KEGG, GO, graph, annotate, methods, genefilter
+Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, hgu95av2 
 Imports: methods, Biobase
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
