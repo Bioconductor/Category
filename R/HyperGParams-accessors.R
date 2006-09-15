@@ -43,6 +43,17 @@ setReplaceMethod("pvalueCutoff", "HyperGParams", function(r, value) {
 
 setMethod("isConditional", "HyperGParams", function(r) FALSE)
 
+setMethod("conditional", "HyperGParams", function(r) FALSE)
+
+setMethod("conditional", "GOHyperGParams", function(r) r@conditional)
+
+setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
+                 function(r, value) {
+                     if (is.na(value))
+                       stop("value must be TRUE or FALSE")
+                     r@conditional <- value
+                     r
+                 })
 
 ##FIXME, this shouldn't be as hard as it is :-( :-(
 ## autogenerate accessors
