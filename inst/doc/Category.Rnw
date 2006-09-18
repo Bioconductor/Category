@@ -210,7 +210,7 @@ To carry this out we make use of the \Rfunction{rowttests} function in the
 ttests = rowttests(esetASub, "mol.biol")
 
 ##find the probes that we are going to use
-fL = findLargest(geneNames(esetASub), abs(ttests$statistic), "hgu95av2")
+fL = findLargest(featureNames(esetASub), abs(ttests$statistic), "hgu95av2")
 fL2 = probes2Path(fL, "hgu95av2")
 length(fL2)
 inBoth = fL %in% names(fL2)
@@ -226,7 +226,7 @@ Then we remove all LocusLink identifiers that do not map to any known
 pathway and find that we have \Sexpr{length(fL2)} genes left.
 
 <<reorder, echo=FALSE, results=hide>>=
-eS = esetASub[match(names(fL2), geneNames(esetASub)),]
+eS = esetASub[match(names(fL2), featureNames(esetASub)),]
 
 tobs = rowttests(eS, "mol.biol")
 @
