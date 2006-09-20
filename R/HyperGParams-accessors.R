@@ -55,6 +55,18 @@ setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
                      r
                  })
 
+setMethod("ontology", "HyperGParams", function(r) NA)
+
+setMethod("ontology", "GOHyperGParams", function(r) r@ontology)
+
+setReplaceMethod("ontology", c("GOHyperGParams", "character"),
+                 function(r, value) {
+                     if (is.na(value) || length(value) != 1)
+                       stop("value must be a length one character vector")
+                     r@ontology <- value
+                     r
+                 })
+
 ##FIXME, this shouldn't be as hard as it is :-( :-(
 ## autogenerate accessors
 ## theSlots <- slotNames("HyperGParams")
