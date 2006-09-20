@@ -1,10 +1,6 @@
 setMethod("hyperGTest",
           signature(p="HyperGParams"), 
           function(p) {
-              ##FIXME: add code for over/under representation handling
-              ## also, reorg p-value calculation as in GOstats
-              if (testDirection(p) != "over")
-                stop("unsupported test direction: ", testDirection(p))
               origGeneIds <- geneIds(p)
               universeGeneIds(p) <- universeBuilder(p)
               selected <- intersect(geneIds(p), universeGeneIds(p))
