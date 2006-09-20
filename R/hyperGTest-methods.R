@@ -52,6 +52,18 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     hyperGTest(params)
 }
 
+genePfamHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
+{
+    .Deprecated("hyperGTest")
+    if (missing(universe) || is.null(universe))
+      universe <- character(0)
+    params <- new("PFAMHyperGParams",
+                  geneIds=entrezGeneIds,
+                  universeGeneIds=universe,
+                  annotation=lib)
+    hyperGTest(params)
+}
+
 
 .doHyperGTest <- function(p, curCat2Entrez, cat2Entrez, selected) {
     ## Here is how we conceptualize the test:

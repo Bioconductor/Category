@@ -1,24 +1,36 @@
 setMethod("categoryToEntrezBuilder",
           signature(p="KEGGHyperGParams"),
           function(p) {
-              keep.all <- switch(p@testDirection,
+              keep.all <- switch(testDirection(p),
                                  over=FALSE,
                                  under=TRUE,
                                  stop("Bad testDirection slot"))
-              getKeggToEntrezMap(p@geneIds, p@annotation, NULL, 
-                                 p@universeGeneIds,
+              getKeggToEntrezMap(geneIds(p), annotation(p), NULL, 
+                                 universeGeneIds(p),
                                  keep.all=keep.all)
           })
 
 setMethod("categoryToEntrezBuilder",
           signature(p="GOHyperGParams"),
           function(p) {
-              keep.all <- switch(p@testDirection,
+              keep.all <- switch(testDirection(p),
                                  over=FALSE,
                                  under=TRUE,
                                  stop("Bad testDirection slot"))
-              getGoToEntrezMap(p@geneIds, p@annotation, p@ontology, 
-                               p@universeGeneIds, keep.all=keep.all)
+              getGoToEntrezMap(geneIds(p), annotation(p), ontology(p), 
+                               universeGeneIds(p), keep.all=keep.all)
+          })
+
+setMethod("categoryToEntrezBuilder",
+          signature(p="PFAMHyperGParams"),
+          function(p) {
+              keep.all <- switch(testDirection(p),
+                                 over=FALSE,
+                                 under=TRUE,
+                                 stop("Bad testDirection slot"))
+              getPfamToEntrezMap(geneIds(p), annotation(p), NULL,
+                                 universeGeneIds(p),
+                                 keep.all=keep.all)
           })
 
 
@@ -41,6 +53,16 @@ getKeggToEntrezMap <- function(selected, lib, ontology, universe,
                                keep.all) {
     kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
     probeAnnot <- getKeggToProbeMap(kegg2allprobes)
+    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+                           keep.all=keep.all)
+}
+
+
+getPfamToEntrezMap <- function(selected, lib, ontology, universe,
+                               keep.all) {
+    probe2pfam <- getDataEnv("PFAM",lib)
+    pfam2allprobes <- splitOrfByPfam(probe2pfam)
+    probeAnnot <- getPfamToProbeMap(pfam2allprobes)
     probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
                            keep.all=keep.all)
 }
@@ -110,6 +132,14 @@ getKeggToProbeMap <- function(kegg2allprobes, keggIds) {
     removeLengthZeroAndMissing(probeAnnot)
 }
 
+getPfamToProbeMap <- function(pfam2allprobes, pfamIds) {
+    probeAnnot = as.list(pfam2allprobes)
+    if (!missing(pfamIds))
+      probeAnnot = probeAnnot[pfamIds]
+    removeLengthZeroAndMissing(probeAnnot)
+}
+
+
 
 removeLengthZeroAndMissing <- function(map) {
     notNA = sapply(map, function(x) {
@@ -119,3 +149,15 @@ removeLengthZeroAndMissing <- function(map) {
     map <- map[notNA]
 }    
 
+splitOrfByPfam <- function(ypfEnv){
+  ## There should be a PFAM to ORF data set in addition to YEASTPFAM...a
+  ## YEASTPFAM2PROBE, but for now we invert
+  probe2pfam <- as.list(ypfEnv)
+  probe2pfam <- removeLengthZeroAndMissing(probe2pfam)
+  pfamlen <- listLen(probe2pfam)
+  orf <- rep(names(probe2pfam), pfamlen)
+  pfam <- unlist(probe2pfam)
+  orfByPfam <- split(orf, pfam)
+  orfByPfam
+
+}

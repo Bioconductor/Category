@@ -9,6 +9,7 @@ export("applyByCategory",  "ttperm",
 exportClasses("HyperGParams",
               "GOHyperGParams",
               "KEGGHyperGParams",
+              "PFAMHyperGParams",
 
               "HyperGResultBase",
               "HyperGResult")
@@ -46,4 +47,5 @@ exportMethods("hyperGTest",
               
               "show")
 
-export(geneGoHyperGeoTest, geneKeggHyperGeoTest, ".doHyperGTest")
+export(geneGoHyperGeoTest, geneKeggHyperGeoTest,
+       genePfamHyperGeoTest, ".doHyperGTest")

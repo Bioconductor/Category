@@ -8,6 +8,11 @@ setMethod("universeBuilder", signature(p="GOHyperGParams"),
             getUniverseViaGo(p@annotation, p@ontology, p@universeGeneIds)
         })
 
+setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
+          function(p) {
+            getUniverseViaPfam(p@annotation, p@universeGeneIds)
+          })
+
 
 getUniverseViaGo <- function(lib, ontology="BP", entrezIds=NULL) {
     ## Return all Entrez Gene Ids that are annotated at one or more
@@ -34,13 +39,22 @@ getUniverseViaGo <- function(lib, ontology="BP", entrezIds=NULL) {
 }
 
 
-getUniverseViaKegg <- function(lib, entrezIds, ...) {
+getUniverseViaKegg <- function(lib, entrezIds) {
     probe2kegg <- as.list(getDataEnv("PATH", lib))
     notNA <- sapply(probe2kegg, function(x) !(length(x) == 1 && is.na(x)))
     probe2kegg <- probe2kegg[notNA]
     probes <- names(probe2kegg)
     getUniverseHelper(probes, lib, entrezIds)
 }
+
+getUniverseViaPfam <- function(lib, entrezIds) {
+    probe2pfam <- as.list(getDataEnv("PFAM", lib))
+    notNA <- sapply(probe2pfam, function(x) !(length(x) == 1 && is.na(x)))
+    probe2pfam <- probe2pfam[notNA]
+    probes <- names(probe2pfam)
+    getUniverseHelper(probes, lib, entrezIds)
+}
+
 
 
 getUniverseHelper <- function(probes, lib, entrezIds) {

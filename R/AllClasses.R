@@ -25,6 +25,10 @@ setClass("KEGGHyperGParams",
          contains="HyperGParams",
          prototype=prototype(categoryName="KEGG"))
 
+setClass("PFAMHyperGParams",
+         contains="HyperGParams",
+         prototype=prototype(categoryName="PFAM"))
+
 
 setClass("HyperGResultBase",
          representation(annotation="character",
