@@ -81,7 +81,7 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
         ## YEAST doesn't use Entrez Gene, everybody else does
         z <- unique(x)
         if (lib != "YEAST")
-          z <- unique(unlist(mget(unique(x), getDataEnv("LOCUSID", lib))))
+          z <- unique(unlist(mget(unique(x), getDataEnv("ENTREZID", lib))))
         z  <- intersect(z, universe)
         ## would be nice to have a short-circuiting way to do this
         if (length(z) > 0 && (keep.all || any(selected %in% z))) {

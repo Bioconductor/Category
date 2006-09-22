@@ -61,7 +61,7 @@ getUniverseHelper <- function(probes, lib, entrezIds) {
     if (lib == "YEAST")
       univ <- probes
     else
-      univ <- unique(unlist(mget(probes, getDataEnv("LOCUSID", lib))))
+      univ <- unique(unlist(mget(probes, getDataEnv("ENTREZID", lib))))
     if (!missing(entrezIds) && !is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
     if (length(univ) < 1) ##FIXME: improve error msg

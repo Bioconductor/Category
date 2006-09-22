@@ -66,9 +66,9 @@ geneKeggHyperGeoTest(entrezGeneIds, lib, universe=NULL)
 \examples{
 library("hgu95av2")
 set.seed(123)
-probes <- ls(hgu95av2LOCUSID)
+probes <- ls(hgu95av2ENTREZID)
 probes <- sample(probes, 100)
-egIds <- unique(unlist(mget(probes, hgu95av2LOCUSID)))
+egIds <- unique(unlist(mget(probes, hgu95av2ENTREZID)))
 ans <- geneKeggHyperGeoTest(egIds, "hgu95av2")
 print(ans)
 }
