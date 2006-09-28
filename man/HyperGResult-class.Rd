@@ -14,6 +14,12 @@
 \alias{universeMappedCount}
 \alias{universeMappedCount,HyperGResult-method}
 
+\alias{expectedCounts}
+\alias{expectedCounts,HyperGResult-method}
+
+\alias{oddsRatios}
+\alias{oddsRatios,HyperGResult-method}
+
 \title{Class "HyperGResult"}
 \description{
   This class represents the results of a test for overrepresentation of
@@ -80,6 +86,12 @@ Class \code{"HyperGResultBase"}, directly.
         "HyperGResult")}: return an \code{"integer"}
       vector of length one giving the size of the gene universe set. }
 
+  \item{\code{expectedCounts(r)}}{ return a \code{"numeric"} vector
+      giving the expected number of genes in the selected gene list to
+      be found at each tested GO term.}
+
+    \item{\code{oddsRatios(r)}}{return a \code{"numeric"} vector giving
+      the odds ratio for each GO term tested.}
 
   }
 }

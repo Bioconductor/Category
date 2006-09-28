@@ -23,6 +23,8 @@
 \alias{testName}
 \alias{testName,HyperGResultBase-method}
 
+\alias{isConditional,HyperGResultBase-method}
+
 \title{Class "HyperGResultBase"}
 \description{	 
   This VIRTUAL class represents common elements of the return values
@@ -92,7 +94,10 @@
           "HyperGResultBase")}: return a string
         describing the testing method used.}
 
-	 }
+      \item{\code{isConditional(r)}}{Return \code{TRUE} if the
+          result was obtained using a conditional algorithm.}
+
+    }
 }
 
 \author{Seth Falcon}

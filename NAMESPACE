@@ -48,4 +48,4 @@ exportMethods("hyperGTest",
               "show")
 
 export(geneGoHyperGeoTest, geneKeggHyperGeoTest,
-       genePfamHyperGeoTest, ".doHyperGTest")
+       ".doHyperGTest")

@@ -1,6 +1,35 @@
 \name{HyperGParams-class}
 \docType{class}
+
+%% I don't know where these really belong :-(
+\alias{conditional}
+\alias{conditional<-}
+\alias{geneIds<-}
+\alias{isConditional}
+\alias{ontology}
+\alias{ontology<-}
+\alias{pvalueCutoff<-}
+\alias{testDirection<-}
+\alias{universeGeneIds}
+%% end :-(
+
 \alias{HyperGParams-class}
+
+\alias{geneIds,HyperGParams-method}
+\alias{geneIds<-,HyperGParams,logical-method}
+\alias{geneIds<-,HyperGParams-method}
+
+\alias{annotation,HyperGParams-method}
+\alias{conditional,HyperGParams-method}
+
+\alias{ontology,HyperGParams-method}
+\alias{pvalueCutoff,HyperGParams-method}
+\alias{pvalueCutoff<-,HyperGParams-method}
+\alias{testDirection,HyperGParams-method}
+\alias{testDirection<-,HyperGParams-method}
+\alias{universeGeneIds,HyperGParams-method}
+
+\alias{isConditional,HyperGParams-method}
 
 \alias{categoryName}
 \alias{categoryName,HyperGParams-method}
@@ -48,13 +77,38 @@ Objects of this class cannot be instantiated directly.
 }
 \section{Methods}{
   \describe{
-    \item{hyperGTest}{\code{signature(p =
-    "HyperGParams")}: Perform hypergeometric tests to
-    assess overrepresentation of category ids in the gene set.  See the
-    documentation for the generic function for details.  This method
-    must be called with a proper subclass of
-    \code{HyperGParams}.}
-}
+  \item{hyperGTest}{\code{signature(p =
+        "HyperGParams")}: Perform hypergeometric tests to
+      assess overrepresentation of category ids in the gene set.  See the
+      documentation for the generic function for details.  This method
+      must be called with a proper subclass of
+      \code{HyperGParams}.}
+    
+  \item{\code{geneIds(r)}, \code{geneIds(r) <- value}}{Accessors for
+      the gene identifiers that will be used as the selected gene
+      list.}
+    
+  \item{code{annotation(object)}}{Accessor for annotation}
+    
+  \item{\code{ontology(r)}}{Accessor for GO ontology.}
+    
+  \item{\code{pvalueCutoff(r)}, \code{pvalueCutoff(r) <-
+        value}}{Accessor for the p-value cutoff.  When setting,
+      \code{value} should be a numeric value between zero and one.}
+
+  \item{\code{testDirection(r)}, 
+        \code{testDirection(r) <- value}}
+      {Accessor for the test direction.  When setting,
+        \code{value} must be either "over" or "under".}
+
+    \item{\code{universeGeneIds(r)}}{accessor for vector of gene
+        identifiers.}
+
+    \item{\code{isConditional(r)}}{Returns \code{TRUE} if the instance
+      has its conditional flag set}
+
+    
+  }
 }
 
 \author{S. Falcon}

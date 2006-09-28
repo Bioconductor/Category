@@ -4,6 +4,16 @@
 \alias{show,GOHyperGParams-method}
 \alias{categoryName,GOHyperGParams-method}
 
+\alias{annotation,GOHyperGParams-method}
+
+\alias{conditional,GOHyperGParams-method}
+\alias{conditional<-,GOHyperGParams,logical-method}
+
+\alias{ontology,GOHyperGParams-method}
+\alias{ontology<-,GOHyperGParams,character-method}
+
+
+
 \title{Class "GOHyperGParams"}
 
 \description{
@@ -38,7 +48,8 @@ Objects can be created by calls of the form \code{new("GOHyperGParams", ...)}.
       category ids to include in the test instead of all possible
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
-      Usually set automatically by subclasses.  For example "GO".}           
+      Usually set automatically by subclasses.  For example "GO".}
+    \item{}{}
   }
 }
 \section{Extends}{
@@ -46,12 +57,19 @@ Class \code{"HyperGParams"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{hyperGTest}{\code{signature(p =
-        "HyperGParams")}: Perform hypergeometric tests to
+    \item{\code{hyperGTest(p)}}{Perform hypergeometric tests to
       assess overrepresentation of category ids in the gene set.  See
       the documentation for the generic function for details.  This
       method must be called with a proper subclass of
       \code{HyperGParams}.}
+
+    \item{\code{ontology(p)}, \code{ontology(p) <- value}}{Accessors
+        for the GO ontology.  When setting, \code{value} should be one
+      of "BP", "CC", or "MF".}
+
+    \item{\code{conditional(p)}, \code{conditional(p) <-
+          value}}{Accessors for the conditional flag.  When setting,
+        \code{value} must be \code{TRUE} or \code{FALSE}.}
   }
 }
 
