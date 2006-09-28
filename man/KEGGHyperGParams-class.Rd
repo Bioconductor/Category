@@ -1,16 +1,19 @@
 \name{KEGGHyperGParams-class}
 \docType{class}
 \alias{KEGGHyperGParams-class}
+\alias{PFAMHyperGParams-class}
 
-\title{Class "KEGGHyperGParams"}
+\title{Class "KEGGHyperGParams" and "PFAMHyperGParams"}
 \description{
-  A parameter class for representing all parameters needed for
-  running the \code{hyperGTest} method with KEGG as the
+  Parameter classes for representing all parameters needed for
+  running the \code{hyperGTest} method with KEGG or PFAM as the
   category.
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("KEGGHyperGParams", ...)}.
+Objects can be created by calls of the form
+\code{new("KEGGHyperGParams", ...)} or 
+\code{new("PFAMHyperGParams", ...)}.
 }
 \section{Slots}{
   \describe{
@@ -31,8 +34,8 @@ Objects can be created by calls of the form \code{new("KEGGHyperGParams", ...)}.
       category ids to include in the test instead of all possible
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
-      This will be automatically set to "KEGG" via the class's
-      prototype.}
+      This will be automatically set to "KEGG" or "PFAM" via the
+      class's prototype.}
 
     \item{\code{pvalueCutoff}:}{The p-value to use as a cutoff for
         significance for testing methods that require it.  This value
