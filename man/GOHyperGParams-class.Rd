@@ -67,8 +67,7 @@ Class \code{"HyperGParams"}, directly.
         for the GO ontology.  When setting, \code{value} should be one
       of "BP", "CC", or "MF".}
 
-    \item{\code{conditional(p)}, \code{conditional(p) <-
-          value}}{Accessors for the conditional flag.  When setting,
+    \item{\code{conditional(p)}, \code{conditional(p) <- value}}{Accessors for the conditional flag.  When setting,
         \code{value} must be \code{TRUE} or \code{FALSE}.}
   }
 }

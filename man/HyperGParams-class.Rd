@@ -96,9 +96,7 @@ Objects of this class cannot be instantiated directly.
         value}}{Accessor for the p-value cutoff.  When setting,
       \code{value} should be a numeric value between zero and one.}
 
-  \item{\code{testDirection(r)}, 
-        \code{testDirection(r) <- value}}
-      {Accessor for the test direction.  When setting,
+  \item{\code{testDirection}}{Accessor for the test direction.  When setting,
         \code{value} must be either "over" or "under".}
 
     \item{\code{universeGeneIds(r)}}{accessor for vector of gene

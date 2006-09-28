@@ -83,8 +83,7 @@
         whether the test was for \code{"over"} or \code{"under"}
         representation of the categories.}
 
-    \item{description}{\code{signature(object =
-          "HyperGResultBase")}: return a character
+    \item{description}{\code{signature(object = "HyperGResultBase")}: return a character
         string description of the test result. }
 
     \item{show}{\code{signature(object =
