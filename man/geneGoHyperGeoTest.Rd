@@ -1,14 +1,10 @@
 \name{geneGoHyperGeoTest}
 \alias{geneGoHyperGeoTest}
 
-\title{Hypergeometric Tests for GO }
+\title{Hypergeometric Tests for GO (DEFUNCT)}
 
 \description{
-  Given a set of unique Entrez Gene Identifiers, a microarray annotation
-  data package name, and the GO ontology of interest, this function will
-  compute Hypergeomtric p-values for overrepresentation of each GO term
-  in the specified ontology among the GO annotations for the interesting
-  genes (as indicated by the Entrez Gene ids).
+        This function is defunct.  Use \code{hyperGTest} instead.
 }
 
 \usage{
@@ -70,15 +66,5 @@ geneGoHyperGeoTest(entrezGeneIds, lib, ontology, universe=NULL)
   \code{\link{hyperGTest}}
 }
 
-\examples{
-library("hgu95av2")
-library("GO")
-set.seed(123)
-probes <- ls(hgu95av2ENTREZID)
-probes <- sample(probes, 100)
-egIds <- unique(unlist(mget(probes, hgu95av2ENTREZID)))
-ans <- geneGoHyperGeoTest(egIds, "hgu95av2", "BP")
-print(ans)
-}
 \keyword{htest}
 

@@ -1,13 +1,10 @@
 \name{geneKeggHyperGeoTest}
 \alias{geneKeggHyperGeoTest}
 
-\title{Hypergeometric Tests for KEGG}
+\title{Hypergeometric Tests for KEGG (DEFUNCT)}
 
 \description{
-  Given a set of unique Entrez Gene Identifiers, a microarray annotation
-  data package name, this function will compute Hypergeomtric p-values
-  for overrepresentation of each KEGG pathway among the KEGG annotations
-  for the interesting genes (as indicated by the Entrez Gene ids).
+        This function is defunct.  Use \code{hyperGTest} instead.
 }
 \usage{
 geneKeggHyperGeoTest(entrezGeneIds, lib, universe=NULL)
@@ -63,14 +60,5 @@ geneKeggHyperGeoTest(entrezGeneIds, lib, universe=NULL)
   \code{\link{hyperGTest}}
 }
 
-\examples{
-library("hgu95av2")
-set.seed(123)
-probes <- ls(hgu95av2ENTREZID)
-probes <- sample(probes, 100)
-egIds <- unique(unlist(mget(probes, hgu95av2ENTREZID)))
-ans <- geneKeggHyperGeoTest(egIds, "hgu95av2")
-print(ans)
-}
 \keyword{htest}
 

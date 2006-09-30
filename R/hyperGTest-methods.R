@@ -24,7 +24,7 @@ setMethod("hyperGTest",
 
 geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
 {
-    .Deprecated("hyperGTest")
+    .Defunct("hyperGTest")
     if (missing(universe) || is.null(universe))
       universe <- character(0)
     params <- new("GOHyperGParams",
@@ -38,7 +38,7 @@ geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
 
 geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
 {
-    .Deprecated("hyperGTest")
+    .Defunct("hyperGTest")
     if (missing(universe) || is.null(universe))
       universe <- character(0)
     params <- new("KEGGHyperGParams",

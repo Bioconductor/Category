@@ -21,6 +21,7 @@
   the \code{hyperGTest} method with one of the GO
   ontologies (BP, CC, MF) as the category.
 }
+
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("GOHyperGParams", ...)}.
 }
@@ -49,7 +50,6 @@ Objects can be created by calls of the form \code{new("GOHyperGParams", ...)}.
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
       Usually set automatically by subclasses.  For example "GO".}
-    \item{}{}
   }
 }
 \section{Extends}{
