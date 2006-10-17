@@ -3,7 +3,7 @@ require("Category")
 
 
 TEST_DATA_DIR <- "data"
-runitPat <- ".*_test\.R$"
+runitPat <- ".*_test\\.R$"
 runitDirs <- c(".")
 suite <- defineTestSuite(name="Category Test Suite",
                          dirs=runitDirs,

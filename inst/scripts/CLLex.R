@@ -14,7 +14,7 @@ cache <- function(name, expr) {
 
 
  CLL.exprs = cache("CLL.exprs", gcrma(CLLbatch))
- sampleNames(CLL.exprs) = gsub("\.CEL", "", sampleNames(CLL.exprs))
+ sampleNames(CLL.exprs) = gsub("\\.CEL", "", sampleNames(CLL.exprs))
  data(disease)
  pD = new("phenoData", pData=disease,
     varLabels = list(SampleID = "Sample ID", Disease = "Stable/Progressive"))
