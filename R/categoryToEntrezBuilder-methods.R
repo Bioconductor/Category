@@ -115,7 +115,7 @@ getGoToProbeMap <- function(go2allprobes, ontology, goids) {
     goids = names(probeAnnot)
 
     ## filter on desired GO ontology
-    inOnt = sapply(mget(goids, GOTERM), function(x) Ontology(x) == ontology)
+    inOnt <- filterGOByOntology(goids, ontology)
     probeAnnot = probeAnnot[inOnt]
 
     ## remove any GO ids that don't map to an probe id (NA)
