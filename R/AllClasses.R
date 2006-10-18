@@ -1,14 +1,36 @@
+setClass("DatPkg",
+         contains="VIRTUAL",
+         representation=representation(name="character"))
+
+setClass("AffyDatPkg", contains="DatPkg")
+setClass("YeastDatPkg", contains="DatPkg")
+## For hummanLLMapping and similar
+setClass("OrganismMappingDatPkg", contains="DatPkg")
+
+DatPkgFactory <- function(pkgName) {
+    if (length(grep("YEAST", pkgName)) > 0)
+      pkg <- new("YeastDatPkg", name=pkgName)
+    else if (length(grep("Mapping", pkgName)) > 0)
+      pkg <- new("OrganismMappingDatPkg", name=pkgName)
+    else
+      pkg <- new("AffyDatPkg", name=pkgName)
+    pkg
+}
+
+
 setClass("HyperGParams", 
          representation(geneIds="ANY",
                         universeGeneIds="ANY",
                         annotation="character",
+                        datPkg="DatPkg",
                         cateogrySubsetIds="ANY",
                         categoryName="character",
                         pvalueCutoff="numeric",
                         testDirection="character"),
          prototype=prototype(
            pvalueCutoff=0.01,
-           testDirection="over"
+           testDirection="over",
+           datPkg=DatPkgFactory("UNKNOWN")
            ),  ## FIXME: add validity check
          contains="VIRTUAL")
 
@@ -49,4 +71,5 @@ setClass("HyperGResult",
            geneCounts="integer",
            universeCounts="integer",
            catToGeneId="list"))
+
 

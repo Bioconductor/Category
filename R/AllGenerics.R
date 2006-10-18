@@ -65,3 +65,9 @@ setGeneric("categorySubsetIds", function(r) standardGeneric("categorySubsetIds")
 setGeneric("categorySubsetIds<-", function(r, value) standardGeneric("categorySubsetIds<-"))
 
 setGeneric("isConditional", function(r) standardGeneric("isConditional"))
+
+
+## accessors for DatPkg
+setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
+setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
+setGeneric("GO2AllProbes", function(p) standardGeneric("GO2AllProbes"))

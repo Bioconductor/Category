@@ -17,7 +17,7 @@ setMethod("categoryToEntrezBuilder",
                                  over=FALSE,
                                  under=TRUE,
                                  stop("Bad testDirection slot"))
-              getGoToEntrezMap(geneIds(p), annotation(p), ontology(p), 
+              getGoToEntrezMap(geneIds(p), p@datPkg, ontology(p), 
                                universeGeneIds(p), keep.all=keep.all)
           })
 
@@ -40,7 +40,7 @@ getGoToEntrezMap <- function(selected, lib, ontology, universe,
     ## at the GO id.  Only those GO ids that are in the specified
     ## ontology and have at least one annotation in the set of 
     ## Entrez Gene ids specified by 'selected' are included.
-    go2allprobes <- getDataEnv("GO2ALLPROBES", lib)
+    go2allprobes <- GO2AllProbes(lib)
     probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
     ## Map to Entrez Gene and flag GO ids that don't have any
     ## annotations in our selected set.  No sense testing these.
@@ -78,10 +78,8 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
     ## entries even if the list of gene IDs includes no gene ID from the
     ## selected list.
     egAnnot <- lapply(probeAnnot, function(x) {
-        ## YEAST doesn't use Entrez Gene, everybody else does
         z <- unique(x)
-        if (lib != "YEAST")
-          z <- unique(unlist(mget(unique(x), getDataEnv("ENTREZID", lib))))
+        z <- unique(unlist(mget(unique(x), ID2EntrezID(lib))))
         z  <- intersect(z, universe)
         ## would be nice to have a short-circuiting way to do this
         if (length(z) > 0 && (keep.all || any(selected %in% z))) {
@@ -97,7 +95,7 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
 getGoToProbeMap <- function(go2allprobes, ontology, goids) {
     ## Return a list with one element for each GO id in the specified 
     ## ontology that has at least one Probe probe id annotated at it.  
-    ## The elements are vectors of Probe probe ids.  Names are GO ids.
+    ## The elements are vectors of Probe ids.  Names are GO ids.
     ##
     probeAnnot = as.list(go2allprobes)
     if (!missing(goids))

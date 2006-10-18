@@ -5,7 +5,7 @@ setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
 
 setMethod("universeBuilder", signature(p="GOHyperGParams"),
           function(p) {
-            getUniverseViaGo(p@annotation, p@ontology, p@universeGeneIds)
+            getUniverseViaGo(p@datPkg, p@ontology, p@universeGeneIds)
         })
 
 setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
@@ -14,13 +14,13 @@ setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
           })
 
 
-getUniverseViaGo <- function(lib, ontology="BP", entrezIds=NULL) {
+getUniverseViaGo <- function(datPkg, ontology="BP", entrezIds=NULL) {
     ## Return all Entrez Gene Ids that are annotated at one or more
     ## GO terms belonging to the specified GO ontology.
     ## If 'entrezIds' is given, return the intersection of 'entrezIds'
     ## and the normal return value.
     ontology <- match.arg(ontology, c("BP", "CC", "MF"))
-    probe2go <- eapply(getDataEnv("GO", lib), function(goids) {
+    probe2go <- eapply(ID2GO(datPkg), function(goids) {
         if (length(goids) == 0 || (length(goids) == 1 && is.na(goids)))
           return(FALSE)
         ## Normally, would do sapply here, but we only want to know if
@@ -35,7 +35,7 @@ getUniverseViaGo <- function(lib, ontology="BP", entrezIds=NULL) {
     })
     probe2go <- probe2go[unlist(probe2go)]
     probes <- names(probe2go)
-    getUniverseHelper(probes, lib, entrezIds)
+    getUniverseHelper(probes, datPkg, entrezIds)
 }
 
 
@@ -57,11 +57,8 @@ getUniverseViaPfam <- function(lib, entrezIds) {
 
 
 
-getUniverseHelper <- function(probes, lib, entrezIds) {
-    if (lib == "YEAST")
-      univ <- probes
-    else
-      univ <- unique(unlist(mget(probes, getDataEnv("ENTREZID", lib))))
+getUniverseHelper <- function(probes, datPkg, entrezIds) {
+    univ <- unique(unlist(mget(probes, ID2EntrezID(datPkg))))
     if (!missing(entrezIds) && !is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
     if (length(univ) < 1) ##FIXME: improve error msg
