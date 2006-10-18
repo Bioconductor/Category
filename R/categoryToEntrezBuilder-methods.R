@@ -77,9 +77,10 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
     ## intersection with the selected genes.  If keep.all is TRUE, then we keep
     ## entries even if the list of gene IDs includes no gene ID from the
     ## selected list.
+    id2entrezEnv <- ID2EntrezID(lib)
     egAnnot <- lapply(probeAnnot, function(x) {
         z <- unique(x)
-        z <- unique(unlist(mget(unique(x), ID2EntrezID(lib))))
+        z <- unique(unlist(mget(unique(x), id2entrezEnv)))
         z  <- intersect(z, universe)
         ## would be nice to have a short-circuiting way to do this
         if (length(z) > 0 && (keep.all || any(selected %in% z))) {
