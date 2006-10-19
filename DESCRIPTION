@@ -1,6 +1,6 @@
 Package: Category
 Title: Category Analysis
-Version: 2.1.2
+Version: 2.1.3
 Author: R. Gentleman with contributions from S. Falcon
 Description: A collection of tools for performing category analysis.
 Maintainer: R. Gentleman <rgentlem@fhcrc.org>

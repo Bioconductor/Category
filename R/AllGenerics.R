@@ -70,4 +70,5 @@ setGeneric("isConditional", function(r) standardGeneric("isConditional"))
 ## accessors for DatPkg
 setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
-setGeneric("GO2AllProbes", function(p) standardGeneric("GO2AllProbes"))
+setGeneric("GO2AllProbes", signature=c("p"),
+           function(p, ontology) standardGeneric("GO2AllProbes"))
