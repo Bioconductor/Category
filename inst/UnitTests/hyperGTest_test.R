@@ -35,17 +35,21 @@ test_basic_regression_hgu95av2 <- function() {
     res <- hyperGTest(p)
     checkEquals(22, sum(pvalues(res) < pvalueCutoff(res)))
 
-    pvals <- round(c(0.001, 0.001, 0.002), 3)
-    names(pvals) <- c("GO:0051247", "GO:0009891", "GO:0044267") 
-    checkEquals(pvals, round(pvalues(res)[3:5], 3))
+    ## This is a fragile test.  It depends on the annotation
+    ## data.  Choose pvalues to compare carefully since many
+    ## terms will have same pvalue and you don't want to fail
+    ## just because the ordering is different.
+    pvals <- round(c(0.126, 0.129, 0.138), 3)
+    names(pvals) <- c("GO:0048522", "GO:0006968", "GO:0048518")
+    checkEquals(pvals, round(pvalues(res)[87:89], 3))
     
-    gcounts <- c(3, 3, 13)
+    gcounts <- c(4, 2, 4)
     names(gcounts) <- names(pvals)
-    checkEquals(gcounts, geneCounts(res)[3:5])
+    checkEquals(gcounts, geneCounts(res)[87:89])
 
-    ucounts <- c(4, 4, 95)
+    ucounts <- c(31, 10, 32)
     names(ucounts) <- names(pvals)
-    checkEquals(ucounts, universeCounts(res)[3:5])
+    checkEquals(ucounts, universeCounts(res)[87:89])
     
     checkEquals(390, universeMappedCount(res))
     checkEquals(25, geneMappedCount(res))
@@ -59,17 +63,17 @@ test_basic_regression_YEAST <- function() {
     res <- hyperGTest(p)
     checkEquals(2, sum(pvalues(res) < pvalueCutoff(res)))
 
-    pvals <- round(c(0.06, 0.06, 0.06), 3)
-    names(pvals) <- c("GO:0045332", "GO:0007009", "GO:0045490")
-    checkEquals(pvals, round(pvalues(res)[3:5], 3))
+    pvals <- round(c(0.927, 0.929, 0.956 ), 3)
+    names(pvals) <- c("GO:0044237", "GO:0006412", "GO:0009059")
+    checkEquals(pvals, round(pvalues(res)[201:203], 3))
     
-    gcounts <- c(1, 1, 1)
+    gcounts <- c(12, 1, 1)
     names(gcounts) <- names(pvals)
-    checkEquals(gcounts, geneCounts(res)[3:5])
+    checkEquals(gcounts, geneCounts(res)[201:203])
 
-    ucounts <- c(1, 1, 1)
+    ucounts <- c(256, 41, 48)
     names(ucounts) <- names(pvals)
-    checkEquals(ucounts, universeCounts(res)[3:5])
+    checkEquals(ucounts, universeCounts(res)[201:203])
     
     checkEquals(500, universeMappedCount(res))
     checkEquals(30, geneMappedCount(res))
