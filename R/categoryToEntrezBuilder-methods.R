@@ -40,7 +40,7 @@ getGoToEntrezMap <- function(selected, lib, ontology, universe,
     ## at the GO id.  Only those GO ids that are in the specified
     ## ontology and have at least one annotation in the set of 
     ## Entrez Gene ids specified by 'selected' are included.
-    go2allprobes <- GO2AllProbes(lib)
+    go2allprobes <- GO2AllProbes(lib, ontology)
     probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
     ## Map to Entrez Gene and flag GO ids that don't have any
     ## annotations in our selected set.  No sense testing these.

@@ -20,17 +20,16 @@ getUniverseViaGo <- function(datPkg, ontology="BP", entrezIds=NULL) {
     ## If 'entrezIds' is given, return the intersection of 'entrezIds'
     ## and the normal return value.
     ontology <- match.arg(ontology, c("BP", "CC", "MF"))
+    ontIds <- getGOOntologyIDs(ontology)
     probe2go <- eapply(ID2GO(datPkg), function(goids) {
         if (length(goids) == 0 || (length(goids) == 1 && is.na(goids)))
           return(FALSE)
-        ## Normally, would do sapply here, but we only want to know if
-        ## at least one is TRUE.  It is a lot faster to stop short.
-        for (goid in goids) {
-            ## use identical in case the GO data is borked
-            ## and Ontology is NA
-            if (identical(goid$Ontology, ontology))
-                return(TRUE)
-        }
+        ## FIXME: *Mapping packages don't have a list,
+        ##        but just the GO ID, so we have to branch
+        if (!is.character(goids[[1]])) ## the Affy case
+          goids <- sapply(goids, function(x) x$GOID)
+        if (any(goids %in% ontIds))
+          return(TRUE)
         FALSE
     })
     probe2go <- probe2go[unlist(probe2go)]
