@@ -110,7 +110,7 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     odds_ratio <-  (numWdrawn * n22) / (n12 * n21)
 
     expected <- (numWdrawn + n12) * (numWdrawn + n21)
-    expected <- expected / (numWdrawn + n21 + n21 + n22)
+    expected <- expected / (numWdrawn + n12 + n21 + n22)
 
     if (testDirection(p) == "over") {
         ## take the -1 because we want evidence for as extreme or more
