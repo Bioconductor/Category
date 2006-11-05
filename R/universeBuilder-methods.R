@@ -1,20 +1,23 @@
 setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
           function(p) {
-            getUniverseViaKegg(p@annotation, p@universeGeneIds)  
+              getUniverseViaKegg(p)
           })
 
 setMethod("universeBuilder", signature(p="GOHyperGParams"),
           function(p) {
-            getUniverseViaGo(p@datPkg, p@ontology, p@universeGeneIds)
+            getUniverseViaGo(p)
         })
 
 setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
           function(p) {
-            getUniverseViaPfam(p@annotation, p@universeGeneIds)
+            getUniverseViaPfam(p)
           })
 
 
-getUniverseViaGo <- function(datPkg, ontology="BP", entrezIds=NULL) {
+getUniverseViaGo <- function(p) {
+    datPkg <- p@datPkg
+    ontology <- ontology(p)
+    entrezIds <- universeGeneIds(p)
     ## Return all Entrez Gene Ids that are annotated at one or more
     ## GO terms belonging to the specified GO ontology.
     ## If 'entrezIds' is given, return the intersection of 'entrezIds'
@@ -37,21 +40,23 @@ getUniverseViaGo <- function(datPkg, ontology="BP", entrezIds=NULL) {
     getUniverseHelper(probes, datPkg, entrezIds)
 }
 
-
-getUniverseViaKegg <- function(lib, entrezIds) {
-    probe2kegg <- as.list(getDataEnv("PATH", lib))
+getUniverseViaKegg <- function(p) {
+    entrezIds <- universeGeneIds(p)
+    probe2kegg <- as.list(getDataEnv("PATH", annotation(p)))
     notNA <- sapply(probe2kegg, function(x) !(length(x) == 1 && is.na(x)))
     probe2kegg <- probe2kegg[notNA]
     probes <- names(probe2kegg)
-    getUniverseHelper(probes, lib, entrezIds)
+    getUniverseHelper(probes, p@datPkg, universeGeneIds(p))
 }
 
-getUniverseViaPfam <- function(lib, entrezIds) {
-    probe2pfam <- as.list(getDataEnv("PFAM", lib))
+
+getUniverseViaPfam <- function(p) {
+    entrezIds <- universeGeneIds(p)
+    probe2pfam <- as.list(getDataEnv("PFAM", annotation(p)))
     notNA <- sapply(probe2pfam, function(x) !(length(x) == 1 && is.na(x)))
     probe2pfam <- probe2pfam[notNA]
     probes <- names(probe2pfam)
-    getUniverseHelper(probes, lib, entrezIds)
+    getUniverseHelper(probes, p@datPkg, entrezIds)
 }
 
 

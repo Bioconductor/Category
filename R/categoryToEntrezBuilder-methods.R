@@ -1,41 +1,29 @@
 setMethod("categoryToEntrezBuilder",
           signature(p="KEGGHyperGParams"),
           function(p) {
-              keep.all <- switch(testDirection(p),
-                                 over=FALSE,
-                                 under=TRUE,
-                                 stop("Bad testDirection slot"))
-              getKeggToEntrezMap(geneIds(p), annotation(p), NULL, 
-                                 universeGeneIds(p),
-                                 keep.all=keep.all)
+              getKeggToEntrezMap(p)
           })
 
 setMethod("categoryToEntrezBuilder",
           signature(p="GOHyperGParams"),
           function(p) {
-              keep.all <- switch(testDirection(p),
-                                 over=FALSE,
-                                 under=TRUE,
-                                 stop("Bad testDirection slot"))
-              getGoToEntrezMap(geneIds(p), p@datPkg, ontology(p), 
-                               universeGeneIds(p), keep.all=keep.all)
+              getGoToEntrezMap(p)
           })
 
 setMethod("categoryToEntrezBuilder",
           signature(p="PFAMHyperGParams"),
           function(p) {
-              keep.all <- switch(testDirection(p),
-                                 over=FALSE,
-                                 under=TRUE,
-                                 stop("Bad testDirection slot"))
-              getPfamToEntrezMap(geneIds(p), annotation(p), NULL,
-                                 universeGeneIds(p),
-                                 keep.all=keep.all)
+              getPfamToEntrezMap(p)
           })
 
 
-getGoToEntrezMap <- function(selected, lib, ontology, universe,
-                             keep.all) {
+getGoToEntrezMap <- function(p) {
+    keep.all <- switch(testDirection(p),
+                       over=FALSE,
+                       under=TRUE,
+                       stop("Bad testDirection slot"))    
+    lib <- p@datPkg
+    ontology <- ontology(p)
     ## Return a list mapping GO ids to the Entrez Gene ids annotated
     ## at the GO id.  Only those GO ids that are in the specified
     ## ontology and have at least one annotation in the set of 
@@ -44,26 +32,33 @@ getGoToEntrezMap <- function(selected, lib, ontology, universe,
     probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
     ## Map to Entrez Gene and flag GO ids that don't have any
     ## annotations in our selected set.  No sense testing these.
-    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+    probeToEntrezMapHelper(probeAnnot, geneIds(p), lib, universeGeneIds(p),
                            keep.all=keep.all)
 }
 
 
-getKeggToEntrezMap <- function(selected, lib, ontology, universe,
-                               keep.all) {
+getKeggToEntrezMap <- function(p) {
+    keep.all <- switch(testDirection(p),
+                       over=FALSE,
+                       under=TRUE,
+                       stop("Bad testDirection slot"))
+    lib <- annotation(p)
     kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
     probeAnnot <- getKeggToProbeMap(kegg2allprobes)
-    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+    probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
 }
 
 
-getPfamToEntrezMap <- function(selected, lib, ontology, universe,
-                               keep.all) {
-    probe2pfam <- getDataEnv("PFAM",lib)
+getPfamToEntrezMap <- function(p) {
+    keep.all <- switch(testDirection(p),
+                       over=FALSE,
+                       under=TRUE,
+                       stop("Bad testDirection slot"))
+    probe2pfam <- getDataEnv("PFAM", annotation(p))
     pfam2allprobes <- splitOrfByPfam(probe2pfam)
     probeAnnot <- getPfamToProbeMap(pfam2allprobes)
-    probeToEntrezMapHelper(probeAnnot, selected, lib, universe,
+    probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
 }
 
