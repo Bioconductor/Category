@@ -67,6 +67,10 @@ setGeneric("categorySubsetIds<-", function(r, value) standardGeneric("categorySu
 setGeneric("isConditional", function(r) standardGeneric("isConditional"))
 
 
+setGeneric("htmlReport", function(r, file="", append=TRUE, label="", ...)
+           standardGeneric("htmlReport"),
+           signature=c("r"))
+
 ## accessors for DatPkg
 setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
