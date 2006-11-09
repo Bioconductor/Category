@@ -3,10 +3,10 @@ Title: Category Analysis
 Version: 2.1.6
 Author: R. Gentleman with contributions from S. Falcon
 Description: A collection of tools for performing category analysis.
-Maintainer: R. Gentleman <rgentlem@fhcrc.org>
+Maintainer: S. Falcon <sfalcon@fhcrc.org>
 License: The Artistic License, Version 2.0
 Depends: Biobase, KEGG, GO, graph, annotate, methods, genefilter
-Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, hgu95av2 
+Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, hgu95av2, xtable
 Imports: methods, Biobase
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
