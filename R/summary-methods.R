@@ -41,7 +41,7 @@ setMethod("summary", signature(object="HyperGResultBase"),
           })
 
 
-htmlReportFromDf <- function(r, caption, file="", append=FALSE, label="")
+htmlReportFromDf <- function(r, caption, file="", append=FALSE)
 {
     have_xtable <- suppressWarnings({
         require("xtable", quietly=TRUE, warn.conflicts=FALSE)
@@ -68,7 +68,7 @@ setMethod("htmlReport", signature(r="HyperGResultBase"),
           function(r, file="", append=FALSE, label="", ...)
           {
               htmlReportFromDf(r=summary(r, ...),
-                               caption=description(r),
-                               file=file, append=append, label=label)
+                               caption=paste(label, description(r)),
+                               file=file, append=append)
           })
 
