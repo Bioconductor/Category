@@ -17,47 +17,101 @@ setMethod("categoryToEntrezBuilder",
           })
 
 
-getGoToEntrezMap_db <- function(p) {
-    keep.all <- switch(testDirection(p),
-                       over=FALSE,
-                       under=TRUE,
+getGoToEntrezMap_db <- function(p, db) {
+    keep.all <- switch(testDirection(p), over=FALSE, under=TRUE,
                        stop("Bad testDirection slot"))    
-    db <- p@datPkg@getdb()
+    ##db <- p@datPkg@getdb()
     ontology <- ontology(p)
-
-    gotable <- switch(ontology,
-                      BP="GOBPHUMAN",
-                      CC="GOCCHUMAN",
-                      MF="GOMFHUMAN")
-    SQL <- "select GOID, GeneID from %s where "
-    SQL <- "select distinct GeneID from GO%sHUMAN where GOID in (select OffspringID from GO%sOFFSPRING where ID='%d');"
-    tname <- sprintf("GO%sOFFSPRING", ontology)
-    gid <- sqliteQuickColumn(db, tname, "ID")
-    system.time({
-    go2all <- lapply(gid, function(x) {
-        query <- sprintf(SQL, ontology, ontology, x)
-        ans <- dbGetQuery(db, query)
-        if (nrow(ans) == 0)
-          ans <- NULL
-        ans[[1]]
+    GOXXALL <- sprintf("GO%sALL", ontology)
+    goxxall.id <- sqliteQuickColumn(db, GOXXALL, "ID")
+    goxxall.goid <- sqliteQuickColumn(db, GOXXALL, "GOID")
+    genes.id <- sqliteQuickColumn(hgdb, "GENES", "ID")
+    genes.geneid <- sqliteQuickColumn(db, "GENES", "GeneID")
+    ## convert internal gene id to "official" gene id (usually Entrez)
+    intId2Entrez <- split(genes.geneid, genes.id)
+    ## FIXME: not all IDs will be integers!
+    goxxall.geneid <- as.integer(unlist(intId2Entrez[goxxall.id]))
+    go2all <- split(goxxall.geneid, goxxall.goid)
+    sql <- paste("select distinct GOID from", GOXXALL,
+                 ", GENES where GeneID in (",
+                 paste("'", geneIds(p), "'", sep="", collapse=","), ")",
+                 "and ", paste(GOXXALL, ".ID", sep=""), "= GENES.ID")
+    rs <- dbSendQuery(db, sql)
+    on.exit(dbClearResult(rs))
+    ## FIXME: can we estimate size?
+    goids <- fetch(rs, n=-1)[[1]]
+    ## FIXME, why don't we get back a unique result set?
+    goids <- unique(goids)
+    stopifnot(dbHasCompleted(rs))
+    univ <- universeGeneIds(p)
+    go2all <- lapply(go2all[goids], function(eg) {
+        z <- intersect(univ, eg)
+        stopifnot(length(z) > 0)
+        z
     })
-})
+    go2all
+}
+    
 
-            
-    "select GOID, GeneID from GOBPHUMAN where GOID in (select OffspringID from GOBPOFFSPRING where ID=GOBPHUMAN.GOID) group by GOBPHUMAN.GOID limit 200;"
+getGoToEntrezMap_db2 <- function(p, db) {
+    keep.all <- switch(testDirection(p), over=FALSE, under=TRUE,
+                       stop("Bad testDirection slot"))    
+    ##db <- p@datPkg@getdb()
+    ontology <- ontology(p)
+    GOXXALL <- sprintf("GO%sALL", ontology)
+    tables <- paste(GOXXALL, "GENES", sep=", ")
+    ourGeneIds <- paste("'", geneIds(p), "'", sep="", collapse=",")
+    sql <- paste("select distinct GOID from", tables,
+                 "where GeneID in (", ourGeneIds, ")",
+                 "and ", paste(GOXXALL, ".ID", sep=""), "= GENES.ID")
+    sql <- paste("select GeneID, GOID from", tables,
+                 "where GOID in (", sql, ")",
+                 "and ", paste(GOXXALL, ".ID", sep=""), "= GENES.ID")
+    rs <- dbSendQuery(db, sql)
+    on.exit(dbClearResult(rs))
+    ans <- fetch(rs, n=-1)
+    go2all <- split(ans[["GeneID"]], ans[["GOID"]])
+    ##SQL <- "select GeneID, GOBPALL.GOID from GOXXALL, GENES where GOXXALL.ID = GENES.ID"
+    ##SQL <- gsub("XX", ontology, SQL)
+    univ <- unlist(universeGeneIds(p), use.names=FALSE)
+    go2all <- lapply(go2all, function(eg) {
+        z <- intersect(univ, eg)
+        stopifnot(length(z) > 0)
+        z
+    })
+    go2all
+}
 
     
-    ## Return a list mapping GO ids to the Entrez Gene ids annotated
-    ## at the GO id.  Only those GO ids that are in the specified
-    ## ontology and have at least one annotation in the set of 
-    ## Entrez Gene ids specified by 'selected' are included.
-    go2allprobes <- GO2AllProbes(lib, ontology)
-    probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
-    ## Map to Entrez Gene and flag GO ids that don't have any
-    ## annotations in our selected set.  No sense testing these.
-    probeToEntrezMapHelper(probeAnnot, geneIds(p), lib, universeGeneIds(p),
-                           keep.all=keep.all)
-}
+
+
+##     sql <- paste("select distinct ID from GENES where GeneID in (",
+##                  paste("'", myEg, "'", sep="", collapse=","), ")")
+##     rs <- dbSendQuery(db, sql)
+##     ans <- fetch(rs, n=length(myEg)+2L)[[1]]
+##     stopifnot(dbHasCompleted(rs))
+##     dbClearResult(rs)
+
+
+##     ## This is slower than pasting in the IN (x, y, z, ...) clause
+##     ST({
+##         dbBeginTransaction(db)
+##         sql1 <- "create temp table idinput (id int)"
+##         dbGetQuery(db, sql1)
+##         sql2 <- "insert into idinput values (?)"
+##         dbGetPreparedQuery(db, sql2, data.frame(id=myEg))
+##         sql3 <- paste("select distinct ID from GENES where GeneID in (",
+##                      "select id from idinput)")
+##         rs <- dbSendQuery(db, sql3)
+##         ans <- fetch(rs, n=length(myEg)+2L)
+##         stopifnot(dbHasCompleted(rs))
+##         dbClearResult(rs)
+##         dbGetQuery(db, "drop table idinput")
+##         dbCommit(db)
+##         ans <- ans[[1]]
+##     })
+    
+
 
 
 getGoToEntrezMap <- function(p) {
