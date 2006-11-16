@@ -3,7 +3,7 @@ setClass("DatPkg",
          representation=representation(name="character"))
 
 setClass("DBPkg",
-         contains=c("DatPkg", "VIRTUAL",
+         contains=c("DatPkg", "VIRTUAL"),
          representation=representation(getdb="function"))
 
 setClass("AffyDatPkg", contains="DatPkg")
@@ -19,10 +19,12 @@ setClass("OrganismMappingDBPkg", contains="DBPkg")
 
 DatPkgFactory <- function(pkgName) {
 
-    strMatch <- function(pat, s) length(grep(p, s)) > 0
+    strMatch <- function(pat, s) length(grep(pat, s)) > 0
     isDbPkg <- function(p) length(grep("db$", p)) > 0
 
-    havePkg <- require(pkgName, character.only=TRUE)
+    if (pkgName == "UNKNOWN")
+      return(new("AffyDatPkg", name=pkgName))
+    havePkg <- suppressWarnings(require(pkgName, character.only=TRUE))
     if (!havePkg)
       stop("the ", pkgName, " package was not found.")
 

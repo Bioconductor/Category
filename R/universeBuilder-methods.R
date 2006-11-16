@@ -31,7 +31,7 @@ getUniverseViaGo_db <- function(p) {
     ## and the normal return value.
     ontology <- match.arg(ontology, c("BP", "CC", "MF"))
     SQL <- "select distinct gene_id from GO, probe2gene where GO.Ontology ='%s' and GO.PROBE = probe2gene.probe_id"
-    univ <- dbGetQuery(p@datPkg@getdb(), sprintf(SQL, ontology)[[1]]
+    univ <- dbGetQuery(p@datPkg@getdb(), sprintf(SQL, ontology))[[1]]
     if (!is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
     if (length(univ) < 1)
