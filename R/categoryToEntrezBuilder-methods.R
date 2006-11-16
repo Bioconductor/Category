@@ -28,17 +28,17 @@ getGoToEntrezMap_db <- function(p) {
     ontology <- ontology(p)
     ourGeneIds <- paste("'", geneIds(p), "'", sep="", collapse=",")
     SQL <- "
-select GeneID, GOID from GOXXALL, GENES where
-  GOID in (select distinct GOID from GOXXALL, GENES
-           where GeneID in (%s) and GOXXALL.ID = GENES.ID)
-  and GOXXALL.ID = GENES.ID
+select gene_id, go_id from go_XX_all, genes where
+  go_id in (select distinct go_id from go_XX_all, genes
+           where gene_id in (%s) and go_XX_all.id = genes.id)
+  and go_XX_all.id = genes.id
 "
     SQL <- gsub("XX", ontology, SQL)
     SQL <- sprintf(SQL, ourGeneIds)
     rs <- dbSendQuery(db, SQL)
     on.exit(dbClearResult(rs))
     ans <- fetch(rs, n=-1)
-    go2all <- split(ans[["GeneID"]], ans[["GOID"]])
+    go2all <- split(ans[[1]], ans[[2]])
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
     go2all <- lapply(go2all, function(eg) {
         z <- intersect(univ, eg)
