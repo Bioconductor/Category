@@ -17,6 +17,49 @@ setMethod("categoryToEntrezBuilder",
           })
 
 
+getGoToEntrezMap_db <- function(p) {
+    keep.all <- switch(testDirection(p),
+                       over=FALSE,
+                       under=TRUE,
+                       stop("Bad testDirection slot"))    
+    db <- p@datPkg@getdb()
+    ontology <- ontology(p)
+
+    gotable <- switch(ontology,
+                      BP="GOBPHUMAN",
+                      CC="GOCCHUMAN",
+                      MF="GOMFHUMAN")
+    SQL <- "select GOID, GeneID from %s where "
+    SQL <- "select distinct GeneID from GO%sHUMAN where GOID in (select OffspringID from GO%sOFFSPRING where ID='%d');"
+    tname <- sprintf("GO%sOFFSPRING", ontology)
+    gid <- sqliteQuickColumn(db, tname, "ID")
+    system.time({
+    go2all <- lapply(gid, function(x) {
+        query <- sprintf(SQL, ontology, ontology, x)
+        ans <- dbGetQuery(db, query)
+        if (nrow(ans) == 0)
+          ans <- NULL
+        ans[[1]]
+    })
+})
+
+            
+    "select GOID, GeneID from GOBPHUMAN where GOID in (select OffspringID from GOBPOFFSPRING where ID=GOBPHUMAN.GOID) group by GOBPHUMAN.GOID limit 200;"
+
+    
+    ## Return a list mapping GO ids to the Entrez Gene ids annotated
+    ## at the GO id.  Only those GO ids that are in the specified
+    ## ontology and have at least one annotation in the set of 
+    ## Entrez Gene ids specified by 'selected' are included.
+    go2allprobes <- GO2AllProbes(lib, ontology)
+    probeAnnot <- getGoToProbeMap(go2allprobes, ontology)
+    ## Map to Entrez Gene and flag GO ids that don't have any
+    ## annotations in our selected set.  No sense testing these.
+    probeToEntrezMapHelper(probeAnnot, geneIds(p), lib, universeGeneIds(p),
+                           keep.all=keep.all)
+}
+
+
 getGoToEntrezMap <- function(p) {
     keep.all <- switch(testDirection(p),
                        over=FALSE,
