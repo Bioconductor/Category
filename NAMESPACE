@@ -15,9 +15,13 @@ exportClasses("HyperGParams",
               "HyperGResult",
 
               "DatPkg",
+              "DBPkg",
               "AffyDatPkg",
               "YeastDatPkg",
-              "OrganismMappingDatPkg")
+              "OrganismMappingDatPkg",
+              "AffyDBPkg",
+              "YeastDBPkg",
+              "OrganismMappingDBPkg")
 
 exportMethods("hyperGTest",
               
