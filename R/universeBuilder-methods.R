@@ -5,13 +5,39 @@ setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
 
 setMethod("universeBuilder", signature(p="GOHyperGParams"),
           function(p) {
-            getUniverseViaGo(p)
-        })
+              ## FIXME: this should be done via dispatch
+              if (is(p@datPkg, "DBPkg"))
+                getUniverseViaGo_db(p)
+              else
+                getUniverseViaGo(p)
+          })
 
 setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
           function(p) {
             getUniverseViaPfam(p)
           })
+
+
+setGeneric("getUniverse", function(datPkg) standardGeneric("getUniverse"))
+
+
+getUniverseViaGo_db <- function(p) {
+    datPkg <- p@datPkg
+    ontology <- ontology(p)
+    entrezIds <- universeGeneIds(p)
+    ## Return all Entrez Gene Ids that are annotated at one or more
+    ## GO terms belonging to the specified GO ontology.
+    ## If 'entrezIds' is given, return the intersection of 'entrezIds'
+    ## and the normal return value.
+    ontology <- match.arg(ontology, c("BP", "CC", "MF"))
+    SQL <- "select distinct gene_id from GO, probe2gene where GO.Ontology ='%s' and GO.PROBE = probe2gene.probe_id"
+    univ <- dbGetQuery(p@datPkg@getdb(), sprintf(SQL, ontology)[[1]]
+    if (!is.null(entrezIds) && length(entrezIds) > 0)
+      univ <- intersect(univ, unlist(entrezIds))
+    if (length(univ) < 1)
+      stop("No Entrez Gene ids left in universe")
+    univ
+}
 
 
 getUniverseViaGo <- function(p) {
