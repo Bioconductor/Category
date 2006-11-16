@@ -1,6 +1,10 @@
 setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
           function(p) {
-              getUniverseViaKegg(p)
+              ## FIXME: this should be done via dispatch
+              if (is(p@datPkg, "DBPkg"))
+                getUniverseViaKegg_db(p)
+              else
+                getUniverseViaKegg(p)
           })
 
 setMethod("universeBuilder", signature(p="GOHyperGParams"),
@@ -14,11 +18,12 @@ setMethod("universeBuilder", signature(p="GOHyperGParams"),
 
 setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
           function(p) {
-            getUniverseViaPfam(p)
+              ## FIXME: this should be done via dispatch
+              if (is(p@datPkg, "DBPkg"))
+                getUniverseViaPfam_db(p)
+              else
+                getUniverseViaPfam(p)
           })
-
-
-setGeneric("getUniverse", function(datPkg) standardGeneric("getUniverse"))
 
 
 getUniverseViaGo_db <- function(p) {
@@ -68,6 +73,19 @@ getUniverseViaGo <- function(p) {
     getUniverseHelper(probes, datPkg, entrezIds)
 }
 
+
+getUniverseViaKegg_db <- function(p) {
+    entrezIds <- universeGeneIds(p)
+    SQL <- "select distinct gene_id from genes, kegg where genes.id = kegg.id"
+    univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
+    if (!is.null(entrezIds) && length(entrezIds) > 0)
+      univ <- intersect(univ, unlist(entrezIds))
+    if (length(univ) < 1)
+      stop("No Entrez Gene ids left in universe")
+    univ
+}
+
+
 getUniverseViaKegg <- function(p) {
     entrezIds <- universeGeneIds(p)
     probe2kegg <- as.list(getDataEnv("PATH", annotation(p)))
@@ -75,6 +93,18 @@ getUniverseViaKegg <- function(p) {
     probe2kegg <- probe2kegg[notNA]
     probes <- names(probe2kegg)
     getUniverseHelper(probes, p@datPkg, universeGeneIds(p))
+}
+
+
+getUniverseViaPfam_db <- function(p) {
+    entrezIds <- universeGeneIds(p)
+    SQL <- "select distinct gene_id from genes, pfam where genes.id = pfam.id"
+    univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
+    if (!is.null(entrezIds) && length(entrezIds) > 0)
+      univ <- intersect(univ, unlist(entrezIds))
+    if (length(univ) < 1)
+      stop("No Entrez Gene ids left in universe")
+    univ
 }
 
 
@@ -86,7 +116,6 @@ getUniverseViaPfam <- function(p) {
     probes <- names(probe2pfam)
     getUniverseHelper(probes, p@datPkg, entrezIds)
 }
-
 
 
 getUniverseHelper <- function(probes, datPkg, entrezIds) {
