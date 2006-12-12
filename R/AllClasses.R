@@ -52,20 +52,22 @@ DatPkgFactory <- function(pkgName) {
 
 
 setClass("HyperGParams",
-         representation(geneIds="ANY",
-                        universeGeneIds="ANY",
-                        annotation="character",
-                        datPkg="DatPkg",
-                        cateogrySubsetIds="ANY",
-                        categoryName="character",
-                        pvalueCutoff="numeric",
-                        testDirection="character"),
+         contains="VIRTUAL",
+         representation=representation(geneIds="ANY",
+           universeGeneIds="ANY",
+           annotation="character",
+           datPkg="DatPkg",
+           cateogrySubsetIds="ANY",
+           categoryName="character",
+           pvalueCutoff="numeric",
+           testDirection="character"),
          prototype=prototype(
            pvalueCutoff=0.01,
            testDirection="over",
            datPkg=DatPkgFactory("UNKNOWN")
-           ),  ## FIXME: add validity check
-         contains="VIRTUAL")
+           ),
+         validity=function(object) .isValidHyperGParams(object))
+
 
 
 setClass("GOHyperGParams",

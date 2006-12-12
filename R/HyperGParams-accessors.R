@@ -1,3 +1,26 @@
+.isValidHyperGParams <- function(object) {
+    sel <- geneIds(object)
+    if (any(duplicated(sel)))
+      return("duplicate IDs detected in geneIds")
+    univ <- universeGeneIds(object)
+    if (length(univ) && any(duplicated(univ)))
+      return("duplicate IDs detected in universeGeneIds")
+    if (!all(sel %in% univ))
+      return("IDs in geneIds not in universeGeneIds")
+    pv <- pvalueCutoff(object)
+    if (pv > 1 || pv < 0)
+      return("invalid pvalueCutoff, must be between 0 and 1")
+    if (length(annotation(object)) != 1)
+      return("annotation must be a length 1 character vector")
+    if (typeof(sel) != typeof(univ))
+      return(paste("geneIds and universeGeneIds must have the same mode\n",
+                   "geneIds:", typeof(sel), "\n",
+                   "universeGeneIds:", typeof(univ)))
+    if (length(categoryName(object)) != 1)
+      return("categoryName must be a length 1 character vector")
+    TRUE
+}
+
 setMethod("geneIds", "HyperGParams", function(r) r@geneIds)
 setReplaceMethod("geneIds", "HyperGParams", function(r, value) {
     r@geneIds <- value
