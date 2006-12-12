@@ -29,6 +29,7 @@ exportMethods("hyperGTest",
               "categoryToEntrezBuilder",
 
               "categoryName",
+              "makeValidParams",
 
               ## accessors for HyperGResult
               "pvalues",

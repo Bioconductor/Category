@@ -65,9 +65,7 @@ setClass("HyperGParams",
            pvalueCutoff=0.01,
            testDirection="over",
            datPkg=DatPkgFactory("UNKNOWN")
-           ),
-         validity=function(object) .isValidHyperGParams(object))
-
+           ))
 
 
 setClass("GOHyperGParams",

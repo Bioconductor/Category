@@ -1,5 +1,15 @@
 library("hgu95av2")
+## Set to FALSE to see warning/error messages when running tests
+## that verify that errors/warnings are raised.
 quiet <- TRUE
+
+.setUp <- function() {
+    options(warn=2)
+}
+
+.tearDown <- function() {
+    options(warn=0)
+}
 
 testValid <- function() {
     univ <- 1:100
@@ -17,6 +27,17 @@ testValid <- function() {
                        annotation="hgu95av2",
                        pvalueCutoff=0.05,
                        testDirection="over")
+    
+    ## verify that our fixups work as expected
+    options(warn=0)
+    p3 <- new("GOHyperGParams",
+              geneIds=c(sel, sel, 9000L),
+              universeGeneIds=c(univ, univ),
+              annotation="hgu95av2",
+              pvalueCutoff=0.05,
+              testDirection="over")
+    checkEquals(sel, geneIds(p3))
+    checkEquals(univ, universeGeneIds(p3))
 }
 
 testDupGeneIds <- function() {

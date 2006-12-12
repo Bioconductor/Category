@@ -1,7 +1,7 @@
 setMethod("hyperGTest",
           signature(p="HyperGParams"), 
           function(p) {
-              validObject(p)
+              p <- makeValidParams(p)
               origGeneIds <- geneIds(p)
               universeGeneIds(p) <- universeBuilder(p)
               selected <- intersect(geneIds(p), universeGeneIds(p))

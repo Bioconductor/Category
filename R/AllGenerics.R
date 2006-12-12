@@ -71,6 +71,9 @@ setGeneric("htmlReport", function(r, file="", append=FALSE, label="", ...)
            standardGeneric("htmlReport"),
            signature=c("r"))
 
+setGeneric("makeValidParams", function(object)
+           standardGeneric("makeValidParams"))
+
 ## accessors for DatPkg
 setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
