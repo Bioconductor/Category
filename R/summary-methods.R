@@ -55,7 +55,7 @@ htmlReportFromDf <- function(r, caption, file="", append=FALSE)
     }
     ## XXX: Hard-coded column formatting here
     dig <- rep(2, ncol(r)+1)  ## need +1 for xtable row name
-    dig[5:6] <- 0
+    dig[5:7] <- 0
     xt <- xtable(r, caption=caption,
                  digits=dig)
     print(xt, type="html", file=file, append=append,
