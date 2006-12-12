@@ -16,8 +16,6 @@
       return(paste("geneIds and universeGeneIds must have the same mode\n",
                    "geneIds:", typeof(sel), "\n",
                    "universeGeneIds:", typeof(univ)))
-    if (length(categoryName(object)) != 1)
-      return("categoryName must be a length 1 character vector")
     TRUE
 }
 
