@@ -1,5 +1,23 @@
 library("hgu95av2")
-quiet <- FALSE
+quiet <- TRUE
+
+testValid <- function() {
+    univ <- 1:100
+    sel <- sample(univ, 10)
+    p1 <- new("KEGGHyperGParams",
+                       geneIds=sel,
+                       universeGeneIds=univ,
+                       annotation="hgu95av2",
+                       pvalueCutoff=0.05,
+                       testDirection="over")
+
+    p2 <- new("GOHyperGParams",
+                       geneIds=sel,
+                       universeGeneIds=univ,
+                       annotation="hgu95av2",
+                       pvalueCutoff=0.05,
+                       testDirection="over")
+}
 
 testDupGeneIds <- function() {
     univ <- 1:100
