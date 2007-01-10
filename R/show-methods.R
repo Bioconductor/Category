@@ -11,7 +11,7 @@ setMethod("show", signature(object="HyperGResultBase"),
           })
 
 
-setMethod("show", signature(object="GOHyperGParams"),
+setMethod("show", signature(object="HyperGParams"),
           function(object) {
               cat("A", class(object), "instance\n")
               cat("  category:", object@categoryName, "\n")
