@@ -21,8 +21,8 @@ MAPAmat(data, minCount = 5)
 }
 \value{
  A matrix of zeros and ones (possibly a sparse representation) where rows
- correspond to MAP regions and columns to probe IDs. A one indicates that 
- the corresponding gene is in the mapped region.
+ correspond to Entrez Gene IDs and columns to chromosome regions. A one 
+  indicates that the corresponding gene is in the mapped region.
 
  Mapping is based on Entrez gene IDs.
 }
