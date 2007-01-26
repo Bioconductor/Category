@@ -108,7 +108,7 @@ to taking a more global view.
 <<Setup, echo=FALSE, results=hide>>=
 library("Biobase")
 library("annotate")
-library("hgu95av2")
+library("hgu95av2db")
 library("KEGG")
 library("genefilter")
 library("Category")

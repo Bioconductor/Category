@@ -1,5 +1,5 @@
 import("methods")
-
+import("AnnotationDbi")
 importMethodsFrom("Biobase", "annotation", "description")
 
 export("applyByCategory",  "ttperm",
