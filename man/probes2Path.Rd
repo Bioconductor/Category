@@ -25,7 +25,7 @@ probes2Path(pids, data = "hgu133plus2")
 
 \seealso{ \code{\link{findAMstats}} }
 \examples{
- library("hgu95av2")
+ library("hgu95av2db")
  x = c("1001_at", "1000_at")
  probes2Path(x, "hgu95av2")
 

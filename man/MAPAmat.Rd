@@ -29,7 +29,7 @@ MAPAmat(data, minCount = 5)
 \author{ R. Gentleman }
 \seealso{ \code{\link{cateGOry}}, \code{\link{probes2MAP}} }
 \examples{
-have_hgu95av2 <- suppressWarnings(require("hgu95av2"))
+have_hgu95av2 <- suppressWarnings(require("hgu95av2db"))
 if (have_hgu95av2)
    mam <- MAPAmat("hgu95av2", 10) 
 }
