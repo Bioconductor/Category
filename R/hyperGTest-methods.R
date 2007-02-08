@@ -79,6 +79,44 @@ chrMap_hg_test <- function(p) {
 }
 
 
+removeLengthZero <- function(x) {
+    wanted <- sapply(x, function(z) length(z) > 0)
+    x[wanted]
+}
+
+removeSigKidGenes <- function(curCatKids, goDag, curCat2Entrez, SIGNIF,
+                              cat2Entrez) {
+    if (length(curCatKids)) {
+        ## keep only those kids with SIGNIF pvalue
+        curCatKids <- lapply(curCatKids, function(x) {
+            pvKids <- nodeData(goDag, n=x, attr="pvalue")
+            idx <- which(pvKids < SIGNIF)
+            if (length(idx))
+              x[idx]
+            else
+              character(0)
+        })
+        curCat2EntrezCond <- list()
+        for (goid in names(curCat2Entrez)) {
+            ## remove entrez ids that came from
+            ## SIGNIF children
+            kids <- curCatKids[[goid]]
+            if (length(kids)) {
+                kidEgs <- unlist(cat2Entrez[kids])
+                newEgs <- setdiff(curCat2Entrez[[goid]], kidEgs)
+                ## newEgs may be length 0
+                curCat2EntrezCond[[goid]] <- newEgs
+            } else {
+                curCat2EntrezCond[[goid]] <- curCat2Entrez[[goid]]
+            }
+        }
+        curCat2Entrez <- curCat2EntrezCond
+    }
+    curCat2Entrez
+}
+
+
+
 setMethod("hyperGTest",
           signature(p="ChrMapHyperGParams"),
           function(p) {
