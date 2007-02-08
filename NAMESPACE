@@ -4,15 +4,18 @@ importMethodsFrom("Biobase", "annotation", "description")
 
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
- "getPathNames", "makeEBcontr", "probes2Path")     
+ "getPathNames", "makeEBcontr", "probes2Path",
+       "parseChrMap")
 
 exportClasses("HyperGParams",
               "GOHyperGParams",
               "KEGGHyperGParams",
               "PFAMHyperGParams",
+              "ChrMapHyperGParams",
 
               "HyperGResultBase",
               "HyperGResult",
+              "ChrMapHyperGResult",
 
               "DatPkg",
               "DBPkg",
@@ -32,6 +35,7 @@ exportMethods("hyperGTest",
               "makeValidParams",
 
               ## accessors for HyperGResult
+              "chrGraph",
               "pvalues",
               "geneCounts",
               "universeCounts",
@@ -40,6 +44,8 @@ exportMethods("hyperGTest",
               "annotation",
               "geneIds",
               "geneIds<-",
+              "geneIdUniverse",
+              "condGeneIdUniverse",
               "testName",
               "pvalueCutoff",
               "pvalueCutoff<-",

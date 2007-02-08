@@ -22,6 +22,14 @@ setGeneric("universeMappedCount",
 setGeneric("geneMappedCount",
            function(r) standardGeneric("geneMappedCount"))
 
+setGeneric("chrGraph",
+           function(r) standardGeneric("chrGraph"))
+
+setGeneric("geneIdUniverse", function(r) standardGeneric("geneIdUniverse"))
+
+setGeneric("condGeneIdUniverse",
+           function(r) standardGeneric("condGeneIdUniverse"))
+
 ## generic "annotation" defined in Biobase
 
 setGeneric("geneIds", function(r) standardGeneric("geneIds"))

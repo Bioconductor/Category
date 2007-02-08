@@ -84,6 +84,14 @@ setClass("PFAMHyperGParams",
          contains="HyperGParams",
          prototype=prototype(categoryName="PFAM"))
 
+setClass("ChrMapHyperGParams",
+         contains="HyperGParams",
+         representation=representation(
+           chrGraph="graph",
+           conditional="logical"),
+         prototype=prototype(
+           categoryName="ChrMap",
+           chrGraph=new("graphNEL", edgemode="directed")))
 
 setClass("HyperGResultBase",
          representation(annotation="character",
@@ -105,4 +113,12 @@ setClass("HyperGResult",
            universeCounts="integer",
            catToGeneId="list"))
 
+setClass("ChrMapHyperGResult",
+         contains="HyperGResultBase",
+         representation=representation(
+           pvalue.order="integer",
+           conditional="logical",
+           chrGraph="graph"),
+         prototype=prototype(
+           chrGraph=new("graphNEL", edgemode="directed")))
 

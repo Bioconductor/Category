@@ -1,5 +1,5 @@
 setMethod("hyperGTest",
-          signature(p="HyperGParams"), 
+          signature(p="HyperGParams"),
           function(p) {
               p <- makeValidParams(p)
               origGeneIds <- geneIds(p)
@@ -20,6 +20,90 @@ setMethod("hyperGTest",
                   testName=categoryName(p),
                   pvalueCutoff=pvalueCutoff(p),
                   testDirection=testDirection(p))
+          })
+
+
+chrMap_hg_test <- function(p) {
+    chrGraph <- p@chrGraph
+
+    nodeDataDefaults(chrGraph, "pvalue") <- 1
+    nodeDataDefaults(chrGraph, "geneIds") <- numeric(0)
+    nodeDataDefaults(chrGraph, "condGeneIds") <- numeric(0)
+    nodeDataDefaults(chrGraph, "oddsRatio") <- numeric(0)
+    nodeDataDefaults(chrGraph, "expCount") <- numeric(0)
+
+    ## now iterate leaves first doing tests and conditioning
+    ## on all significant children.
+    ## FIXME: consider replacing with RBGL tsort?
+    needsProc <- chrGraph
+    complete <- character(0)
+    SIGNIF <- p@pvalueCutoff
+    cat2Entrez <- nodeData(chrGraph, attr="geneIds")
+    while (length(nodes(needsProc))) {
+        numKids <- sapply(edges(needsProc), length)
+        noKids <- names(numKids[numKids == 0])
+        curCat2Entrez <- cat2Entrez[noKids]
+        if (p@conditional) {
+            curCatKids <- edges(chrGraph)[names(curCat2Entrez)]
+            curCatKids <- removeLengthZero(curCatKids)
+            if (length(curCatKids)) { ## sanity check
+                ## they should be all complete
+                stopifnot(all(unlist(curCatKids) %in% complete))
+            }
+            curCat2Entrez <- removeSigKidGenes(curCatKids, chrGraph,
+                                               curCat2Entrez,
+                                               SIGNIF, cat2Entrez)
+            ## Store the conditioned cat => entrez map
+            nodeData(chrGraph, n=names(curCat2Entrez),
+                     attr="condGeneIds") <- curCat2Entrez
+        }
+        stats <- .doHyperGTest(p, curCat2Entrez, cat2Entrez,
+                               p@geneIds)
+
+        ## store the pvals, mark these nodes as complete,
+        ## then compute the next set of nodes to do.
+        noKids <- names(curCat2Entrez)
+        ## drop names on pvals to avoid weird names upon unlisting
+        nodeData(chrGraph, n=noKids,
+                 attr="pvalue") <- as.numeric(stats$p)
+        nodeData(chrGraph, n=noKids,
+                 attr="oddsRatio") <- as.numeric(stats$odds)
+        nodeData(chrGraph, n=noKids,
+                 attr="expCount") <- as.numeric(stats$expected)
+        complete <- c(complete, noKids)
+        hasKids <- names(numKids[numKids > 0])
+        needsProc <- subGraph(hasKids, needsProc)
+    } ## end while
+    p@chrGraph <- chrGraph
+    p
+}
+
+
+setMethod("hyperGTest",
+          signature(p="ChrMapHyperGParams"),
+          function(p) {
+              p <- makeValidParams(p)
+              if (numNodes(p@chrGraph) == 0)
+                p@chrGraph <- makeChrMapGraph(p)
+
+              univ <- unlist(nodeData(p@chrGraph, attr="geneIds"))
+              univ <- unique(univ)
+              p@universeGeneIds <- univ
+              ## preserve names on geneIds
+              p@geneIds <- p@geneIds[p@geneIds %in% p@universeGeneIds]
+
+              p <- chrMap_hg_test(p)
+              pvals <- unlist(nodeData(p@chrGraph, attr="pvalue"))
+              pvord <- order(pvals)
+              new("ChrMapHyperGResult",
+                  chrGraph=p@chrGraph,
+                  annotation=p@annotation,
+                  geneIds=p@geneIds,
+                  testName=categoryName(p),
+                  testDirection=p@testDirection,
+                  pvalueCutoff=p@pvalueCutoff,
+                  conditional=p@conditional,
+                  pvalue.order=pvord)
           })
 
 
@@ -91,12 +175,12 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     }
 
     ## Num white drawn (n11)
-    numWdrawn <- sapply(curCat2Entrez, 
+    numWdrawn <- sapply(curCat2Entrez,
                         function(x) sum(selected %in% x))
 
     ## Num white
     numW <- listLen(curCat2Entrez)
-    
+
     ## Num black
     numB <- (length(universeGeneIds(p)) - numOtherRemoved - numSelectedRemoved
              - numW)
