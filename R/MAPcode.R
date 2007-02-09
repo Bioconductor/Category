@@ -70,17 +70,43 @@ cleanMapWeird <- function(p2m) {
 
 
 cleanRanges <- function(probe2chr) {
-    ## fix probes annotated as 1p34-p33
-    ## XXX FIXME XXX: for now we just remove those with ranges
+    ## We use (p|q) even though it will match nonsense annotations like
+    ## "6p23-q24".  These seem to appear in the data.  But it is OK
+    ## since we are taking the longest common suffix and that will just
+    ## be the chromosome in these cases.
+    rangePat <- "[0-9XY]+(q|p)([0-9.]+|ter)-(q|p)([0-9.]+|ter)"
+    cenPat <- "cen"
+
     probe2chr <- lapply(probe2chr, function(x) {
-        parts <- strsplit(x, "-")
-        lapply(parts, function(x) {
-            if (length(x) == 1)
-              x
-            else if (length(x) == 2) {
-                chr <- FIXME.FIXME
-            } else
-            stop("unexpected data: ", paste(x, collapse=", "))
+        ## this could be made faster
+        sapply(x, function(z) {
+            if (length(grep("-", z, fixed=TRUE))) {
+                if (length(grep(rangePat, z, perl=TRUE))) {
+                    arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
+                    lhs <- substr(z, 1L, arm.loc[2L]-1L)
+                    rhs <- paste(substr(z, 1L, arm.loc[1L]-1L),
+                                 substr(z, arm.loc[2L]+1L, nchar(z)), sep="")
+                    ans <- lcPrefix(c(lhs, rhs))
+                    nc <- nchar(ans)
+                    if (substr(ans, nc, nc) == ".")
+                      ans <- substr(ans, 1L, nc - 1L)
+                    ans
+                } else if (length(grep(cenPat, z, perl=TRUE))) {
+                    ## FIXME:
+                    ## for range including centromere, we just
+                    ## take the entire chromosome.
+                    ## Could we do better and include arm info?
+                    substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+                } else {
+                    ## FIXME:
+                    ans <- substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+                    warning("unexpected band notation: ", z, " using ", ans,
+                            call.=FALSE)
+                    ans
+                }
+            } else {
+                z
+            }
         })
     })
     probe2chr
@@ -119,16 +145,18 @@ makeChrMapToEntrez <- function(p) {
 
     probe2chr <- cleanMapAndsOrs(probe2chr)
     probe2chr <- cleanMapWeird(probe2chr)
-    ##probe2chr <- cleanRanges(probe2chr)
+    probe2chr <- cleanRanges(probe2chr)
 
     lens <- listLen(probe2chr)
     chr <- unlist(probe2chr)
     pbs <- rep(names(probe2chr), lens)
     m2p <- split(pbs, chr)
-    ## XXX: remove all annotations that are specified
-    ## as a range of chromosome bands
+    ## XXX: remove all annotations that remain that have '-'
     hasRange <- grep("-", names(m2p))
-    m2p <- m2p[-hasRange]
+    if (length(hasRange)) {
+        warning("dropping ", length(hasRange), " items with weird range")
+        m2p <- m2p[-hasRange]
+    }
     onlyDot <- grep("^\\.$", names(m2p))
     m2p <- m2p[-onlyDot]
 
