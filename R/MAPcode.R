@@ -86,7 +86,7 @@ cleanRanges <- function(probe2chr) {
                     lhs <- substr(z, 1L, arm.loc[2L]-1L)
                     rhs <- paste(substr(z, 1L, arm.loc[1L]-1L),
                                  substr(z, arm.loc[2L]+1L, nchar(z)), sep="")
-                    ans <- lcPrefix(c(lhs, rhs))
+                    ans <- lcPrefixC(c(lhs, rhs))
                     nc <- nchar(ans)
                     if (substr(ans, nc, nc) == ".")
                       ans <- substr(ans, 1L, nc - 1L)
