@@ -109,8 +109,6 @@ setClass("HyperGResult",
            pvalues="numeric",
            oddsRatios="numeric",
            expectedCounts="numeric",
-           geneCounts="integer",
-           universeCounts="integer",
            catToGeneId="list"))
 
 setClass("ChrMapHyperGResult",

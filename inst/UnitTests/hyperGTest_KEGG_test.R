@@ -12,4 +12,5 @@ test_KEGG1 <- function() {
     checkEquals("KEGG", testName(ans))
     checkEquals(14, length(geneIds(ans)))
     checkEquals(27, length(universeCounts(ans)))
+    checkEquals(27, length(geneCounts(ans)))
 }

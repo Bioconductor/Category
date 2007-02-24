@@ -36,12 +36,6 @@ Objects can be created by calls of the form \code{new("HyperGResult", ...)}.
 	 \describe{
     \item{\code{pvalues}:}{\code{"numeric"} vector: the ordered
       p-values for each category term tested.}
-    \item{\code{geneCounts}:}{\code{"integer"} vector: for each
-      category term tested, the number of genes from the gene set that
-      are annotated at the term.}
-    \item{\code{universeCounts}:}{\code{"integer"} vector: for
-      each category term tested, the number of genes from the gene
-      universe that are annotated at the term.}
     \item{\code{catToGeneId}:}{Object of class \code{"list"}.  The
         names of the list are category IDs.  Each element is a vector
         of gene IDs annotated at the given category ID and in the
