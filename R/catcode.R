@@ -8,28 +8,16 @@ findAMstats = function(Amat, tstats) {
     return(list(eDE = expDE[pw1s], lens=pwLens[pw1s]))
 }
 
-## Amat: either a 0/1 adjacency matrix of categories x genes,
-##   or a graphNEL (directed) whose edges go from categories
-##   to genes
+## Amat: adjacency matrix of gene -> categories
 applyByCategory = function(stats, Amat, FUN=mean, ...)
 {
-  if(is.matrix(Amat)) {
-    if(ncol(Amat) != length(stats) )
-        stop("wrong dimension for Amat")
-    res = apply(Amat, 1, function(x)  FUN(stats[x!=0],...))
-  } else {
-    if(!inherits(Amat, "graphNEL"))
-      stop("'Amat' must be a matrix or a graphNEL object.")
-    if(is.null(names(stats)))
-      stop("'stats' must be named, and names must correspond to the node names in 'Amat'")
-    if(!identical(nodes(Amat), names(edges(Amat))))
-      stop("'nodes(Amat)' and 'names(edges(Amat))' are not identical.")
-    isGene = nodes(Amat) %in% names(stats)
-    if(!any(isGene))
-      warning("node names of 'Amat' do not match any of the names of 'stats'")
-    res = sapply(edges(Amat)[!isGene], function(x) FUN(stats[x], ...))
-  }
-  return(res)  
+  if(ncol(Amat) != length(stats) )
+    stop("wrong dimension for Amat")
+  if(is.matrix(Amat))
+    if(!is.logical(Amat))
+      Amat = (Amat==0)
+  
+  apply(Amat, 1, function(x) FUN(stats[x], ...))
 }
 
 ##given a set of AffyIDs, which have pathway data

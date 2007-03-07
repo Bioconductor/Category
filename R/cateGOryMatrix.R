@@ -7,9 +7,18 @@ augmentByAncestors = function(x) {
    s4 = is.na(x)
    
    notFound = which(!(s1|s2|s3|s4))
-   if(length(notFound)>0)
-     stop(sprintf("GO term%s %s not found.\n", ifelse(length(notFound)>1, "s", ""),
-                  paste(x[notFound], collapse=", ")))
+   if(length(notFound)>0) {
+     got = if(length(notFound)>7) {
+       paste(paste(notFound[1:7], collapse=", "), ", ... ")
+     } else {
+       paste(notFound, collapse=", ")
+     }
+     stop(if(length(notFound)==1) {
+       sprintf("GO term %s is mentioned in 'x' but was not found in the GO package.\n", got)
+     } else {
+       sprintf("GO terms %s were mentioned in 'x' but were not found in the GO package.\n", got)
+     })
+   }
    
    stopifnot(all(s1+s2+s3+s4==1))
 
@@ -49,37 +58,13 @@ cateGOry  = function(x, categ, sparse=TRUE) {
   gocats = sort(unique(unlist(categAnc)))
   genes  = sort(unique(unlist(x)))
 
-  if(sparse) {
-    
-    ## wh 14.1.2006: I considered using the matrix.csr class from the SparseM package
-    ## here, but it doesn't provide row- and column names, which would make the return
-    ## of 'gocats' (GO category names) and 'genes' (gene names) difficult.
-
-    ## Really the graph is a bipartite graph, but I use graphNEL for now.
-    ## The fastest way to construct it seems to be via the from-to matrix ft
-
-    ## This code is elegant but slow:
-    ##   ft = do.call("rbind", args=mapply(cbind, x, categAnc))
-    ##
-    ## This is a bit explicit but seems much faster:
-    rg = c(0, cumsum(listLen(categAnc)))
-    ft = matrix("", nrow=rg[length(rg)], ncol=2)
-    for(j in 1:length(x)) {
-      ft[ (rg[j]+1):rg[j+1], 1] = x[j]
-      ft[ (rg[j]+1):rg[j+1], 2] = categAnc[[j]]
-    }
-    
-    ## remove duplicated edges
-    ft = ft[!duplicated(paste(ft[,1], ft[,2])), ]
-    res = ftM2graphNEL(ft, edgemode="undirected")
-    
-  } else {
-    res = matrix(as.integer(0), nrow=length(gocats), ncol=length(genes))
-    rownames(res) = gocats
-    colnames(res) = genes
-    for(j in seq(along=x))
-      res[categAnc[[j]], x[j]] = as.integer(1)
-  }
+  res = do.call(if(sparse) "Matrix" else "matrix",
+    list(FALSE, nrow=length(gocats), ncol=length(genes)))
+  
+  rownames(res) = gocats
+  colnames(res) = genes
+  for(j in seq(along=x))
+    res[categAnc[[j]], x[j]] = TRUE
   
   return(res)
 }

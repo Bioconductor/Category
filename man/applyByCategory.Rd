@@ -11,38 +11,26 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 }
 
 \arguments{
-  \item{stats}{Numeric vector with test statistics of interest. If
-    \code{Amat} is an object of class
-    \code{\link[graph:graphNEL-class]{graphNEL}}, then \code{stats}
-    needs to be named, with names corresponding to those in \code{Amat}.}
-  \item{Amat}{A data structure that codes category memberships of the
-    elements of \code{stats}. It can be either a matrix or a
-    \code{\link[graph:graphNEL-class]{graphNEL}} object.
-    See details.}
+  \item{stats}{Numeric vector with test statistics of interest.}
+  \item{Amat}{Either a logical matrix or an
+    \code{\linkS4class{lgCMatrix}}: the adjacency matrix of the
+    bipartite genes - category graph.
+    Its rows correspond to the categories, columns
+    to the genes, and \code{TRUE} indicates membership.
+    The columns are assumed to be aligned with the elements of \code{stats}.}
   \item{FUN}{A function to apply to the subsets \code{stats} by
     categories.}
   \item{\dots}{Extra parameters passed to \code{FUN}.}
 }
 
 \details{
-  If \code{Amat} is an object of class
-  \code{\link[graph:graphNEL-class]{graphNEL}}, the
-  categories are taken
-  to be those nodes of \code{Amat} whose names do not match the names of
-  \code{stats}, and category membership is coded by edges from
-  categories to non-category nodes.
-  If it is a matrix, its columns correspond to values in
-  \code{stats} and its rows to the different
-  categories. If matrix element \code{[i,j]!=0}, then
-  \code{stats[j]} belongs to the \code{i}-th categorization.
-
-  For situations in which \code{stats} is large, the sparse
-  graph representation may be more efficient.
+  For GO categories, the function \code{\link{cateGOry}} might be useful
+  for the construction of \code{Amat}.
 }
 
 \value{
   The return value is a list or vector of length equal to
-  the number of categorizations. Each element corresponds to the
+  the number of categories. Each element corresponds to the
   values obtained by applying \code{FUN} to the subset of values
   in \code{stats} according to the category defined for that
   row.
@@ -51,21 +39,21 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 \author{R. Gentleman, contributions from W. Huber}
 
 
-\seealso{ \code{\link{split}}, \code{\link{apply}} }
+\seealso{\code{\link{apply}} }
 \examples{
- set.seed(123)
+ set.seed(0xabcd)
  st = rnorm(20)
 
- aM = matrix(sample(c(0,1), 60, replace=TRUE), nr=3)
- rownames(aM) = paste("category", 1:3, sep="")
- colnames(aM) = names(st) = paste("g", 1:20, sep="")
+ a = matrix(sample(c(FALSE, TRUE), 60, replace=TRUE), nrow=3)
+ rownames(a) = paste("category", 1:3, sep="")
+ colnames(a) = names(st) = paste("g", 1:20, sep="")
 
- bpg = aM2bpG(aM)
+ sa = Matrix(a) ## sparse
 
- a1 = applyByCategory(st, aM, median)
- a2 = applyByCategory(st, bpg, median)
+ k1 = applyByCategory(st, a, median)
+ k2 = applyByCategory(st, sa, median)
 
- stopifnot( identical(a2, a1) )
+ stopifnot(identical(k2, k1))
 }
 
 \keyword{manip}
