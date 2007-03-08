@@ -394,11 +394,13 @@ patient belongs to). In the code below we consider \Sexpr{NPERM}
 permutations.
 
 <<ttperms>>=
-
-
 v1 = ttperm(exprs(eS), eS$mol.biol, B=NPERM)
 
-permDm = do.call("cbind", lapply(v1$perms, function(x) x$statistic))
+permDm <- matrix(0.0, nrow=length(v1$perms[[1]]$statistic),
+                 ncol=length(v1$perms))
+for (j in 1:ncol(permDm)) {
+    permDm[ , j] <- v1$perms[[j]]$statistic
+}
 
 permD = AmER2 %*% permDm
 ##no need to do this second step - if we don't do if for tobs
