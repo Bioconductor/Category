@@ -1,10 +1,13 @@
 setClass("DatPkg",
          contains="VIRTUAL",
-         representation=representation(name="character"))
+         representation=representation(
+           name="character",
+           baseName="character"))
 
 setClass("DBPkg",
          contains=c("DatPkg", "VIRTUAL"),
-         representation=representation(getdb="function"))
+         representation=representation(
+           getdb="function"))
 
 setClass("AffyDatPkg", contains="DatPkg")
 setClass("AffyDBPkg", contains="DBPkg")
@@ -28,6 +31,7 @@ DatPkgFactory <- function(pkgName) {
     if (!havePkg)
       stop("the ", pkgName, " package was not found.")
 
+    baseName <- pkgName
     ## XXX: ugly name-based computations ahead
     if (!isDbPkg(pkgName)) {
         if (strMatch("YEAST", pkgName))
@@ -37,6 +41,7 @@ DatPkgFactory <- function(pkgName) {
         else
           pkg <- new("AffyDatPkg", name=pkgName)
     } else { ## we have a db-based package
+        baseName <- substr(pkgName, 1, nchar(pkgName) - 2)
         pkgns <- getNamespace(pkgName)
         dbgetter <- get("getDb", envir=pkgns)
         if (strMatch("YEAST", pkgName))
@@ -47,6 +52,7 @@ DatPkgFactory <- function(pkgName) {
         else
           pkg <- new("AffyDBPkg", name=pkgName, getdb=dbgetter)
     }
+    pkg@baseName <- baseName
     pkg
 }
 

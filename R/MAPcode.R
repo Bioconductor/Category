@@ -114,7 +114,7 @@ cleanRanges <- function(probe2chr) {
 
 
 .chrMapToEntrez <- function(m2p, p) {
-    chipEnv <- getDataEnv("ENTREZID", annotation(p))
+    chipEnv <- getDataEnv("ENTREZID", annBaseName(p))
     univ <- p@universeGeneIds
     allEntrez <- unique(unlist(as.list(chipEnv)))
     allEntrez <- allEntrez[!is.na(allEntrez)]
@@ -139,10 +139,18 @@ cleanRanges <- function(probe2chr) {
 }
 
 
-makeChrMapToEntrez <- function(p) {
-    aData <- get(paste(annotation(p), "MAP", sep=""))
-    probe2chr <- as.list(aData)
+annBaseName <- function(p) {
+    baseName <- p@datPkg@baseName
+}
 
+makeChrMapToEntrez <- function(p) {
+    aData <- get(paste(annBaseName(p), "MAP", sep=""))
+    probe2chr <- as.list(aData)
+    ## remove NAs
+    probeNA <- sapply(probe2chr, function(x) {
+        length(x) == 1 && is.na(x)
+    })
+    probe2chr <- probe2chr[!probeNA]
     probe2chr <- cleanMapAndsOrs(probe2chr)
     probe2chr <- cleanMapWeird(probe2chr)
     probe2chr <- cleanRanges(probe2chr)
@@ -158,8 +166,8 @@ makeChrMapToEntrez <- function(p) {
         m2p <- m2p[-hasRange]
     }
     onlyDot <- grep("^\\.$", names(m2p))
-    m2p <- m2p[-onlyDot]
-
+    if (length(onlyDot))
+      m2p <- m2p[-onlyDot]
     .chrMapToEntrez(m2p, p)
 }
 
@@ -238,8 +246,8 @@ makeChrMapGraph <- function(p) {
     if (length(selfLoops) > 0 && any(selfLoops > 0))
       vvT <- vvT[-selfLoops, ]
     ## add root node
-    org <- getDataEnv("ORGANISM", annotation(p))
-    chrNames <- names(getDataEnv("CHRLENGTHS", annotation(p)))
+    org <- getDataEnv("ORGANISM", annBaseName(p))
+    chrNames <- names(getDataEnv("CHRLENGTHS", annBaseName(p)))
     orgLinks <- cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
     g <- ftM2graphNEL(vvT, edgemode="directed")
