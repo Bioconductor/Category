@@ -1,4 +1,11 @@
- probes2MAP <- function (pids, data = "hgu133plus2") {
+## Since we now depends on the Matrix package, and Matrix
+## does evil things to base::cbind, we make our own copy
+## for basic uses.  The cbind that results from loading Matrix
+## is unusable for perf reasons.
+base_cbind <- function (..., deparse.level = 1) 
+  .Internal(cbind(deparse.level, ...))
+
+probes2MAP <- function (pids, data = "hgu133plus2") {
     pEnv = get(paste(data, "MAP", sep = ""))
     inMAP = mget(pids, pEnv, ifnotfound = NA)
     inMAP[!is.na(inMAP)]
@@ -226,7 +233,7 @@ makeChrMapGraph <- function(p) {
         ## XXX: some will have L == 1, will induce NA's
         rbind(x[1:(L - 1)], x[2:L])
     })
-    vvAll <- do.call(cbind, vv)
+    vvAll <- do.call(base_cbind, vv)
     vvStr <- paste(vvAll[1, ], vvAll[2, ], sep="+")
     ## remove duplicate edges
     dupIdx <- which(duplicated(vvStr))
@@ -248,7 +255,7 @@ makeChrMapGraph <- function(p) {
     ## add root node
     org <- getDataEnv("ORGANISM", annBaseName(p))
     chrNames <- names(getDataEnv("CHRLENGTHS", annBaseName(p)))
-    orgLinks <- cbind(rep(org, length(chrNames)), chrNames)
+    orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
     g <- ftM2graphNEL(vvT, edgemode="directed")
     g <- addAnnotation(g, m2p)
