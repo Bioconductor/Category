@@ -6,8 +6,11 @@
   The function constructs a category membership matrix, such as used by
   \code{\link{applyByCategory}},
   from a list of gene identifiers and their annotated GO categories.
-  For each of the GO categories stated in \code{categ}, it also
-  considers the implied annotation with all ancestors.
+  For each of the GO categories stated in \code{categ},
+  all less specific terms (ancestors) are also included, thus one need
+  only obtain the most specific set of GO term mappings, which
+  can be obtained from Bioconductor annotation packages or via \pkg{biomaRt}.
+  The ancestor relationships are obtained from the \pkg{GO} package.   
 }
 \usage{
 cateGOry(x, categ, sparse=TRUE)
@@ -47,8 +50,12 @@ cateGOry(x, categ, sparse=TRUE)
   rownames(g)
   colnames(g)
   rowSums(g)   ## number of genes in each category
-  
-  g[rowSums(g)>1,,drop=FALSE ]
+
+  ## Filter out categories with less than minMem members.
+  ## This is toy data, in real applications, a number higher
+  ## than 2 will be more appropriate.
+  minMemb = 2
+  g[rowSums(g)>=minMemb,,drop=FALSE ]
 }
 
 \keyword{manip}
