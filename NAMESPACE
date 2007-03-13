@@ -67,6 +67,8 @@ exportMethods("hyperGTest",
               "ID2EntrezID",
               "GO2AllProbes",
 
+              "nsFilter",
+
               "initialize",
               "show",
               "summary")

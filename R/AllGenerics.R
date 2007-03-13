@@ -87,3 +87,15 @@ setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
 setGeneric("GO2AllProbes", signature=c("p"),
            function(p, ontology) standardGeneric("GO2AllProbes"))
+
+setGeneric("nsFilter", signature="eset",
+           function(eset,
+                    require.entrez=TRUE,
+                    require.symbol=TRUE,
+                    require.GOBP=FALSE,
+                    require.GOCC=FALSE,
+                    require.GOMF=FALSE,
+                    remove.dupEntrez=TRUE,
+                    var.func=IQR, var.cutoff=0.5, var.filter=TRUE)
+           standardGeneric("nsFilter"))
+
