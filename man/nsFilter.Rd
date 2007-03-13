@@ -45,7 +45,7 @@ remove.dupEntrez = TRUE, var.func = IQR, var.cutoff = 0.5, var.filter = TRUE)
       is \code{IQR}.}
   \item{var.cutoff}{a numeric value to use in filtering out probe sets
       with small variance across samples.  See the \code{var.func}
-      argument and the details section below.
+      argument and the details section below.}
   \item{var.filter}{a logical indicating whether or not to perform
       variance based filtering.  The default is \code{TRUE}.}
 }
@@ -82,6 +82,7 @@ remove.dupEntrez = TRUE, var.func = IQR, var.cutoff = 0.5, var.filter = TRUE)
 \author{Seth Falcon}
 
 \examples{
+library("hgu95av2db")
 data(sample.ExpressionSet)
 ans <- nsFilter(sample.ExpressionSet)
 ans$eset
