@@ -59,7 +59,9 @@ htmlReportFromDf <- function(r, caption, file="", append=FALSE)
     xt <- xtable(r, caption=caption,
                  digits=dig)
     print(xt, type="html", file=file, append=append,
-          caption.placement="top")
+          caption.placement="top",
+          sanitize.text.function=function(x) x,
+          include.rownames=FALSE)
     return(invisible(TRUE))
 }
 
