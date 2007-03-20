@@ -122,7 +122,7 @@ setMethod("hyperGTest",
           function(p) {
               p <- makeValidParams(p)
               if (numNodes(p@chrGraph) == 0)
-                p@chrGraph <- makeChrMapGraph(p)
+                p@chrGraph <- makeChrMapGraph(annotation(p), type=c("db", "env"))
 
               univ <- unlist(nodeData(p@chrGraph, attr="geneIds"))
               univ <- unique(univ)

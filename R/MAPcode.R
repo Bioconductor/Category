@@ -122,10 +122,9 @@ cleanRanges <- function(probe2chr) {
 }
 
 
-.chrMapToEntrez <- function(m2p, p) {
-    chipEnv <- getDataEnv("ENTREZID", annBaseName(p))
+.chrMapToEntrez <- function(m2p, entrezMap) {
     univ <- p@universeGeneIds
-    allEntrez <- unique(unlist(as.list(chipEnv)))
+    allEntrez <- unique(unlist(as.list(entrezMap)))
     allEntrez <- allEntrez[!is.na(allEntrez)]
     if (!is.null(univ) && length(univ) > 0)
       univ <- intersect(univ, allEntrez)
@@ -136,7 +135,7 @@ cleanRanges <- function(probe2chr) {
         if (length(x) == 0)
           eg <- NULL
         else {
-            eg <- unlist(mget(x, chipEnv, ifnotfound=NA))
+            eg <- unlist(mget(x, entrezMap, ifnotfound=NA))
             eg <- intersect(unique(eg[!is.na(eg)]), univ)
             if (length(eg) == 0)
               eg <- NULL
@@ -152,8 +151,10 @@ annBaseName <- function(p) {
     baseName <- p@datPkg@baseName
 }
 
-makeChrMapToEntrez <- function(p) {
-    aData <- get(paste(annBaseName(p), "MAP", sep=""))
+makeChrMapToEntrez <- function(chip, type=c("db", "env")) {
+    .getMap <- function(map)
+      getAnnMap(map=map, chip=chip, type=type, load=TRUE)
+    aData <- .getMap(map="MAP")
     probe2chr <- as.list(aData)
     ## remove NAs
     probeNA <- sapply(probe2chr, function(x) {
@@ -177,7 +178,7 @@ makeChrMapToEntrez <- function(p) {
     onlyDot <- grep("^\\.$", names(m2p))
     if (length(onlyDot))
       m2p <- m2p[-onlyDot]
-    .chrMapToEntrez(m2p, p)
+    .chrMapToEntrez(m2p, .getMap("ENTREZID"))
 }
 
 
@@ -227,8 +228,8 @@ parseChrMap <- function(x) {
 }
 
 
-makeChrMapGraph <- function(p) {
-    m2p <- makeChrMapToEntrez(p)
+makeChrMapGraph <- function(chip, type=c("db", "env")) {
+    m2p <- makeChrMapToEntrez(chip, type)
     allMaps <- lapply(names(m2p), parseChrMap)
     vv <- lapply(allMaps, function(x) {
         L <- length(x)
@@ -255,16 +256,16 @@ makeChrMapGraph <- function(p) {
     if (length(selfLoops) > 0 && any(selfLoops > 0))
       vvT <- vvT[-selfLoops, ]
     ## add root node
-    org <- getDataEnv("ORGANISM", annBaseName(p))
-    chrNames <- names(getDataEnv("CHRLENGTHS", annBaseName(p)))
+    org <- getAnnMap("ORGANISM", chip, type=type, load=TRUE)
+    chrNames <- names(getAnnMap("CHRLENGTHS", chip, type=type, load=TRUE))
     orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
     g <- ftM2graphNEL(vvT, edgemode="directed")
-    g <- addAnnotation(g, m2p)
+    g <- addChrBandAnnotation(g, m2p)
     g
 }
 
-addAnnotation <- function(g, m2p) {
+addChrBandAnnotation <- function(g, m2p) {
     nodeDataDefaults(g, "geneIds") <- as.character(NA)
     nodes <- rev(tsort(g))
     gEdges <- edges(g)
@@ -272,8 +273,7 @@ addAnnotation <- function(g, m2p) {
         ids <- m2p[[n]]
         kids <- gEdges[[n]]
         if (length(kids)) {
-            ids <- unique(c(ids,
-                            unlist(nodeData(g, n=kids, "geneIds"))))
+            ids <- unique(c(ids, unlist(nodeData(g, n=kids, "geneIds"))))
         }
         if (length(ids) > 0)
           nodeData(g, n, "geneIds") <- list(ids[!is.na(ids)])
