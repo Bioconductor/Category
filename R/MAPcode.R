@@ -105,8 +105,10 @@ cleanRanges <- function(probe2chr) {
                     ## Could we do better and include arm info?
                     substr(z, 1L, regexpr("cen|q|p", z) - 1L)
                 } else {
-                    ## FIXME:
-                    ans <- substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+                    parts <- strsplit(z, "-", fixed=TRUE)[[1]]
+                    ans <- lcPrefix(parts)
+                    if (nchar(ans) < 1)
+                      ans <- substr(z, 1L, regexpr("cen|q|p", z) - 1L)
                     warning("unexpected band notation: ", z, " using ", ans,
                             call.=FALSE)
                     ans
