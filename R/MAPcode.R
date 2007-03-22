@@ -14,7 +14,7 @@ probes2MAP <- function (pids, data = "hgu133plus2") {
    MAPAmat <- function (data, minCount=5) {
     if (!is.character(data) || length(data) != 1)
         stop("wrong argument")
-    dataE = as.list(get(paste(data, "MAP", sep = "")))
+    dataE = as.list(getAnnMap("MAP", chip=data))
     LLs = getLL(names(dataE), data)
     goodLLs = !duplicated(LLs) & !is.na(LLs)
     use = dataE[goodLLs]
