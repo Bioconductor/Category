@@ -1,5 +1,5 @@
 setMethod("ID2GO", "DatPkg",
-          function(p) getDataEnv("GO", p@name))
+          function(p) getAnnMap("GO", p@name))
 
 
 setMethod("ID2GO", "OrganismMappingDatPkg",
@@ -7,7 +7,7 @@ setMethod("ID2GO", "OrganismMappingDatPkg",
               ## FIXME: This is REALLY ugly
               ## The data in the *Mapping packages should
               ## be more sane so we don't have to munge it.
-              e <- getDataEnv("LL2GO", p@name)
+              e <- getAnnMap("LL2GO", chip=p@name)
               ans <- eapply(e, function(x) {
                   sub("([^@]+)@[A-Z]{3}", "\\1", x)
               })
@@ -16,13 +16,13 @@ setMethod("ID2GO", "OrganismMappingDatPkg",
 
 
 setMethod("ID2EntrezID", "AffyDatPkg",
-          function(p) getDataEnv("ENTREZID", p@name))
+          function(p) getAnnMap("ENTREZID", p@name))
 
 setMethod("ID2EntrezID", "YeastDatPkg",
           function(p) {
               ## Create an identity map
               e <- new.env(parent=emptyenv(), hash=TRUE)
-              for (n in ls(getDataEnv("CHR", p@name))) {
+              for (n in ls(getAnnMap("CHR", p@name))) {
                   e[[n]] <- n
               }
               e
@@ -39,7 +39,7 @@ setMethod("ID2EntrezID", "OrganismMappingDatPkg",
               ## take the unique(c(x1, x2, x2)) where the x_i
               ## are ls(humanLLMappingsLL2ACCNUM, 2GO, 2UG).
               e <- new.env(parent=emptyenv(), hash=TRUE)
-              for (n in ls(getDataEnv("LL2GO", p@name))) {
+              for (n in ls(getAnnMap("LL2GO", p@name))) {
                   e[[n]] <- n
               }
               e
@@ -48,8 +48,8 @@ setMethod("ID2EntrezID", "OrganismMappingDatPkg",
 
 setMethod("GO2AllProbes", "DatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
-              ontIds <- getGOOntologyIDs(ontology)
-              go2all <- getDataEnv("GO2ALLPROBES", p@name)
+              ontIds <- aqListGOIDs(ontology)
+              go2all <- getAnnMap("GO2ALLPROBES", p@name)
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
               l2e(go2allOnt)
@@ -58,14 +58,15 @@ setMethod("GO2AllProbes", "DatPkg",
 
 setMethod("GO2AllProbes", "OrganismMappingDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
-              ontIds <- getGOOntologyIDs(ontology)
-              go2eg <- mget(ontIds, getDataEnv("GO2LL", p@name),
+              ontIds <- aqListGOIDs(ontology)
+              go2eg <- mget(ontIds, getAnnMap("GO2LL", p@name),
                             ifnotfound=NA)
               go2eg <- l2e(removeLengthZeroAndMissing(go2eg))
               goEnvName <- paste(ontology, "OFFSPRING", sep="")
-              offspring <- mget(ls(go2eg), getDataEnv(goEnvName, "GO"),
+              offspring <- mget(ls(go2eg), getAnnMap(goEnvName, "GO"),
                                 ifnotfound=NA)
-              go2allEg <- new.env(parent=emptyenv(), hash=TRUE)
+              go2allEg <- new.env(parent=emptyenv(), hash=TRUE,
+                                  size=length(go2eg)*1.20)
               for (goid in names(offspring)) {
                   goids <- c(goid, offspring[[goid]])
                   goids <- goids[!is.na(goids)]
@@ -77,15 +78,3 @@ setMethod("GO2AllProbes", "OrganismMappingDatPkg",
               }
               go2allEg
           })
-              
-
-getGOOntologyIDs <- function(ontology=c("BP", "CC", "MF")) {
-    ## Return all GO IDs in the specified ontology
-    ## FIXME: this belongs in annotate
-    ontology <- match.arg(ontology)
-    goEnvName <- paste(ontology, "PARENTS", sep="")
-    ls(getDataEnv(goEnvName, "GO"))
-}
-    
-
-

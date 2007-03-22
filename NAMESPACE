@@ -1,6 +1,7 @@
 import("methods")
 import("AnnotationDbi")
 importMethodsFrom("Biobase", "annotation", "description")
+importFrom("RBGL", "tsort")
 
 export("applyByCategory",  "ttperm",
  "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
@@ -18,13 +19,10 @@ exportClasses("HyperGParams",
               "ChrMapHyperGResult",
 
               "DatPkg",
-              "DBPkg",
               "AffyDatPkg",
               "YeastDatPkg",
-              "OrganismMappingDatPkg",
-              "AffyDBPkg",
-              "YeastDBPkg",
-              "OrganismMappingDBPkg")
+              "OrganismMappingDatPkg")
+
 
 exportMethods("hyperGTest",
               

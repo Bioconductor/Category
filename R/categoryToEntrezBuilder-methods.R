@@ -7,10 +7,6 @@ setMethod("categoryToEntrezBuilder",
 setMethod("categoryToEntrezBuilder",
           signature(p="GOHyperGParams"),
           function(p) {
-              ## FIXME: this should be done via dispatch
-              if (is(p@datPkg, "DBPkg"))
-                getGoToEntrezMap_db(p)
-              else
                 getGoToEntrezMap(p)
           })
 
@@ -21,7 +17,7 @@ setMethod("categoryToEntrezBuilder",
           })
 
 
-getGoToEntrezMap_db <- function(p) {
+XXXgetGoToEntrezMap_db <- function(p) {
     keep.all <- switch(testDirection(p), over=FALSE, under=TRUE,
                        stop("Bad testDirection slot"))    
     db <- p@datPkg@getdb()

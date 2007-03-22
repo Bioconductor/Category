@@ -1,32 +1,20 @@
 setMethod("universeBuilder", signature(p="KEGGHyperGParams"),
           function(p) {
-              ## FIXME: this should be done via dispatch
-              if (is(p@datPkg, "DBPkg"))
-                getUniverseViaKegg_db(p)
-              else
                 getUniverseViaKegg(p)
           })
 
 setMethod("universeBuilder", signature(p="GOHyperGParams"),
           function(p) {
-              ## FIXME: this should be done via dispatch
-              if (is(p@datPkg, "DBPkg"))
-                getUniverseViaGo_db(p)
-              else
                 getUniverseViaGo(p)
           })
 
 setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
           function(p) {
-              ## FIXME: this should be done via dispatch
-              if (is(p@datPkg, "DBPkg"))
-                getUniverseViaPfam_db(p)
-              else
                 getUniverseViaPfam(p)
           })
 
 
-getUniverseViaGo_db <- function(p) {
+XXXgetUniverseViaGo_db <- function(p) {
     datPkg <- p@datPkg
     ontology <- ontology(p)
     entrezIds <- universeGeneIds(p)
@@ -56,7 +44,9 @@ getUniverseViaGo <- function(p) {
     ## If 'entrezIds' is given, return the intersection of 'entrezIds'
     ## and the normal return value.
     ontology <- match.arg(ontology, c("BP", "CC", "MF"))
-    ontIds <- getGOOntologyIDs(ontology)
+    ## FIXME: put dispatch code here depending on whether we get DB-based
+    ## maps or env-based maps
+    ontIds <- aqListGOIDs(ontology)
     probe2go <- eapply(ID2GO(datPkg), function(goids) {
         if (length(goids) == 0 || (length(goids) == 1 && is.na(goids)))
           return(FALSE)
