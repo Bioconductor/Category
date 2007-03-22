@@ -6,7 +6,7 @@ Description: A collection of tools for performing category analysis.
 Maintainer: S. Falcon <sfalcon@fhcrc.org>
 License: The Artistic License, Version 2.0
 Depends: methods, Biobase (>= 1.13.37), graph, KEGG, GO,
-         annotate (>= 1.13.7), genefilter, Matrix
+         annotate (>= 1.13.7), genefilter, Matrix, AnnotationDbi
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-3), hgu95av2db
 Imports: methods, Biobase (>= 1.13.37), AnnotationDbi, RBGL
 LazyLoad: Yes
