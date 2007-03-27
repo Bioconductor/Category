@@ -69,6 +69,21 @@ htmlReportFromDf <- function(r, caption, file="", append=FALSE)
 setMethod("htmlReport", signature(r="HyperGResultBase"),
           function(r, file="", append=FALSE, label="", ...)
           {
+              ## FIXME: the methods packge is broken for this case
+              ## so we have to find the right summary method ourselves
+              places <- find("summary")
+              ## take the first standardGeneric
+              f <- NULL
+              for (i in seq(along=places)) {
+                  f <- get("summary", places[i])
+                  if (is(f, "standardGeneric"))
+                    break
+                  else
+                    f <- NULL
+              }
+              if (is.null(f))
+                stop("could not find appropriate summary method")
+              summary <- f
               htmlReportFromDf(r=summary(r, ...),
                                caption=paste(label, description(r)),
                                file=file, append=append)
