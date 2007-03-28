@@ -225,7 +225,10 @@ observed $t$--statistic in and so obtain the most extreme value.
 Then we remove all LocusLink identifiers that do not map to any known
 pathway and find that we have \Sexpr{length(fL2)} genes left.
 
-<<reorder, echo=FALSE, results=hide>>=
+In the next code segment, we first reorder the genes by the \Robject{fl2}
+values and then compute $t$-tests, on a per row basis, using 
+\Robject{mol.biol} variable in the phenotypic data to define the groups.
+<<reorder>>=
 eS = esetASub[match(names(fL2), featureNames(esetASub)),]
 
 tobs = rowttests(eS, "mol.biol")
