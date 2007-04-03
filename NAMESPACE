@@ -3,10 +3,20 @@ import("AnnotationDbi")
 importMethodsFrom("Biobase", "annotation", "description")
 importFrom("RBGL", "tsort")
 
-export("applyByCategory",  "ttperm",
- "cateGOry", "findAMstats", "MAPAmat", "probes2MAP",
- "getPathNames", "makeEBcontr", "probes2Path",
-       "parseChrMap")
+export(
+       ".doHyperGTest",
+       "applyByCategory",
+       "cateGOry",
+       "findAMstats",
+       "geneGoHyperGeoTest",
+       "geneKeggHyperGeoTest",
+       "getPathNames",
+       "makeEBcontr",
+       "MAPAmat",
+       "parseChrMap",
+       "probes2MAP",
+       "probes2Path",
+       "ttperm")
 
 exportClasses("HyperGParams",
               "GOHyperGParams",
@@ -68,6 +78,3 @@ exportMethods("hyperGTest",
               "initialize",
               "show",
               "summary")
-
-export(geneGoHyperGeoTest, geneKeggHyperGeoTest,
-       ".doHyperGTest")
