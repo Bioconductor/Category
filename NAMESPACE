@@ -11,6 +11,7 @@ export(
        "geneGoHyperGeoTest",
        "geneKeggHyperGeoTest",
        "getPathNames",
+       "makeChrBandGraph",
        "makeEBcontr",
        "MAPAmat",
        "parseChrMap",

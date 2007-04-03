@@ -227,7 +227,7 @@ parseChrMap <- function(x) {
 }
 
 
-makeChrMapGraph <- function(chip, univ) {
+makeChrBandGraph <- function(chip, univ=NULL) {
     m2p <- makeChrMapToEntrez(chip, univ)
     allMaps <- lapply(names(m2p), parseChrMap)
     vv <- lapply(allMaps, function(x) {
@@ -266,9 +266,9 @@ makeChrMapGraph <- function(chip, univ) {
 
 addChrBandAnnotation <- function(g, m2p) {
     nodeDataDefaults(g, "geneIds") <- as.character(NA)
-    nodes <- rev(tsort(g))
+    bands <- rev(tsort(g)[-1])          # remove root node
     gEdges <- edges(g)
-    for (n in nodes) {
+    for (n in bands) {
         ids <- m2p[[n]]
         kids <- gEdges[[n]]
         if (length(kids)) {
