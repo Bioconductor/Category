@@ -177,6 +177,12 @@ makeChrMapToEntrez <- function(chip, univ) {
     onlyDot <- grep("^\\.$", names(m2p))
     if (length(onlyDot))
       m2p <- m2p[-onlyDot]
+    invalid <- grep("[^0-9.qpXYter]+", names(m2p))
+    if (length(invalid)) {
+        warning("dropping invalid items: ",
+                paste(names(m2p)[invalid], collapse=", "))
+        m2p <- m2p[-invalid]
+    }
     .chrMapToEntrez(m2p, .getMap("ENTREZID"), univ)
 }
 
