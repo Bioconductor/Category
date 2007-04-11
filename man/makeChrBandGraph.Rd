@@ -17,8 +17,8 @@ makeChrBandGraph(chip, univ = NULL)
 \arguments{
   \item{chip}{A string giving the annotation source.  For example, \code{"hgu133plus2"}}
   \item{univ}{A vector of gene IDs (these should be Entrez IDs for
-  most annotation sources) which will be used to limit the annotations
-  attached to the graph to those in the set specified by \code{univ}.
+  most annotation sources).  The annotations
+  attached to the graph will be limited to those specified by \code{univ}.
   If \code{univ} is \code{NULL} (default), then the gene IDs are those
   found in the annotation data source.}
 }

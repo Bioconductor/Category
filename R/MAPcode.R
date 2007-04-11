@@ -261,7 +261,7 @@ makeChrBandGraph <- function(chip, univ=NULL) {
     if (length(selfLoops) > 0 && any(selfLoops > 0))
       vvT <- vvT[-selfLoops, ]
     ## add root node
-    org <- getAnnMap("ORGANISM", chip)
+    org <- paste("ORGANISM:", getAnnMap("ORGANISM", chip), sep="")
     chrNames <- names(getAnnMap("CHRLENGTHS", chip))
     orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
@@ -284,4 +284,25 @@ addChrBandAnnotation <- function(g, m2p) {
           nodeData(g, n, "geneIds") <- list(ids[!is.na(ids)])
     }
     g
+}
+
+makeChrBandInciMat <- function(chrGraph) {
+    gnodes <- nodes(chrGraph)
+    rootIdx <- grep("^ORGANISM", gnodes)
+    v1 <- nodeData(chrGraph, n=gnodes[-rootIdx] , attr="geneIds")
+    v1 <- v1[sapply(v1, function(z) !any(is.na(z)))]
+    v1 <- lapply(v1, as.character)
+    allGeneIDs <- unique(unlist(v1))
+    nr <- length(allGeneIDs)
+    nc <- length(v1)
+    mat <- matrix(0L, nrow=nr, ncol=nc)
+    dimnames(mat) <- list(allGeneIDs, names(v1))
+    for (cb in names(v1)) {
+        mat[v1[[cb]], cb] <- 1L         # XXX: beware partial match!
+    }
+    mat
+}
+
+chrBandInciMat <- function(chip, univ=NULL) {
+    makeChrBandInciMat(makeChrBandGraph(chip=chip, univ=univ))
 }
