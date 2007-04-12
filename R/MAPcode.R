@@ -39,17 +39,18 @@ probes2MAP <- function (pids, data = "hgu133plus2") {
 
 ### ------------------------------------------------------------------
 
-cleanMapAndsOrs <- function(p2m) {
+cleanMapAndsOrs <- function(e2m) {
     ## The map data is a bit odd and we get things like: "Xq28 and Yq12"
     ## and "Xp22.3 or Yp11.3".  This function maps these to a proper
     ## vector of length 2.
-    lapply(p2m, function(cbs) {
-        unlist(strsplit(cbs, " and | or "))
-    })
+    for (eg in ls(e2m)) {
+        e2m[[eg]] <- unlist(strsplit(e2m[[eg]], " and | or "))
+    }
+    e2m
 }
 
 
-cleanMapWeird <- function(p2m) {
+cleanMapWeird <- function(e2m) {
     ## Current MAP annotation data contains weird entries like:
     ##     "1 69.9 cM"
     ##     "1 E4"
@@ -62,21 +63,23 @@ cleanMapWeird <- function(p2m) {
     ##
     ## This function removes these for now.  The strategy is simply to
     ## look for annotations with spaces and drop them.
-    lapply(p2m, function(cbs) {
-        badIdx <- grep(" ", cbs)
+    for (eg in ls(e2m)) {
+        val <- e2m[[eg]]
+        badIdx <- grep(" ", val)
         if (length(badIdx) > 0) {
             good <- cbs[-badIdx]
             if (length(good) == 0)
               good <- as.character(NA)
         } else {
-            good <- cbs
+            good <- val
         }
-        good
-    })
+        e2m[[eg]] <- good
+    }
+    e2m
 }
 
 
-cleanRanges <- function(probe2chr) {
+cleanRanges <- function(e2m) {
     ## We use (p|q) even though it will match nonsense annotations like
     ## "6p23-q24".  These seem to appear in the data.  But it is OK
     ## since we are taking the longest common suffix and that will just
@@ -84,9 +87,8 @@ cleanRanges <- function(probe2chr) {
     rangePat <- "[0-9XY]+(q|p)([0-9.]+|ter)-(q|p)([0-9.]+|ter)"
     cenPat <- "cen"
 
-    probe2chr <- lapply(probe2chr, function(x) {
-        ## this could be made faster
-        sapply(x, function(z) {
+    for (eg in ls(e2m)) {
+        e2m[[eg]] <- sapply(e2m[[eg]], function(z) {
             if (length(grep("-", z, fixed=TRUE))) {
                 if (length(grep(rangePat, z, perl=TRUE))) {
                     arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
@@ -117,32 +119,8 @@ cleanRanges <- function(probe2chr) {
                 z
             }
         })
-    })
-    probe2chr
-}
-
-
-.chrMapToEntrez <- function(m2p, entrezMap, univ) {
-    allEntrez <- unique(unlist(as.list(entrezMap)))
-    allEntrez <- allEntrez[!is.na(allEntrez)]
-    if (!is.null(univ) && length(univ) > 0)
-      univ <- intersect(univ, allEntrez)
-    else
-      univ <- allEntrez
-    m2eg <- lapply(m2p, function(x) {
-        x <- unique(x[!is.na(x)])
-        if (length(x) == 0)
-          eg <- NULL
-        else {
-            eg <- unlist(mget(x, entrezMap, ifnotfound=NA))
-            eg <- intersect(unique(eg[!is.na(eg)]), univ)
-            if (length(eg) == 0)
-              eg <- NULL
-        }
-        eg
-    })
-    notNull <- sapply(m2eg, function(x) !is.null(x))
-    m2eg[notNull]
+    }
+    e2m
 }
 
 
@@ -153,37 +131,45 @@ annBaseName <- function(p) {
 makeChrMapToEntrez <- function(chip, univ) {
     .getMap <- function(map)
       getAnnMap(map=map, chip=chip)
-    aData <- .getMap(map="MAP")
-    probe2chr <- as.list(aData)
-    ## remove NAs
-    probeNA <- sapply(probe2chr, function(x) {
-        length(x) == 1 && is.na(x)
-    })
-    probe2chr <- probe2chr[!probeNA]
-    probe2chr <- cleanMapAndsOrs(probe2chr)
-    probe2chr <- cleanMapWeird(probe2chr)
-    probe2chr <- cleanRanges(probe2chr)
+    probe2chr <- .getMap(map="MAP")
+    if (!is.environment(probe2chr))
+      probe2chr <- l2e(as.list(probe2chr))
+    egs <- unique(unlist(mget(ls(probe2chr), .getMap(map="ENTREZID"))))
+    egs <- as.character(egs[!is.na(egs)])
+    if (!is.null(univ))
+      egs <- intersect(egs, univ)
+    eg2chr <- new.env(parent=emptyenv(), hash=TRUE,
+                      size=as.integer(1.20 * length(egs)))
+    ## XXX: need to define a revmap method for environments
+    eg2p <- l2e(mget(egs, revmap(.getMap(map="ENTREZID"))))
+    for (eg in egs) {
+        bands <- mget(eg2p[[eg]], probe2chr)
+        bands <- bands[!is.na(bands)]
+        if (length(bands))
+          eg2chr[[eg]] <- unique(unlist(bands))
+    }
+    eg2chr <- cleanMapAndsOrs(eg2chr)
+    eg2chr <- cleanMapWeird(eg2chr)
+    eg2chr <- cleanRanges(eg2chr)
 
-    lens <- listLen(probe2chr)
-    chr <- unlist(probe2chr)
-    pbs <- rep(names(probe2chr), lens)
-    m2p <- split(pbs, chr)
+    m2eg <- reverseSplit(as.list(eg2chr))
+    
     ## XXX: remove all annotations that remain that have '-'
-    hasRange <- grep("-", names(m2p))
+    hasRange <- grep("-", names(m2eg))
     if (length(hasRange)) {
         warning("dropping ", length(hasRange), " items with weird range")
-        m2p <- m2p[-hasRange]
+        m2eg <- m2eg[-hasRange]
     }
-    onlyDot <- grep("^\\.$", names(m2p))
+    onlyDot <- grep("^\\.$", names(m2eg))
     if (length(onlyDot))
-      m2p <- m2p[-onlyDot]
-    invalid <- grep("[^0-9.qpXYter]+", names(m2p))
+      m2eg <- m2eg[-onlyDot]
+    invalid <- grep("[^0-9.qpXYter]+", names(m2eg))
     if (length(invalid)) {
         warning("dropping invalid items: ",
-                paste(names(m2p)[invalid], collapse=", "))
-        m2p <- m2p[-invalid]
+                paste(names(m2eg)[invalid], collapse=", "))
+        m2eg <- m2eg[-invalid]
     }
-    .chrMapToEntrez(m2p, .getMap("ENTREZID"), univ)
+    m2eg
 }
 
 
