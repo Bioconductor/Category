@@ -22,12 +22,6 @@
 \alias{chrGraph}
 \alias{chrGraph,ChrMapHyperGResult-method}
 
-\alias{geneIdUniverse}
-\alias{geneIdUniverse,ChrMapHyperGResult-method}
-
-\alias{condGeneIdUniverse}
-\alias{condGeneIdUniverse,ChrMapHyperGResult-method}
-
 \alias{annotation}
 
 \alias{description}
@@ -38,6 +32,16 @@
 
 \alias{geneIds}
 \alias{geneIds,HyperGResultBase-method}
+
+\alias{geneIdUniverse}
+\alias{geneIdUniverse,HyperGResult-method}
+\alias{geneIdUniverse,ChrMapHyperGResult-method}
+
+\alias{condGeneIdUniverse}
+\alias{condGeneIdUniverse,ChrMapHyperGResult-method}
+
+\alias{geneIdsByCategory}
+\alias{geneIdsByCategory,HyperGResultBase-method}
 
 \alias{geneMappedCount}
 \alias{geneMappedCount,HyperGResultBase-method}
@@ -84,14 +88,14 @@ universeCounts(r)
 universeMappedCount(r)
 geneMappedCount(r)
 
+geneIds(r)
 geneIdUniverse(r)
 condGeneIdUniverse(r)
+geneIdsByCategory(r, catids = NULL)
 
 ## R CMD check doesn't like these
 ## annotation(r)
 ## description(r)
-
-geneIds(r)
 
 testName(r)
 pvalueCutoff(r)
@@ -103,7 +107,9 @@ chrGraph(r)
 
 \arguments{
   \item{r}{An instance of a subclass of
-  \code{HyperGResultBase}.}
+    \code{HyperGResultBase}.}
+
+  \item{catids}{A character vector of category identifiers.}
 }
 
 \section{Accessor Methods (Generic Functions)}{
@@ -136,6 +142,17 @@ chrGraph(r)
     \item{geneIds}{returns the input
         vector of gene identifiers intersected with the universe of
         gene identifiers used in the computation. }
+
+    \item{geneIdUniverse}{returns a list named by the
+      tested categories.  Each element of the list is a vector of gene
+      identifiers (from the gene universe) annotated at the
+      corresponding category term.}
+
+    \item{geneIdsByCategory}{returns a list similar to
+      \code{geneIdUniverse}, but each vector of gene IDs is
+      intersected with the list of selected gene IDs from
+      \code{geneIds}.  The result is the selected gene IDs annotated at
+      each category.}
 
     \item{geneMappedCount}{returns the size of
         the selected gene set used in the computation.  This is simply

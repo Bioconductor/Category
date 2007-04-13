@@ -37,6 +37,17 @@ setMethod("geneMappedCount", signature(r="HyperGResultBase"),
 setMethod("geneIds", signature(r="HyperGResultBase"),
           function(r) r@geneIds)
 
+setMethod("geneIdUniverse", signature(r="HyperGResult"),
+          function(r) r@catToGeneId)
+
+setMethod("geneIdsByCategory", signature(r="HyperGResultBase"),
+          function(r, catids=NULL) {
+              ans <- geneIdUniverse(r)
+              if (!missing(catids) && !is.null(catids))
+                ans <- ans[catids]
+              lapply(ans, intersect, geneIds(r))
+          })
+
 setMethod("testName", signature(r="HyperGResultBase"),
           function(r) r@testName)
 

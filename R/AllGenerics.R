@@ -35,6 +35,9 @@ setGeneric("condGeneIdUniverse",
 setGeneric("geneIds", function(r) standardGeneric("geneIds"))
 setGeneric("geneIds<-", function(r, value) standardGeneric("geneIds<-"))
 
+setGeneric("geneIdsByCategory", signature="r",
+           function(r, catids = NULL) standardGeneric("geneIdsByCategory"))
+
 setGeneric("testName", function(r) standardGeneric("testName"))
 
 setGeneric("pvalueCutoff", function(r) standardGeneric("pvalueCutoff"))
