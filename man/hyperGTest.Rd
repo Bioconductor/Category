@@ -3,6 +3,7 @@
 
 \alias{hyperGTest}
 \alias{hyperGTest,HyperGParams-method}
+\alias{hyperGTest,ChrMapHyperGParams-method}
 
 \title{Hypergeometric Test for association of categories and genes}
 

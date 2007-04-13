@@ -16,7 +16,6 @@ export(
        "makeChrBandInciMat",
        "makeEBcontr",
        "MAPAmat",
-       "parseChrMap",
        "probes2MAP",
        "probes2Path",
        "ttperm")

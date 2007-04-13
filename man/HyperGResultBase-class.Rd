@@ -2,28 +2,8 @@
 \docType{class}
 \alias{HyperGResultBase-class}
 
-\alias{annotation,HyperGResultBase-method}
-
-\alias{geneIds}
-\alias{geneIds,HyperGResultBase-method}
-
-\alias{geneMappedCount}
-\alias{geneMappedCount,HyperGResultBase-method}
-
-\alias{pvalueCutoff}
-\alias{pvalueCutoff,HyperGResultBase-method}
-
-\alias{testDirection}
-\alias{testDirection,HyperGResultBase-method}
 
 \alias{show,HyperGResultBase-method}
-
-\alias{description,HyperGResultBase-method}
-
-\alias{testName}
-\alias{testName,HyperGResultBase-method}
-
-\alias{isConditional,HyperGResultBase-method}
 
 \alias{summary,HyperGResultBase-method}
 

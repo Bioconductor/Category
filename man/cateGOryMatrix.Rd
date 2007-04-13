@@ -23,7 +23,7 @@ cateGOry(x, categ, sparse=TRUE)
     gene has multiple GO annotations, it is expected to occur multiple
     times in \code{x}, once for each different annotation.}
   \item{sparse}{Logical. If \code{TRUE}, the return value will be a
-    sparse matrix of class \code{\linkS4class{lgCMatrix}}, if \code{FALSE},
+    sparse matrix of class \code{\link[Matrix]{lgCMatrix-class}}, if \code{FALSE},
     an ordinary \code{\link{matrix}}.}
 }
 \details{

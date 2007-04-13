@@ -2,27 +2,9 @@
 \docType{class}
 \alias{HyperGResult-class}
 
-\alias{geneCounts}
-\alias{geneCounts,HyperGResult-method}
-
-\alias{pvalues}
-\alias{pvalues,HyperGResult-method}
-
-\alias{universeCounts}
-\alias{universeCounts,HyperGResult-method}
-
-\alias{universeMappedCount}
-\alias{universeMappedCount,HyperGResult-method}
-
-\alias{expectedCounts}
-\alias{expectedCounts,HyperGResult-method}
-
-\alias{oddsRatios}
-\alias{oddsRatios,HyperGResult-method}
-
 \title{Class "HyperGResult"}
 \description{
-  This class represents the results of a test for overrepresentation of
+  This class represents the results of a test for over-representation of
   categories among genes in a selected gene set based upon the
   Hypergeometric distribution.  The \code{hyperGTest}
   generic function returns an instance of the
@@ -53,6 +35,19 @@ Objects can be created by calls of the form \code{new("HyperGResult", ...)}.
         cutoff.  Used by the \code{show} method to count number of
         significant terms.
       }
+
+      \item{\code{testDirection}:}{A string indicating whether the
+          test should be for overrepresentation (\code{"over"}) or
+          underrepresentation (\code{"under"}).}
+
+  \item{\code{oddsRatios}}{a \code{"numeric"} vector giving
+      the odds ratio for each category term tested.}
+
+  \item{expectedCounts}{a \code{"numeric"} vector
+      giving the expected number of genes in the selected gene list to
+      be found at each tested category term.}
+
+
     }
   }
 

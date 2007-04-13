@@ -1,0 +1,175 @@
+\name{HyperGResult-accessors}
+\alias{HyperGResult-accessors}
+
+\alias{pvalues}
+\alias{pvalues,HyperGResult-method}
+\alias{pvalues,ChrMapHyperGResult-method}
+
+\alias{geneCounts}
+\alias{geneCounts,HyperGResult-method}
+\alias{geneCounts,ChrMapHyperGResult-method}
+
+\alias{universeCounts}
+\alias{universeCounts,HyperGResult-method}
+\alias{universeCounts,ChrMapHyperGResult-method}
+
+\alias{universeMappedCount}
+\alias{universeMappedCount,HyperGResult-method}
+\alias{universeMappedCount,ChrMapHyperGResult-method}
+
+\alias{geneMappedCount}
+
+\alias{chrGraph}
+\alias{chrGraph,ChrMapHyperGResult-method}
+
+\alias{geneIdUniverse}
+\alias{geneIdUniverse,ChrMapHyperGResult-method}
+
+\alias{condGeneIdUniverse}
+\alias{condGeneIdUniverse,ChrMapHyperGResult-method}
+
+\alias{annotation}
+
+\alias{description}
+\alias{description,HyperGResultBase-method}
+\alias{description,ChrMapHyperGResult-method}
+
+\alias{annotation,HyperGResultBase-method}
+
+\alias{geneIds}
+\alias{geneIds,HyperGResultBase-method}
+
+\alias{geneMappedCount}
+\alias{geneMappedCount,HyperGResultBase-method}
+
+\alias{testName}
+\alias{testName,HyperGResultBase-method}
+
+\alias{isConditional,HyperGResultBase-method}
+\alias{isConditional,ChrMapHyperGResult-method}
+
+\alias{pvalueCutoff}
+\alias{pvalueCutoff,HyperGResultBase-method}
+\alias{testDirection}
+\alias{testDirection,HyperGResultBase-method}
+
+
+\alias{oddsRatios}
+\alias{oddsRatios,HyperGResult-method}
+\alias{oddsRatios,ChrMapHyperGResult-method}
+
+\alias{expectedCounts}
+\alias{expectedCounts,HyperGResult-method}
+\alias{expectedCounts,ChrMapHyperGResult-method}
+
+\docType{genericFunction}
+
+\title{Accessors for HyperGResult Objects}
+
+\description{
+  This manual page documents generic functions for extracting data
+  from the result object returned from a call to \code{hyperGTest}.
+  The result object will be a subclass of \code{HyperGResultBase}.
+  Methods apply to all result object classes unless otherwise noted.
+}
+
+\usage{
+
+pvalues(r)
+oddsRatios(r)
+expectedCounts(r)
+
+geneCounts(r)
+universeCounts(r)
+universeMappedCount(r)
+geneMappedCount(r)
+
+geneIdUniverse(r)
+condGeneIdUniverse(r)
+
+## R CMD check doesn't like these
+## annotation(r)
+## description(r)
+
+geneIds(r)
+
+testName(r)
+pvalueCutoff(r)
+testDirection(r)
+
+chrGraph(r)
+
+}
+
+\arguments{
+  \item{r}{An instance of a subclass of
+  \code{HyperGResultBase}.}
+}
+
+\section{Accessor Methods (Generic Functions)}{
+ \describe{
+
+  \item{geneCounts}{returns an \code{"integer"}
+      vector: for each category term tested, the number of genes from
+      the gene set that are annotated at the term.}
+
+  \item{pvalues}{returns a \code{"numeric"}
+      vector: the ordered p-values for each category term tested.}
+
+  \item{universeCounts}{returns an \code{"integer"}
+      vector: for each category term tested, the number of genes from
+      the gene universe that are annotated at the term.}
+
+  \item{universeMappedCount}{returns an \code{"integer"}
+      vector of length one giving the size of the gene universe set.}
+
+  \item{expectedCounts}{returns a \code{"numeric"} vector
+      giving the expected number of genes in the selected gene list to
+      be found at each tested category term.}
+
+  \item{oddsRatios}{returns a \code{"numeric"} vector giving
+      the odds ratio for each category term tested.}
+
+    \item{annotation}{returns the name
+        of the annotation data package used.  }
+
+    \item{geneIds}{returns the input
+        vector of gene identifiers intersected with the universe of
+        gene identifiers used in the computation. }
+
+    \item{geneMappedCount}{returns the size of
+        the selected gene set used in the computation.  This is simply
+        \code{length(geneIds(obj))}.}
+
+    \item{pvalueCutoff}{accessor for the
+        \code{pvalueCutoff} slot.}
+
+    \item{testDirection}{accessor for the
+        \code{testDirection} slot.  Contains a string indicating
+        whether the test was for \code{"over"} or \code{"under"}
+        representation of the categories.}
+
+    \item{description}{returns a character
+        string description of the test result. }
+
+    \item{testName}{returns a string
+        describing the testing method used.}
+
+    \item{isConditional}{returns \code{TRUE} if the
+          result was obtained using a conditional algorithm.}
+
+ }
+}
+
+\details{
+}
+
+\author{Seth Falcon}
+\seealso{
+  \code{\link{hyperGTest}}
+  \code{\link{HyperGResult-class}}
+  \code{\link{HyperGParams-class}}
+  \code{\link{GOHyperGParams-class}}
+  \code{\link{KEGGHyperGParams-class}}
+}
+\keyword{htest}

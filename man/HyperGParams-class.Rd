@@ -14,6 +14,7 @@
 %% end :-(
 
 \alias{HyperGParams-class}
+\alias{initialize,HyperGParams-method}
 
 \alias{geneIds,HyperGParams-method}
 \alias{geneIds<-,HyperGParams,logical-method}
@@ -33,6 +34,9 @@
 
 \alias{categoryName}
 \alias{categoryName,HyperGParams-method}
+
+\alias{makeValidParams,HyperGParams-method}
+\alias{show,HyperGParams-method}
 
 \title{Class "HyperGParams"}
 \description{

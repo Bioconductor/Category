@@ -13,7 +13,7 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 \arguments{
   \item{stats}{Numeric vector with test statistics of interest.}
   \item{Amat}{Either a logical matrix or an
-    \code{\linkS4class{lgCMatrix}}: the adjacency matrix of the
+    \code{\link[Matrix]{lgCMatrix-class}}: the adjacency matrix of the
     bipartite genes - category graph.
     Its rows correspond to the categories, columns
     to the genes, and \code{TRUE} indicates membership.
