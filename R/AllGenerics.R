@@ -79,8 +79,13 @@ setGeneric("htmlReport", function(r, file="", append=FALSE, label="", ...)
            standardGeneric("htmlReport"),
            signature=c("r"))
 
-setGeneric("makeValidParams", function(object)
-           standardGeneric("makeValidParams"))
+setGeneric("makeValidParams", function(object) {
+           v <- standardGeneric("makeValidParams")
+           if (class(object) != class(v))
+             stop(paste("makeValidParams generic must return same class ",
+                        "as its argument 'object'"))
+           v
+           })
 
 ## accessors for DatPkg
 setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
