@@ -66,6 +66,7 @@ exportMethods("hyperGTest",
               "oddsRatios",
               "expectedCounts",
               "htmlReport",
+              "sigCategories",
 
               "initialize",
               "show",

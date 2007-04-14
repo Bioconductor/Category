@@ -48,6 +48,14 @@ setMethod("geneIdsByCategory", signature(r="HyperGResultBase"),
               lapply(ans, intersect, geneIds(r))
           })
 
+setMethod("sigCategories", signature(r="HyperGResultBase"),
+          function(r, p) {
+              if (missing(p))
+                p <- pvalueCutoff(r)
+              pv <- pvalues(r)
+              names(pv[pv < p])
+          })
+
 setMethod("testName", signature(r="HyperGResultBase"),
           function(r) r@testName)
 

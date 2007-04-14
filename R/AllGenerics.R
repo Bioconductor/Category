@@ -38,6 +38,9 @@ setGeneric("geneIds<-", function(r, value) standardGeneric("geneIds<-"))
 setGeneric("geneIdsByCategory", signature="r",
            function(r, catids = NULL) standardGeneric("geneIdsByCategory"))
 
+setGeneric("sigCategories", signature="r",
+           function(r, p) standardGeneric("sigCategories"))
+
 setGeneric("testName", function(r) standardGeneric("testName"))
 
 setGeneric("pvalueCutoff", function(r) standardGeneric("pvalueCutoff"))

@@ -97,24 +97,6 @@ setMethod("description", signature(object="ChrMapHyperGResult"),
           })
 
 
-selectedGenes <- function(r, id) {
-    ## FIXME: make me a method!
-    ans <- geneIdUniverse(r)[id]
-    ans <- lapply(ans, intersect, geneIds(r))
-    ans
-}
-
-
-sigCategories <- function(res, p) {
-    ## FIXME: make me a method!
-    if (missing(p))
-      p <- pvalueCutoff(res)
-    pv <- pvalues(res)
-    goIds <- names(pv[pv < p])
-    goIds
-}
-
-
 inducedTermGraph <- function(r, id, children=TRUE, parents=TRUE,
                              ...) {
     if (!children && !parents)

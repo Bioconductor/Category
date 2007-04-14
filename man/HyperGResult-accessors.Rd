@@ -43,6 +43,9 @@
 \alias{geneIdsByCategory}
 \alias{geneIdsByCategory,HyperGResultBase-method}
 
+\alias{sigCategories}
+\alias{sigCategories,HyperGResultBase-method}
+
 \alias{geneMappedCount}
 \alias{geneMappedCount,HyperGResultBase-method}
 
@@ -92,6 +95,7 @@ geneIds(r)
 geneIdUniverse(r)
 condGeneIdUniverse(r)
 geneIdsByCategory(r, catids = NULL)
+sigCategories(r, p)
 
 ## R CMD check doesn't like these
 ## annotation(r)
@@ -110,6 +114,8 @@ chrGraph(r)
     \code{HyperGResultBase}.}
 
   \item{catids}{A character vector of category identifiers.}
+  \item{p}{Numeric p-value used as a cutoff for selecting a subset of
+    the result.}
 }
 
 \section{Accessor Methods (Generic Functions)}{
@@ -153,6 +159,11 @@ chrGraph(r)
       intersected with the list of selected gene IDs from
       \code{geneIds}.  The result is the selected gene IDs annotated at
       each category.}
+
+    \item{sigCategories}{returns a character vector of category
+      identifiers with a significant p-value.  If argument \code{p} is
+      missing, then the cutoff obtained from \code{pvalueCutoff(r)} will
+    be used.}
 
     \item{geneMappedCount}{returns the size of
         the selected gene set used in the computation.  This is simply
