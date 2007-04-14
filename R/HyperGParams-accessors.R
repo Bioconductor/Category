@@ -3,20 +3,30 @@
     ## If we can fix it, we do (and issue a warning)
     ## Return a more valid instance or error
     sel <- geneIds(object)
+    if (is.list(sel)) {
+        warning("converting geneIds from list to atomic vector via unlist")
+        sel <- unlist(sel)
+    }
     if (any(duplicated(sel))) {
         warning("removing duplicate IDs in geneIds")
-        geneIds(object) <- unique(sel)
+        sel <- unique(sel)
     }
+    geneIds(object) <- sel
     univ <- universeGeneIds(object)
     if (length(univ)) {
+        if (is.list(univ)) {
+            warning("converting univ from list to atomic vector via unlist")
+            univ <- unlist(univ)
+        }
         if (typeof(sel) != typeof(univ))
           stop(paste("geneIds and universeGeneIds must have the same mode\n",
                        "geneIds:", typeof(sel), "\n",
                        "universeGeneIds:", typeof(univ)), .Call=FALSE)
         if (any(duplicated(univ))) {
             warning("removing duplicate IDs in universeGeneIds")
-            universeGeneIds(object) <- unique(univ)
+            univ <- unique(univ)
         }
+        universeGeneIds(object) <- univ
         if (!all(sel %in% univ)) {
             warning("removing geneIds not in universeGeneIds")
             sel <- intersect(sel, univ)
