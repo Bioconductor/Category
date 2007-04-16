@@ -8,7 +8,8 @@
   over-representation of genes in a selected gene list in the
   chromosome band annotation.  The \code{hyperGTest} function returns
   an instance of \code{ChrMapHyperGResult} when given a parameter
-  object of class \code{ChrMapHyperGParams}.
+  object of class \code{ChrMapHyperGParams}.  For details on accessing
+  the results, see \link{HyperGResult-accessors}.
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("ChrMapHyperGResult", ...)}.
@@ -46,11 +47,13 @@ Objects can be created by calls of the form \code{new("ChrMapHyperGResult", ...)
 Class \code{"\linkS4class{HyperGResultBase}"}, directly.
 }
 \section{Methods}{
-No methods defined with class "ChrMapHyperGResult" in the signature.
+See \link{HyperGResult-accessors}.
 }
 
 \author{Seth Falcon}
 \examples{
 showClass("ChrMapHyperGResult")
+## For details on accessing the results:
+##     help("HyperGResult-accessors")
 }
 \keyword{classes}

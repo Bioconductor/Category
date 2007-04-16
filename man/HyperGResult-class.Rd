@@ -8,7 +8,8 @@
   categories among genes in a selected gene set based upon the
   Hypergeometric distribution.  The \code{hyperGTest}
   generic function returns an instance of the
-  \code{HyperGResult} class.
+  \code{HyperGResult} class. For details on accessing
+  the results, see \link{HyperGResult-accessors}.
 }
 
 \section{Objects from the Class}{
@@ -55,34 +56,7 @@ Objects can be created by calls of the form \code{new("HyperGResult", ...)}.
 Class \code{"HyperGResultBase"}, directly.
 }
 \section{Methods}{
-  \describe{
-
-  \item{geneCounts}{\code{signature(r =
-        "HyperGResult")}: return an \code{"integer"}
-      vector: for each category term tested, the number of genes from
-      the gene set that are annotated at the term.}
-
-  \item{pvalues}{\code{signature(r =
-        "HyperGResult")}: return a \code{"numeric"}
-      vector: the ordered p-values for each category term tested.}
-
-  \item{universeCounts}{\code{signature(r =
-        "HyperGResult")}: return an \code{"integer"}
-      vector: for each category term tested, the number of genes from
-      the gene universe that are annotated at the term.}
-
-  \item{universeMappedCount}{\code{signature(r =
-        "HyperGResult")}: return an \code{"integer"}
-      vector of length one giving the size of the gene universe set. }
-
-  \item{\code{expectedCounts(r)}}{ return a \code{"numeric"} vector
-      giving the expected number of genes in the selected gene list to
-      be found at each tested GO term.}
-
-    \item{\code{oddsRatios(r)}}{return a \code{"numeric"} vector giving
-      the odds ratio for each GO term tested.}
-
-  }
+See \link{HyperGResult-accessors}.
 }
 
 \author{Seth Falcon}
@@ -90,6 +64,7 @@ Class \code{"HyperGResultBase"}, directly.
 \seealso{
   \code{\link{HyperGResultBase-class}}
   \code{\link[GOstats]{GeneGoHyperGeoTestResult-class}}
+  \link{HyperGResult-accessors}
 }
 
 \keyword{classes}
