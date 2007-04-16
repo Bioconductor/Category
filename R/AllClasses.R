@@ -12,7 +12,6 @@ setClass("OrganismMappingDatPkg", contains="DatPkg")
 DatPkgFactory <- function(chip) {
 
     strMatch <- function(pat, s) length(grep(pat, s)) > 0
-    isDbPkg <- function(p) length(grep("db$", p)) > 0
 
     if (chip == "UNKNOWN")
       return(new("AffyDatPkg", name=chip))
