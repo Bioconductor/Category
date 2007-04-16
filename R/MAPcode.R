@@ -67,7 +67,7 @@ cleanMapWeird <- function(e2m) {
         val <- e2m[[eg]]
         badIdx <- grep(" ", val)
         if (length(badIdx) > 0) {
-            good <- cbs[-badIdx]
+            good <- val[-badIdx]
             if (length(good) == 0)
               good <- as.character(NA)
         } else {
