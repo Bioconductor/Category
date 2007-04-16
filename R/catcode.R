@@ -41,9 +41,12 @@ ttperm = function(x, fac, B=100, tsO=TRUE) {
 }
 
 makeEBcontr = function(f1, hival) {
+    if (!require("EBarrays", quietly=TRUE))
+      stop("need the EBarrays package for this feature")
     contr = rep(1, length(f1))
     p1 = paste(contr, collapse=",")
-    contr2 = contr; contr2[f1 == hival] = 2;
+    contr2 = contr
+    contr2[f1 == hival] = 2
     p2 = paste(contr2, collapse=",")
     ebPatterns(c(p1,p2))
 }
