@@ -17,7 +17,9 @@ applyByCategory = function(stats, Amat, FUN=mean, ...)
     if(!is.logical(Amat))
       Amat = (Amat==0)
   
-  apply(Amat, 1, function(x) FUN(stats[x], ...))
+  res = apply(Amat, 1, function(x) FUN(stats[x], ...))
+  names(res) = colnames(Amat)
+  return(res)
 }
 
 ##given a set of AffyIDs, which have pathway data
