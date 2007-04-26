@@ -5,18 +5,20 @@ augmentByAncestors = function(x) {
    s2 = x %in% ls(GOBPANCESTOR)
    s3 = x %in% ls(GOCCANCESTOR)
    s4 = is.na(x)
-   
-   notFound = which(!(s1|s2|s3|s4))
+
+   ## throw warning if some not found
+   notFound = x[!(s1|s2|s3|s4)]
    if(length(notFound)>0) {
+     notFound[notFound==""] = "(zero length string)"
      got = if(length(notFound)>7) {
        paste(paste(notFound[1:7], collapse=", "), ", ... ")
      } else {
        paste(notFound, collapse=", ")
      }
-     stop(if(length(notFound)==1) {
-       sprintf("GO term %s is mentioned in 'x' but was not found in the GO package.\n", got)
+     warning(if(length(notFound)==1) {
+       sprintf("cateGOry: GO term %s is mentioned in 'x' but was not found in the GO package.\n", got)
      } else {
-       sprintf("GO terms %s were mentioned in 'x' but were not found in the GO package.\n", got)
+       sprintf("cateGOry: GO terms %s were mentioned in 'x' but were not found in the GO package.\n", got)
      })
    }
    
