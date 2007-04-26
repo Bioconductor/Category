@@ -135,9 +135,10 @@ makeChrMapToEntrez <- function(chip, univ) {
     if (!is.environment(probe2chr))
       probe2chr <- l2e(as.list(probe2chr))
     egs <- unique(unlist(mget(ls(probe2chr), .getMap(map="ENTREZID"))))
-    egs <- as.character(egs[!is.na(egs)])
+    egs <- egs[!is.na(egs)]
     if (!is.null(univ))
       egs <- intersect(egs, univ)
+    egs <- as.character(egs)
     eg2chr <- new.env(parent=emptyenv(), hash=TRUE,
                       size=as.integer(1.20 * length(egs)))
     ## XXX: need to define a revmap method for environments
