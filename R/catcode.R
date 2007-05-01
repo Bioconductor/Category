@@ -18,7 +18,7 @@ applyByCategory = function(stats, Amat, FUN=mean, ...)
       Amat = (Amat==0)
   
   res = apply(Amat, 1, function(x) FUN(stats[x], ...))
-  names(res) = colnames(Amat)
+  names(res) = rownames(Amat)
   return(res)
 }
 
