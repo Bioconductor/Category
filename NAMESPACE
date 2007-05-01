@@ -8,6 +8,7 @@ export(
        "applyByCategory",
        "cateGOry",
        "chrBandInciMat",
+       "DatPkgFactory",
        "findAMstats",
        "geneGoHyperGeoTest",
        "geneKeggHyperGeoTest",
@@ -20,7 +21,12 @@ export(
        "probes2Path",
        "ttperm")
 
-exportClasses("HyperGParams",
+exportClasses("DatPkg",
+              "AffyDatPkg",
+              "YeastDatPkg",
+              "OrganismMappingDatPkg",
+
+              "HyperGParams",
               "GOHyperGParams",
               "KEGGHyperGParams",
               "PFAMHyperGParams",
@@ -31,7 +37,7 @@ exportClasses("HyperGParams",
               "ChrMapHyperGResult")
 
 exportMethods("hyperGTest",
-              
+
               "universeBuilder",
               "categoryToEntrezBuilder",
 
@@ -67,6 +73,11 @@ exportMethods("hyperGTest",
               "expectedCounts",
               "htmlReport",
               "sigCategories",
+
+              ## accessors for DatPkg
+              "ID2GO",
+              "ID2EntrezID",
+              "GO2AllProbes",
 
               "initialize",
               "show",
