@@ -7,6 +7,8 @@ export(
        ".doHyperGTest",
        "applyByCategory",
        "cateGOry",
+       "cb_contingency",
+       "cb_sigBands",
        "chrBandInciMat",
        "DatPkgFactory",
        "findAMstats",

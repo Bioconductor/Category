@@ -274,6 +274,7 @@ addChrBandAnnotation <- function(g, m2p) {
 }
 
 makeChrBandInciMat <- function(chrGraph) {
+    ## TODO, FIXME: should the return be transposed?
     gnodes <- nodes(chrGraph)
     rootIdx <- grep("^ORGANISM", gnodes)
     v1 <- nodeData(chrGraph, n=gnodes[-rootIdx] , attr="geneIds")
@@ -293,3 +294,119 @@ makeChrBandInciMat <- function(chrGraph) {
 chrBandInciMat <- function(chip, univ=NULL) {
     makeChrBandInciMat(makeChrBandGraph(chip=chip, univ=univ))
 }
+
+ann_list_to_mat <- function(L) {
+    gsets <- names(L)
+    nr <- length(gsets)
+    allgenes <- unique(unlist(L))
+    nc <- length(allgenes)
+    M <- matrix(0L, nrow=nr, ncol=nc,
+                dimnames=list(gsets, allgenes))
+    for (gs in gsets) {
+        M[gs, L[[gs]]] <- 1L
+    }
+    M
+}
+
+cb_childAnnList <- function(n, g) {
+    ## n - node label, e.g., 12p1
+    ## g - graph object representing the tree of chrom bands
+    ##
+    ## Returns a list named by children of n, values
+    ## are vectors of gene IDs.  If n is not a node in
+    ## g or has no children, return list()
+    if (!(n %in% nodes(g)))
+      return(list())
+    kids <- edges(g)[[n]]
+    if (length(kids))
+      nodeData(g, n=kids, attr="geneIds")
+    else
+      list()
+}
+
+cb_childInciMat <- function(n, g) {
+    ## Return an incidence matrix for the gene sets
+    ## (rows) which are the children of node n in graph
+    ## g.  The columns are the gene IDs
+    dat <- cb_childAnnList(n, g)
+    ann_list_to_mat(dat)
+}
+
+cb_childContinTable <- function(imat, selids, min.found=1L, min.k=1L) {
+    ## Return a 2 x k contingency table
+    ## First row is selected, second is not.  Columns
+    ## are gene sets (rows of imat).
+    ## If no gene set has greater or equal than min.found
+    ## in the selids, then return integer(0).
+    ##
+    if (any(dim(imat) == 0))
+      return(integer(0))
+    if (nrow(imat) < min.k)
+      return(integer(0))
+    wh <- match(selids, colnames(imat), 0)
+    submat <- imat[ , wh, drop=FALSE]
+    if (ncol(submat) < min.found)       # no chance
+      return(integer(0))
+    tot <- rowSums(imat)
+    found <- rowSums(submat)
+    if (max(found) < min.found)
+      return(integer(0))
+    tab <- t(cbind(found, tot - found))
+    dimnames(tab) <- list(c("selected", "not"), rownames(imat))
+    tab
+}
+
+cb_contingency <- function(selids, chrList, chrGraph, testFun=chisq.test,
+                           min.found=5L, min.k=1L) {
+    chrMats <- lapply(chrList, cb_childInciMat, chrGraph)
+    conTables <- lapply(chrMats, cb_childContinTable,
+                        selids, min.found=min.found, min.k=min.k)
+    conTables <- conTables[listLen(conTables) > 0]
+    lapply(conTables, function(tab) {
+        list(table=tab, result=testFun(tab))
+    })
+}
+
+cb_sigBands <- function(b, p.value=0.01) {
+    bands <- lapply(b, function(x) {
+        if (x$result$p.value < p.value)
+          colnames(x$table)
+        else
+          as.character(NA)
+    })
+    ans <- unlist(bands[!is.na(bands)])
+    if (!length(ans))
+      character(0)
+    else
+      ans
+}
+
+## ----
+
+## This is another non-incidence matrix approach to
+## generating the contingency tables.  Probably can
+## junk this.
+makeContinTable <- function(selids, ann_dat) {
+    ## selids - vector of Gene IDs
+    ## ann_dat - a list of vectors of Gene IDs; each
+    ##           represents the IDs in a cateogry.
+    ##           We assume the categories are close
+    ##           to a partition of the genes.
+    ##
+    ## Returns a matrix with rows 'selected' and 'not' and a column for
+    ## each element of ann_dat giving the counts for the contingency
+    ## table.
+    do.call(cbind, lapply(ann_dat, function(x) {
+        found <- sum(selids %in% x)
+        c(selected=found, not=(length(x) - found))
+    }))
+}
+cb_makeContinTable <- function(n, g, selids) {
+    dat <- cb_childAnnList(n, g)
+    if (length(dat))
+      makeContinTable(selids, dat)
+    else
+      dat
+}
+
+## ----
