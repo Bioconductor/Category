@@ -174,7 +174,7 @@ makeChrMapToEntrez <- function(chip, univ) {
 }
 
 
-parseChrMap <- function(x) {
+cb_parse_band_hsa <- function(x) {
     ## Given a chromosome band annotation (see examples below),
     ## return a vector giving the path from the root:
     ##
@@ -222,7 +222,7 @@ parseChrMap <- function(x) {
 
 makeChrBandGraph <- function(chip, univ=NULL) {
     m2p <- makeChrMapToEntrez(chip, univ)
-    allMaps <- lapply(names(m2p), parseChrMap)
+    allMaps <- lapply(names(m2p), cb_parse_band_hsa)
     vv <- lapply(allMaps, function(x) {
         L <- length(x)
         ## XXX: some will have L == 1, will induce NA's

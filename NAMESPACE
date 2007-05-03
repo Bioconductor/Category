@@ -8,6 +8,7 @@ export(
        "applyByCategory",
        "cateGOry",
        "cb_contingency",
+       "cb_parse_band_hsa",
        "cb_sigBands",
        "chrBandInciMat",
        "DatPkgFactory",
