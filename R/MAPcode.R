@@ -221,6 +221,10 @@ cb_parse_band_hsa <- function(x) {
 
 
 makeChrBandGraph <- function(chip, univ=NULL) {
+    org <- paste("ORGANISM:", getAnnMap("ORGANISM", chip), sep="")
+    if (org != "ORGANISM:Homo sapiens")
+      stop("makeChrBandGraph can only deal with 'Homo sapiens' annotation",
+           " found ", sQuote(org))
     m2p <- makeChrMapToEntrez(chip, univ)
     allMaps <- lapply(names(m2p), cb_parse_band_hsa)
     vv <- lapply(allMaps, function(x) {
@@ -248,7 +252,6 @@ makeChrBandGraph <- function(chip, univ=NULL) {
     if (length(selfLoops) > 0 && any(selfLoops > 0))
       vvT <- vvT[-selfLoops, ]
     ## add root node
-    org <- paste("ORGANISM:", getAnnMap("ORGANISM", chip), sep="")
     chrNames <- names(getAnnMap("CHRLENGTHS", chip))
     orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
