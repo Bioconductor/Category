@@ -311,6 +311,14 @@ ann_list_to_mat <- function(L) {
     M
 }
 
+cb_children <- function(n, chrGraph) {
+    if (length(n) != 1)
+      stop("arg 'n' must be a length one character vector")
+    if (!(n %in% nodes(chrGraph)))
+      return(character(0))
+    edges(chrGraph)[[n]]
+}
+
 cb_childAnnList <- function(n, g) {
     ## n - node label, e.g., 12p1
     ## g - graph object representing the tree of chrom bands
@@ -318,29 +326,44 @@ cb_childAnnList <- function(n, g) {
     ## Returns a list named by children of n, values
     ## are vectors of gene IDs.  If n is not a node in
     ## g or has no children, return list()
-    if (!(n %in% nodes(g)))
-      return(list())
-    kids <- edges(g)[[n]]
+    kids <- cb_children(n, g)
     if (length(kids))
       nodeData(g, n=kids, attr="geneIds")
     else
       list()
 }
 
-cb_childInciMat <- function(n, g) {
+cb_buildInciMat <- function(n, g) {
     ## Return an incidence matrix for the gene sets
-    ## (rows) which are the children of node n in graph
+    ## (rows) specified by n in graph
     ## g.  The columns are the gene IDs
-    dat <- cb_childAnnList(n, g)
+    dat <- nodeData(g, n=n, attr="geneIds")
     ann_list_to_mat(dat)
 }
 
-cb_childContinTable <- function(imat, selids, min.found=1L, min.k=1L) {
-    ## Return a 2 x k contingency table
-    ## First row is selected, second is not.  Columns
-    ## are gene sets (rows of imat).
-    ## If no gene set has greater or equal than min.found
-    ## in the selids, then return integer(0).
+expCounts <- function(tab, wh.row=1L) {
+    ## Expected counts for cells in wh.row of a
+    ## contingency table
+    ##
+    ## Rule of thumb: E <= 5 implies ChiSq not reliable
+    N <- sum(tab)
+    rs <- sum(tab[wh.row, ])
+    cs <- colSums(tab)
+    (cs * rs) / N
+}
+
+## chiSqrSummands <- function(tab, wh.row=1L) {
+##     ## this is just abs(residual)
+##     E <- expCounts(tab, wh.row=wh.row)
+##     sqrt((tab[wh.row, ] - E)^2 / E)
+## }
+
+cb_buildContinTable <- function(imat, selids, min.expected=1L, min.k=1L) {
+    ## Return a 2 x k contingency table First row is selected, second is
+    ## not.  Columns are gene sets (rows of imat).  Columns with
+    ## expected count for selected row < min.expected are omitted.
+    ## Tables with fewer than min.k columns result in a return of
+    ## integer(0).
     ##
     if (any(dim(imat) == 0))
       return(integer(0))
@@ -348,26 +371,31 @@ cb_childContinTable <- function(imat, selids, min.found=1L, min.k=1L) {
       return(integer(0))
     wh <- match(selids, colnames(imat), 0)
     submat <- imat[ , wh, drop=FALSE]
-    if (ncol(submat) < min.found)       # no chance
+    if (ncol(submat)  == 0)
       return(integer(0))
     tot <- rowSums(imat)
     found <- rowSums(submat)
-    if (max(found) < min.found)
-      return(integer(0))
     tab <- t(cbind(found, tot - found))
     dimnames(tab) <- list(c("selected", "not"), rownames(imat))
-    tab
+    eCnt <- expCounts(tab)
+    keep.cols <- eCnt > min.expected
+    tab <- tab[ , keep.cols, drop=FALSE]
+    if (ncol(tab) > 0)
+      tab
+    else
+      integer(0)
 }
 
-cb_contingency <- function(selids, chrList, chrGraph, testFun=chisq.test,
-                           min.found=5L, min.k=1L) {
-    chrMats <- lapply(chrList, cb_childInciMat, chrGraph)
-    conTables <- lapply(chrMats, cb_childContinTable,
-                        selids, min.found=min.found, min.k=min.k)
-    conTables <- conTables[listLen(conTables) > 0]
-    lapply(conTables, function(tab) {
-        list(table=tab, result=testFun(tab))
-    })
+cb_contingency <- function(selids, chrVect, chrGraph, testFun=chisq.test,
+                           min.expected=5L, min.k=1L) {
+    ## filter unknown nodes
+    chrVect <- chrVect[chrVect %in% nodes(chrGraph)]
+    chrMat <- cb_buildInciMat(chrVect, chrGraph)
+    conTab <- cb_buildContinTable(chrMat, selids,
+                                  min.expected=min.expected, min.k=min.k)
+    if (!length(conTab))
+      return(list())
+    list(table=conTab, result=testFun(conTab))
 }
 
 cb_sigBands <- function(b, p.value=0.01) {

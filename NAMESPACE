@@ -7,6 +7,7 @@ export(
        ".doHyperGTest",
        "applyByCategory",
        "cateGOry",
+       "cb_children",
        "cb_contingency",
        "cb_parse_band_hsa",
        "cb_sigBands",
