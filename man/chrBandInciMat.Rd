@@ -8,9 +8,8 @@
 \description{
 
   These functions return a 0/1 incidence matrix with a row for each
-  gene ID with at least one chromosme band annotation and a column for
-  each chromosome band with at least one gene annotation.
-  
+  chromosme band and a column for each gene.  Only those chromosome
+  bands with at least one gene annotation will be included.
 }
 
 \usage{
@@ -30,9 +29,9 @@ makeChrBandInciMat(chrGraph)
 
 \value{
 
-  A (0/1) incidence matrix with gene IDs as rows and chromosome bands
-  as columns.  A \code{1} in \code{m[i, j]} indicates that the geneID
-  \code{rownames(m)[i]} is annotated at chromosome band
+  A (0/1) incidence matrix with chromosome bands as rows and gene IDs
+  as columns.  A \code{1} in \code{m[i, j]} indicates that the
+  chromosome band \code{rownames(m)[i]} contains the geneID
   \code{colnames(m)[j]}.
 
 }

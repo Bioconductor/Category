@@ -277,19 +277,18 @@ addChrBandAnnotation <- function(g, m2p) {
 }
 
 makeChrBandInciMat <- function(chrGraph) {
-    ## TODO, FIXME: should the return be transposed?
     gnodes <- nodes(chrGraph)
     rootIdx <- grep("^ORGANISM", gnodes)
     v1 <- nodeData(chrGraph, n=gnodes[-rootIdx] , attr="geneIds")
     v1 <- v1[sapply(v1, function(z) !any(is.na(z)))]
     v1 <- lapply(v1, as.character)
     allGeneIDs <- unique(unlist(v1))
-    nr <- length(allGeneIDs)
-    nc <- length(v1)
+    nr <- length(v1)
+    nc <- length(allGeneIDs)
     mat <- matrix(0L, nrow=nr, ncol=nc)
-    dimnames(mat) <- list(allGeneIDs, names(v1))
+    dimnames(mat) <- list(names(v1), allGeneIDs)
     for (cb in names(v1)) {
-        mat[v1[[cb]], cb] <- 1L         # XXX: beware partial match!
+        mat[cb, v1[[cb]]] <- 1L         # XXX: beware partial match!
     }
     mat
 }
