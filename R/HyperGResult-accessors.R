@@ -1,48 +1,35 @@
-## Accessor methods for HyperGResult class
+### Accessor methods for HyperGResultBase class
 
 setMethod("annotation", signature(object="HyperGResultBase"),
           function(object) object@annotation)
 
-setMethod("pvalues", signature(r="HyperGResult"),
-          function(r) r@pvalues)
-
-setMethod("oddsRatios", signature(r="HyperGResult"),
-          function(r) r@oddsRatios)
-
-setMethod("expectedCounts", signature(r="HyperGResult"),
-          function(r) r@expectedCounts)
-
-setMethod("geneCounts", signature(r="HyperGResult"),
+setMethod("geneCounts", signature(r="HyperGResultBase"),
           function(r) {
-              sapply(r@catToGeneId, function(x) {
+              sapply(condGeneIdUniverse(r), function(x) {
                   sum(geneIds(r) %in% x)
               })
           })
 
-setMethod("universeCounts", signature(r="HyperGResult"),
+setMethod("universeCounts", signature(r="HyperGResultBase"),
           function(r) {
-              ans <- listLen(r@catToGeneId)
-              names(ans) <- names(r@catToGeneId)
+              univ <- condGeneIdUniverse(r)
+              ans <- listLen(univ)
+              names(ans) <- names(univ)
               ans
           })
 
-setMethod("universeMappedCount", signature(r="HyperGResult"),
-           function(r) length(unique(unlist(r@catToGeneId))))
+setMethod("universeMappedCount", signature(r="HyperGResultBase"),
+           function(r) length(unique(unlist(condGeneIdUniverse(r)))))
 
 setMethod("geneMappedCount", signature(r="HyperGResultBase"),
-           function(r) length(r@geneIds))
-
-## generic "annotation" defined in Biobase
+           function(r) length(geneIds(r)))
 
 setMethod("geneIds", signature(r="HyperGResultBase"),
           function(r) r@geneIds)
 
-setMethod("geneIdUniverse", signature(r="HyperGResult"),
-          function(r) r@catToGeneId)
-
 setMethod("geneIdsByCategory", signature(r="HyperGResultBase"),
           function(r, catids=NULL) {
-              ans <- geneIdUniverse(r)
+              ans <- condGeneIdUniverse(r)
               if (!missing(catids) && !is.null(catids))
                 ans <- ans[catids]
               lapply(ans, intersect, geneIds(r))
@@ -68,8 +55,10 @@ setMethod("testDirection", signature(r="HyperGResultBase"),
 setMethod("description",
           signature(object="HyperGResultBase"),
           function(object) {
-              desc <- paste("Gene to %s Category Test for %s Representation",
-                            "Test Result")
+              cond <- "Conditional"
+              if (!isConditional(object))
+                cond <- ""
+              desc <- paste("Gene to %s", cond, "test for %s-representation")
               desc <- sprintf(desc, paste(testName(object), collapse=" "),
                               testDirection(object))
               desc
@@ -77,4 +66,24 @@ setMethod("description",
 
 setMethod("isConditional", "HyperGResultBase",
           function(r) FALSE)
-          
+
+
+setMethod("condGeneIdUniverse", signature(r="HyperGResultBase"),
+          function(r) geneIdUniverse(r))
+
+
+### Accessor methods for HyperGResult class
+
+setMethod("pvalues", signature(r="HyperGResult"),
+          function(r) r@pvalues)
+
+setMethod("oddsRatios", signature(r="HyperGResult"),
+          function(r) r@oddsRatios)
+
+setMethod("expectedCounts", signature(r="HyperGResult"),
+          function(r) r@expectedCounts)
+
+## generic "annotation" defined in Biobase
+
+setMethod("geneIdUniverse", signature(r="HyperGResult"),
+          function(r) r@catToGeneId)

@@ -6,16 +6,13 @@
 \alias{pvalues,ChrMapHyperGResult-method}
 
 \alias{geneCounts}
-\alias{geneCounts,HyperGResult-method}
-\alias{geneCounts,ChrMapHyperGResult-method}
+\alias{geneCounts,HyperGResultBase-method}
 
 \alias{universeCounts}
-\alias{universeCounts,HyperGResult-method}
-\alias{universeCounts,ChrMapHyperGResult-method}
+\alias{universeCounts,HyperGResultBase-method}
 
 \alias{universeMappedCount}
-\alias{universeMappedCount,HyperGResult-method}
-\alias{universeMappedCount,ChrMapHyperGResult-method}
+\alias{universeMappedCount,HyperGResultBase-method}
 
 \alias{geneMappedCount}
 
@@ -26,7 +23,6 @@
 
 \alias{description}
 \alias{description,HyperGResultBase-method}
-\alias{description,ChrMapHyperGResult-method}
 
 \alias{annotation,HyperGResultBase-method}
 
@@ -38,6 +34,7 @@
 \alias{geneIdUniverse,ChrMapHyperGResult-method}
 
 \alias{condGeneIdUniverse}
+\alias{condGeneIdUniverse,HyperGResultBase-method}
 \alias{condGeneIdUniverse,ChrMapHyperGResult-method}
 
 \alias{geneIdsByCategory}
