@@ -34,7 +34,7 @@ getPathNames = function(iPW)
 
 ttperm = function(x, fac, B=100, tsO=TRUE) {
     obs = rowttests(x, fac, tstatOnly= tsO)
-    ans=NULL
+    ans = vector(mode="list", length=B)
     for(i in 1:B) {
         p1 = sample(fac)
         ans[[i]] = rowttests(x, p1, tstatOnly = tsO)
