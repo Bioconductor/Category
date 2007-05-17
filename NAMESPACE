@@ -17,6 +17,7 @@ export(
        "geneGoHyperGeoTest",
        "geneKeggHyperGeoTest",
        "getPathNames",
+       "gseaperm",
        "makeChrBandGraph",
        "makeChrBandInciMat",
        "makeEBcontr",
