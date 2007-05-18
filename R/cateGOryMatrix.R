@@ -46,7 +46,7 @@ augmentByAncestorsSmart = function(x) {
 
 ## x: vector of gene identifiers (need not be unique)
 ## GOcat: vector of same length as x, with GO categories
-cateGOry  = function(x, categ, sparse=TRUE) {
+cateGOry  = function(x, categ, sparse=FALSE) {
 
   if(!is.character(x))
     stop("'x' must be a character vector")
@@ -60,8 +60,10 @@ cateGOry  = function(x, categ, sparse=TRUE) {
   gocats = sort(unique(unlist(categAnc)))
   genes  = sort(unique(unlist(x)))
 
-  res = do.call(if(sparse) "Matrix" else "matrix",
-    list(FALSE, nrow=length(gocats), ncol=length(genes)))
+  ## res = do.call(if(sparse) "Matrix" else "matrix",
+  ##  list(FALSE, nrow=length(gocats), ncol=length(genes)))
+  
+  res = matrix(FALSE, nrow=length(gocats), ncol=length(genes))
   
   rownames(res) = gocats
   colnames(res) = genes

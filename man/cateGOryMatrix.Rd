@@ -13,7 +13,7 @@
   The ancestor relationships are obtained from the \pkg{GO} package.   
 }
 \usage{
-cateGOry(x, categ, sparse=TRUE)
+cateGOry(x, categ, sparse=FALSE)
 }
 \arguments{
   \item{x}{Character vector with (arbitrary) gene identifiers. They will
@@ -22,9 +22,9 @@ cateGOry(x, categ, sparse=TRUE)
     with GO annotations for the genes in \code{x}. If a
     gene has multiple GO annotations, it is expected to occur multiple
     times in \code{x}, once for each different annotation.}
-  \item{sparse}{Logical. If \code{TRUE}, the return value will be a
-    sparse matrix of class \code{\link[Matrix]{lgCMatrix-class}}, if \code{FALSE},
-    an ordinary \code{\link{matrix}}.}
+  \item{sparse}{Logical. Currently, this is ignored. 
+    This argument might be used in future versions of the function to result in returning a 
+    sparse matrix representation.}
 }
 \details{
   Requires the \code{\link[GO:GO-package]{GO}} package.
