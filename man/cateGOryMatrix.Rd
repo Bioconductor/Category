@@ -23,8 +23,8 @@ cateGOry(x, categ, sparse=FALSE)
     gene has multiple GO annotations, it is expected to occur multiple
     times in \code{x}, once for each different annotation.}
   \item{sparse}{Logical. Currently, this is ignored. 
-    This argument might be used in future versions of the function to result in returning a 
-    sparse matrix representation.}
+    This argument might be used in future versions of the function to
+    result in returning a sparse matrix representation.}
 }
 \details{
   Requires the \code{\link[GO:GO-package]{GO}} package.

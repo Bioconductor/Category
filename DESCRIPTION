@@ -18,7 +18,7 @@ Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
          HyperGResult-accessors.R
          ChrMapHyperGResult-accessors.R
          show-methods.R universeBuilder-methods.R utils.R
-         MAPcode.R catcode.R cateGOryMatrix.R
+         MAPcode.R catcode.R cateGOryMatrix.R gseaperm.R
          summary-methods.R
          zzz.R
 biocViews: Statistics, Annotation, GO, Pathways

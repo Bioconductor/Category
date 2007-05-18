@@ -12,8 +12,7 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 
 \arguments{
   \item{stats}{Numeric vector with test statistics of interest.}
-  \item{Amat}{Either a logical matrix or an
-    \code{\link[Matrix]{lgCMatrix-class}}: the adjacency matrix of the
+  \item{Amat}{A logical matrix: the adjacency matrix of the
     bipartite genes - category graph.
     Its rows correspond to the categories, columns
     to the genes, and \code{TRUE} indicates membership.
@@ -43,17 +42,12 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 \examples{
  set.seed(0xabcd)
  st = rnorm(20)
+ names(st) = paste("gene", 1:20)
 
- a = matrix(sample(c(FALSE, TRUE), 60, replace=TRUE), nrow=3)
- rownames(a) = paste("category", 1:3, sep="")
- colnames(a) = names(st) = paste("g", 1:20, sep="")
+ a = matrix(sample(c(FALSE, TRUE), 60, replace=TRUE), nrow=3,
+        dimnames = list(paste("category", LETTERS[1:3]), names(st)))
 
- sa = Matrix(a) ## sparse
-
- k1 = applyByCategory(st, a, median)
- k2 = applyByCategory(st, sa, median)
-
- stopifnot(identical(k2, k1))
+ applyByCategory(st, a, median)
 }
 
 \keyword{manip}
