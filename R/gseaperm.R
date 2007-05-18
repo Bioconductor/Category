@@ -1,3 +1,8 @@
+qRequire <- function(pkg) {
+    suppressWarnings(require(pkg, character.only=TRUE,
+                             quietly=TRUE, warn.conflicts=FALSE))
+}
+
 pvalFromPermMat <- function(obs, perms) {
     N <- ncol(perms)
     pvals <- matrix(as.double(NA), nr=nrow(perms), ncol=2)
@@ -11,20 +16,23 @@ pvalFromPermMat <- function(obs, perms) {
 }
 
 gseaperm <- function(eset, fac, mat, nperm) {
-    geneNames <- colnames(Amat)
+    mkSparseMat <-
+      if (qRequire("Matrix")) function(x) Matrix(x, sparse=TRUE)
+      else matrix
+
+    geneNames <- colnames(mat)
     if (is.null(geneNames))
       stop("'mat' argument must have column names")
-    eset <- eset[colnames(Amat), ]
-    if (nrow(eset) != ncol(Amat))
+    eset <- eset[colnames(mat), ]
+    if (nrow(eset) != ncol(mat))
       warning("'eset' and 'mat' genes not identical")
     if (nrow(eset) < 2)
       stop("need at two genes in common between 'eset' and 'mat'")
-    ## hope for a sparse matrix representation
-    cAmat <- Matrix(mat)
+    cAmat <- mkSparseMat(mat)
 
     obs <- rowttests(eset, fac, tstatOnly=TRUE)[["statistic"]]
     obs <- as.vector(cAmat %*% obs)
-    
+
     permMat <- matrix(0, nrow=nrow(eset), ncol=nperm)
     i <- 1L
     while (i < (nperm + 1)) {
