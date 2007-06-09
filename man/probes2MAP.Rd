@@ -23,7 +23,7 @@ probes2MAP(pids, data = "hgu133plus2")
 \seealso{ \code{\link{probes2Path}} }
 \examples{
   set.seed(123)
-  library("hgu95av2db")
+  library("hgu95av2.db")
   v1 = sample(names(as.list(hgu95av2MAP)), 100)
   pp = probes2MAP(v1, "hgu95av2")
 }

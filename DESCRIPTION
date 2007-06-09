@@ -8,7 +8,7 @@ License: The Artistic License, Version 2.0
 Depends: methods, Biobase (>= 1.13.37), graph, KEGG, GO,
          annotate (>= 1.13.7), genefilter, AnnotationDbi
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-3),
-          hgu95av2db, Matrix
+          hgu95av2.db, Matrix
 Imports: methods, Biobase (>= 1.13.37), AnnotationDbi, RBGL
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
