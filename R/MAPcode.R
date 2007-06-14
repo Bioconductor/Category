@@ -44,7 +44,7 @@ cleanMapAndsOrs <- function(e2m) {
     ## and "Xp22.3 or Yp11.3".  This function maps these to a proper
     ## vector of length 2.
     for (eg in ls(e2m)) {
-        e2m[[eg]] <- unlist(strsplit(e2m[[eg]], " and | or "))
+        e2m[[eg]] <- unlist(strsplit(e2m[[eg, exact=TRUE]], " and | or "))
     }
     e2m
 }
@@ -64,7 +64,7 @@ cleanMapWeird <- function(e2m) {
     ## This function removes these for now.  The strategy is simply to
     ## look for annotations with spaces and drop them.
     for (eg in ls(e2m)) {
-        val <- e2m[[eg]]
+        val <- e2m[[eg, exact=TRUE]]
         badIdx <- grep(" ", val)
         if (length(badIdx) > 0) {
             good <- val[-badIdx]
@@ -88,7 +88,7 @@ cleanRanges <- function(e2m) {
     cenPat <- "cen"
 
     for (eg in ls(e2m)) {
-        e2m[[eg]] <- sapply(e2m[[eg]], function(z) {
+        e2m[[eg]] <- sapply(e2m[[eg, exact=TRUE]], function(z) {
             if (length(grep("-", z, fixed=TRUE))) {
                 if (length(grep(rangePat, z, perl=TRUE))) {
                     arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
@@ -144,7 +144,7 @@ makeChrMapToEntrez <- function(chip, univ) {
     ## XXX: need to define a revmap method for environments
     eg2p <- l2e(mget(egs, revmap(.getMap(map="ENTREZID"))))
     for (eg in egs) {
-        bands <- mget(eg2p[[eg]], probe2chr)
+        bands <- mget(eg2p[[eg, exact=TRUE]], probe2chr)
         bands <- bands[!is.na(bands)]
         if (length(bands))
           eg2chr[[eg]] <- unique(unlist(bands))
@@ -265,8 +265,8 @@ addChrBandAnnotation <- function(g, m2p) {
     bands <- rev(tsort(g)[-1])          # remove root node
     gEdges <- edges(g)
     for (n in bands) {
-        ids <- m2p[[n]]
-        kids <- gEdges[[n]]
+        ids <- m2p[[n, exact=TRUE]]
+        kids <- gEdges[[n, exact=TRUE]]
         if (length(kids)) {
             ids <- unique(c(ids, unlist(nodeData(g, n=kids, "geneIds"))))
         }
@@ -288,7 +288,7 @@ makeChrBandInciMat <- function(chrGraph) {
     mat <- matrix(0L, nrow=nr, ncol=nc)
     dimnames(mat) <- list(names(v1), allGeneIDs)
     for (cb in names(v1)) {
-        mat[cb, v1[[cb]]] <- 1L         # XXX: beware partial match!
+        mat[cb, v1[[cb, exact=TRUE]]] <- 1L
     }
     mat
 }
@@ -315,7 +315,7 @@ cb_children <- function(n, chrGraph) {
       stop("arg 'n' must be a length one character vector")
     if (!(n %in% nodes(chrGraph)))
       return(character(0))
-    edges(chrGraph)[[n]]
+    edges(chrGraph)[[n, exact=TRUE]]
 }
 
 cb_childAnnList <- function(n, g) {
