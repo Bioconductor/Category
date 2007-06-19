@@ -16,13 +16,12 @@ pvalFromPermMat <- function(obs, perms) {
 }
 
 gseaperm <- function(eset, fac, mat, nperm) {
-    usingMatrix <- FALSE
+    usingMatrix <- qRequire("Matrix")
     mkSparseMat <-
-      if (qRequire("Matrix")) function(x) {
-          usingMatrix <<- TRUE
-          Matrix(x, sparse=TRUE)
-      }
-      else x
+      if (usingMatrix)
+        function(x) Matrix(x, sparse=TRUE)
+      else
+        function(x) x
 
     geneNames <- colnames(mat)
     if (is.null(geneNames))
@@ -40,7 +39,7 @@ gseaperm <- function(eset, fac, mat, nperm) {
       if (usingMatrix)
         Matrix::as.vector(obs)
       else
-        as.vector(cAmat %*% obs)
+        as.vector(obs)
 
     permMat <- matrix(0, nrow=nrow(eset), ncol=nperm)
     i <- 1L

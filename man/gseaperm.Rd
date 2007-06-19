@@ -39,5 +39,39 @@ gseaperm(eset, fac, mat, nperm)
 
 \author{Seth Falcon}
 
+\examples{
+## This example uses a random sample of probesets and a randomly
+## generated category matrix.  The results, therefore, are not
+## meaningful, but the code demonstrates how to use gseaperm without
+## requiring any expensive computations.
+
+## Obtain an ExpressionSet with two types of samples (mol.biol)
+haveALL <- require("ALL")
+if (haveALL) {
+data(ALL)
+set.seed(0xabcd)
+rndIdx <- sample(1:nrow(ALL), 500)
+Bcell <- grep("^B", as.character(ALL$BT))
+typeNames <- c("NEG", "BCR/ABL")
+bcrAblOrNegIdx <- which(as.character(ALL$mol.biol) \%in\% typeNames)
+s <- ALL[rndIdx, intersect(Bcell, bcrAblOrNegIdx)]
+s$mol.biol <- factor(s$mol.biol)
+
+## Generate a random category matrix
+nCats <- 100
+set.seed(0xdcba)
+rndCatMat <- matrix(sample(c(0L, 1L), replace=TRUE),
+                    nrow=nCats, ncol=nrow(s),
+                    dimnames=list(
+                      paste("c", 1:nCats, sep=""),
+                      featureNames(s)))
+
+## Demonstrate use of gseaperm
+N <- 10
+pvals <- gseaperm(s, s$mol.biol, rndCatMat, N)
+pvals[1:5, ]
+}
+}
+
 \keyword{ }
 
