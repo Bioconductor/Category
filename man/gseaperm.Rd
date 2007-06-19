@@ -3,8 +3,8 @@
 
 \title{Permutation p-values for GSEA}
 \description{
-  This function performs a GSEA computations and returns p-values
-  for each gene set based repeated permutation of the phenotype
+  This function performs GSEA computations and returns p-values
+  for each gene set based on repeated permutation of the phenotype
   labels.
 }
 \usage{
