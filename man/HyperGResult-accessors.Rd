@@ -95,7 +95,7 @@ universeMappedCount(r)
 geneMappedCount(r)
 
 geneIds(r)
-geneIdUniverse(r)
+geneIdUniverse(r, cond = TRUE)
 condGeneIdUniverse(r)
 geneIdsByCategory(r, catids = NULL)
 sigCategories(r, p)
@@ -119,6 +119,9 @@ chrGraph(r)
   \item{catids}{A character vector of category identifiers.}
   \item{p}{Numeric p-value used as a cutoff for selecting a subset of
     the result.}
+  \item{cond}{A logical value indicating whether to return conditional
+  results for a conditional test.  The default is \code{TRUE}.  For
+  non-conditional results, this argument is ignored.}
 }
 
 \section{Accessor Methods (Generic Functions)}{

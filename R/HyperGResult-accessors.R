@@ -5,21 +5,21 @@ setMethod("annotation", signature(object="HyperGResultBase"),
 
 setMethod("geneCounts", signature(r="HyperGResultBase"),
           function(r) {
-              sapply(condGeneIdUniverse(r), function(x) {
+              sapply(geneIdUniverse(r), function(x) {
                   sum(geneIds(r) %in% x)
               })
           })
 
 setMethod("universeCounts", signature(r="HyperGResultBase"),
           function(r) {
-              univ <- condGeneIdUniverse(r)
+              univ <- geneIdUniverse(r)
               ans <- listLen(univ)
               names(ans) <- names(univ)
               ans
           })
 
 setMethod("universeMappedCount", signature(r="HyperGResultBase"),
-           function(r) length(unique(unlist(condGeneIdUniverse(r)))))
+           function(r) length(unique(unlist(geneIdUniverse(r)))))
 
 setMethod("geneMappedCount", signature(r="HyperGResultBase"),
            function(r) length(geneIds(r)))
@@ -29,7 +29,7 @@ setMethod("geneIds", signature(r="HyperGResultBase"),
 
 setMethod("geneIdsByCategory", signature(r="HyperGResultBase"),
           function(r, catids=NULL) {
-              ans <- condGeneIdUniverse(r)
+              ans <- geneIdUniverse(r)
               if (!missing(catids) && !is.null(catids))
                 ans <- ans[catids]
               lapply(ans, intersect, geneIds(r))
@@ -69,7 +69,7 @@ setMethod("isConditional", "HyperGResultBase",
 
 
 setMethod("condGeneIdUniverse", signature(r="HyperGResultBase"),
-          function(r) geneIdUniverse(r))
+          function(r) geneIdUniverse(r, cond=TRUE))
 
 
 ### Accessor methods for HyperGResult class
@@ -86,4 +86,4 @@ setMethod("expectedCounts", signature(r="HyperGResult"),
 ## generic "annotation" defined in Biobase
 
 setMethod("geneIdUniverse", signature(r="HyperGResult"),
-          function(r) r@catToGeneId)
+          function(r, cond=TRUE) r@catToGeneId)

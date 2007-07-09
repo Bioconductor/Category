@@ -25,10 +25,15 @@ setGeneric("geneMappedCount",
 setGeneric("chrGraph",
            function(r) standardGeneric("chrGraph"))
 
-setGeneric("geneIdUniverse", function(r) standardGeneric("geneIdUniverse"))
+setGeneric("geneIdUniverse", signature="r",
+           function(r, cond=TRUE) standardGeneric("geneIdUniverse"))
 
 setGeneric("condGeneIdUniverse",
-           function(r) standardGeneric("condGeneIdUniverse"))
+           function(r) {
+               .Deprecated(msg=paste("use unconditional version with",
+                             "'cond' argument"))
+               standardGeneric("condGeneIdUniverse")
+           })
 
 ## generic "annotation" defined in Biobase
 
