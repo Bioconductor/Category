@@ -377,7 +377,11 @@ cb_buildContinTable <- function(imat, selids, min.expected=1L, min.k=1L) {
     tab <- t(cbind(found, tot - found))
     dimnames(tab) <- list(c("selected", "not"), rownames(imat))
     eCnt <- expCounts(tab)
-    keep.cols <- eCnt > min.expected
+    keep.cols <-
+      if (!is.null(min.expected))
+        eCnt > min.expected
+      else
+        as.logical(eCnt)
     tab <- tab[ , keep.cols, drop=FALSE]
     if (ncol(tab) > 0)
       tab

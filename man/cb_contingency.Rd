@@ -41,7 +41,8 @@ cb_children(n, chrGraph)
     count for columns to be included in the contingency table.  The
     expected count is \code{(rowSum * colSum) / n}.  Chromosome bands
     with a select cell count less than \code{min.expected} are dropped
-    from the table before testing occurs.}
+    from the table before testing occurs.  If \code{NULL}, then no bands
+    will be dropped.}
   \item{min.k}{An integer giving the minimum number of chromosome bands
     that must be present in a contingency table in order to proceed with
     testing.}
