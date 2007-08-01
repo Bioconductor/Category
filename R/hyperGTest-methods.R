@@ -171,6 +171,27 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     hyperGTest(params)
 }
 
+.doHyperGInternal <- function(numW, numB, numDrawn, numWdrawn, over) {
+    n21 <- numW - numWdrawn
+    n12 <- numDrawn - numWdrawn
+    n22 <- numB - n12
+
+    odds_ratio <-  (numWdrawn * n22) / (n12 * n21)
+
+    expected <- (numWdrawn + n12) * (numWdrawn + n21)
+    expected <- expected / (numWdrawn + n12 + n21 + n22)
+
+    if (over) {
+        ## take the -1 because we want evidence for as extreme or more
+        pvals <- phyper(numWdrawn - 1L, numW, numB,
+                        numDrawn, lower.tail=FALSE)
+    } else {
+        pvals <- phyper(numWdrawn, numW, numB,
+                        numDrawn, lower.tail=TRUE)
+    }
+    list(p=pvals, odds=odds_ratio, expected=expected)
+}
+
 
 .doHyperGTest <- function(p, curCat2Entrez, cat2Entrez, selected) {
     ## Here is how we conceptualize the test:
@@ -226,22 +247,6 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     ## Num drawn
     numDrawn <- length(selected) - numSelectedRemoved
 
-    n21 <- numW - numWdrawn
-    n12 <- numDrawn - numWdrawn
-    n22 <- numB - n12
-
-    odds_ratio <-  (numWdrawn * n22) / (n12 * n21)
-
-    expected <- (numWdrawn + n12) * (numWdrawn + n21)
-    expected <- expected / (numWdrawn + n12 + n21 + n22)
-
-    if (testDirection(p) == "over") {
-        ## take the -1 because we want evidence for as extreme or more
-        pvals <- phyper(numWdrawn - 1, numW, numB,
-                        numDrawn, lower.tail=FALSE)
-    } else {
-        pvals <- phyper(numWdrawn, numW, numB,
-                        numDrawn, lower.tail=TRUE)
-    }
-    list(p=pvals, odds=odds_ratio, expected=expected)
+    over <- testDirection(p) == "over"
+    .doHyperGInternal(numW, numB, numDrawn, numWdrawn, over)
 }
