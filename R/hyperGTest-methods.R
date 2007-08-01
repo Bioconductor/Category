@@ -226,11 +226,12 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
         numSelectedRemoved <- sapply(cat2RemovedEntrez,
                                      function(x) sum(selected %in% x))
 
+        numUnivRemoved <- listLen(cat2RemovedEntrez)
         ## Black balls removed from urn by conditioning
-        numOtherRemoved <- listLen(cat2RemovedEntrez) - numSelectedRemoved
+        numOtherRemoved <- numUnivRemoved - numSelectedRemoved
     } else {
         numSelectedRemoved <- rep(0, length(curCat2Entrez))
-        numOtherRemoved <- numSelectedRemoved
+        numOtherRemoved <- numUnivRemoved <- numSelectedRemoved
     }
 
     ## Num white drawn (n11)
@@ -241,8 +242,7 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     numW <- listLen(curCat2Entrez)
 
     ## Num black
-    numB <- (length(universeGeneIds(p)) - numOtherRemoved - numSelectedRemoved
-             - numW)
+    numB <- length(universeGeneIds(p)) - numUnivRemoved - numW
 
     ## Num drawn
     numDrawn <- length(selected) - numSelectedRemoved
