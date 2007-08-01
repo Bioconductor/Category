@@ -6,6 +6,8 @@
 
 \alias{annotation,GOHyperGParams-method}
 
+\alias{isConditional,GOHyperGParams-method}
+
 \alias{conditional,GOHyperGParams-method}
 \alias{conditional<-,GOHyperGParams,logical-method}
 
@@ -67,8 +69,11 @@ Class \code{"HyperGParams"}, directly.
         for the GO ontology.  When setting, \code{value} should be one
       of "BP", "CC", or "MF".}
 
-    \item{\code{conditional(p)}, \code{conditional(p) <- value}}{Accessors for the conditional flag.  When setting,
-        \code{value} must be \code{TRUE} or \code{FALSE}.}
+    \item{\code{conditional(p)}, \code{conditional(p) <-
+    value}}{Accessors for the conditional flag.  When setting,
+  \code{value} must be \code{TRUE} or \code{FALSE}.}
+
+   \item{\code{isConditional(p)}}{An alias for \code{conditional}.}
   }
 }
 

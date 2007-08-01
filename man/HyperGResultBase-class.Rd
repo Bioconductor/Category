@@ -2,6 +2,7 @@
 \docType{class}
 \alias{HyperGResultBase-class}
 
+\alias{conditional,HyperGResultBase-method}
 
 \alias{show,HyperGResultBase-method}
 

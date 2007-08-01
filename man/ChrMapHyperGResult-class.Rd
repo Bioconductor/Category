@@ -2,6 +2,8 @@
 \docType{class}
 \alias{ChrMapHyperGResult-class}
 
+\alias{conditional,ChrMapHyperGResult-method}
+
 \title{Class "ChrMapHyperGResult"}
 \description{
   This class represents the results of a Hypergeometric test for

@@ -87,9 +87,17 @@ setReplaceMethod("pvalueCutoff", "HyperGParams", function(r, value) {
 })
 
 
-setMethod("isConditional", "HyperGParams", function(r) FALSE)
-
 setMethod("conditional", "HyperGParams", function(r) FALSE)
+
+setMethod("conditional", "ChrMapHyperGParams", function(r) r@conditional)
+
+setReplaceMethod("conditional", c("ChrMapHyperGParams", "logical"),
+                 function(r, value) {
+                     if (is.na(value))
+                       stop("value must be TRUE or FALSE")
+                     r@conditional <- value
+                     r
+                 })
 
 setMethod("conditional", "GOHyperGParams", function(r) r@conditional)
 
@@ -100,6 +108,9 @@ setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
                      r@conditional <- value
                      r
                  })
+
+## an alias
+isConditional <- conditional
 
 setMethod("ontology", "HyperGParams", function(r) NA)
 
