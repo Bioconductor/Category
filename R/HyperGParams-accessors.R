@@ -44,7 +44,7 @@
 }
 setMethod("makeValidParams", "HyperGParams", .makeValidParams)
 
-setMethod("geneIds", "HyperGParams", function(r) r@geneIds)
+setMethod("geneIds", "HyperGParams", function(r, ...) r@geneIds)
 setReplaceMethod("geneIds", "HyperGParams", function(r, value) {
     r@geneIds <- value
     r

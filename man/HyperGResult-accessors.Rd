@@ -94,7 +94,7 @@ universeCounts(r)
 universeMappedCount(r)
 geneMappedCount(r)
 
-geneIds(r)
+geneIds(r, ...)
 geneIdUniverse(r, cond = TRUE)
 condGeneIdUniverse(r)
 geneIdsByCategory(r, catids = NULL)
@@ -122,6 +122,7 @@ chrGraph(r)
   \item{cond}{A logical value indicating whether to return conditional
   results for a conditional test.  The default is \code{TRUE}.  For
   non-conditional results, this argument is ignored.}
+  \item{...}{Additional arguments that may be used by specializing methods.}
 }
 
 \section{Accessor Methods (Generic Functions)}{

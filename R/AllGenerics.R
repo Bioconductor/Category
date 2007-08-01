@@ -37,7 +37,7 @@ setGeneric("condGeneIdUniverse",
 
 ## generic "annotation" defined in Biobase
 
-setGeneric("geneIds", function(r) standardGeneric("geneIds"))
+setGeneric("geneIds", function(r, ...) standardGeneric("geneIds"))
 setGeneric("geneIds<-", function(r, value) standardGeneric("geneIds<-"))
 
 setGeneric("geneIdsByCategory", signature="r",
