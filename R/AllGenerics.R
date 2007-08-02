@@ -103,3 +103,16 @@ setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
 setGeneric("GO2AllProbes", signature=c("p"),
            function(p, ontology) standardGeneric("GO2AllProbes"))
+
+## ChrBandTree accessors
+setGeneric("lgeneIds", function(r, ...) standardGeneric("lgeneIds"))
+
+setGeneric("childrenOf",
+           function(g, n, ...) standardGeneric("childrenOf"))
+
+setGeneric("parentOf",
+           function(g, n, ...) standardGeneric("parentOf"))
+
+setGeneric("allGeneIds",
+           function(g, ...) standardGeneric("allGeneIds"))
+

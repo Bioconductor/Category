@@ -95,3 +95,10 @@ setClass("ChrMapHyperGResult",
          prototype=prototype(
            chrGraph=new("graphNEL", edgemode="directed")))
 
+setClass("ChrBandTree",
+         representation=representation(
+           toParentGraph="graph",
+           toChildGraph="graph",
+           root="character",
+           level2nodes="list"))
+

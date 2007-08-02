@@ -1,7 +1,7 @@
 import("methods")
 import("AnnotationDbi")
 importMethodsFrom("Biobase", "annotation", "description")
-importFrom("RBGL", "tsort")
+importFrom("RBGL", "tsort", "dijkstra.sp")
 
 export(
        ".doHyperGTest",
@@ -11,8 +11,11 @@ export(
        "cb_contingency",
        "cb_parse_band_hsa",
        "cb_sigBands",
+       "cb_test",
        "chrBandInciMat",
+       "ChrBandTreeFromGraph",
        "DatPkgFactory",
+       "exampleLevels",
        "findAMstats",
        "geneGoHyperGeoTest",
        "geneKeggHyperGeoTest",
@@ -21,6 +24,7 @@ export(
        "makeChrBandGraph",
        "makeChrBandInciMat",
        "makeEBcontr",
+       "NewChrBandTree",
        "MAPAmat",
        "probes2MAP",
        "probes2Path",
@@ -39,7 +43,8 @@ exportClasses("DatPkg",
 
               "HyperGResultBase",
               "HyperGResult",
-              "ChrMapHyperGResult")
+              "ChrMapHyperGResult",
+              "ChrBandTree")
 
 exportMethods("hyperGTest",
 
@@ -86,4 +91,10 @@ exportMethods("hyperGTest",
 
               "initialize",
               "show",
-              "summary")
+              "summary",
+
+              ## accessors for ChrBandTree
+              "allGeneIds",
+              "childrenOf",
+              "lgeneIds",
+              "parentOf")
