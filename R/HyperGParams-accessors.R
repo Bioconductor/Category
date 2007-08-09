@@ -109,8 +109,7 @@ setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
                      r
                  })
 
-## an alias
-isConditional <- conditional
+setMethod("isConditional", "GOHyperGParams", function(r) conditional(r))
 
 setMethod("ontology", "HyperGParams", function(r) NA)
 

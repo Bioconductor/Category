@@ -28,7 +28,7 @@ entrezGeneUniverse <- function(r) {
 
 setMethod("geneIdUniverse", signature(r="ChrMapHyperGResult"),
           function(r, cond=TRUE) {
-              if (cond && isConditional(r))
+              if (cond && conditional(r))
                 nodeData(r@chrGraph, n=nodes(r@chrGraph)[r@pvalue.order],
                          attr="condGeneIds")
               else
@@ -43,4 +43,4 @@ setMethod("condGeneIdUniverse", signature(r="ChrMapHyperGResult"),
 
 
 setMethod("isConditional", signature(r="ChrMapHyperGResult"),
-          function(r) r@conditional)
+          function(r) conditional(r))

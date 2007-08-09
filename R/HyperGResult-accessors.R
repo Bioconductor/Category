@@ -56,7 +56,7 @@ setMethod("description",
           signature(object="HyperGResultBase"),
           function(object) {
               cond <- "Conditional"
-              if (!isConditional(object))
+              if (!conditional(object))
                 cond <- ""
               desc <- paste("Gene to %s", cond, "test for %s-representation")
               desc <- sprintf(desc, paste(testName(object), collapse=" "),
@@ -64,8 +64,16 @@ setMethod("description",
               desc
           })
 
+setMethod("conditional", "HyperGResultBase",
+          function(r) {
+              if (!("conditional" %in% slotNames(r)))
+                FALSE
+              else
+                r@conditional
+          })
+
 setMethod("isConditional", "HyperGResultBase",
-          function(r) FALSE)
+          function(r) conditional(r))
 
 
 setMethod("condGeneIdUniverse", signature(r="HyperGResultBase"),

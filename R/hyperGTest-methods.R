@@ -215,7 +215,7 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     ## selected  n11     n12
     ## not       n21     n22
     ##
-    if (isConditional(p)) {
+    if (conditional(p)) {
         cat2RemovedEntrez <- lapply(names(curCat2Entrez),
                                     function(goid) {
                                         setdiff(cat2Entrez[[goid]],
