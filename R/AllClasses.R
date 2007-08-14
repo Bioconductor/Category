@@ -9,6 +9,8 @@ setClass("YeastDatPkg", contains="DatPkg")
 ## For hummanLLMapping and similar
 setClass("OrganismMappingDatPkg", contains="DatPkg")
 
+setClass("Org.XX.egDatPkg", contains="DatPkg")
+
 DatPkgFactory <- function(chip) {
 
     strMatch <- function(pat, s) length(grep(pat, s)) > 0
@@ -20,6 +22,8 @@ DatPkgFactory <- function(chip) {
       pkg <- new("YeastDatPkg", name=chip)
     else if (strMatch("LLMapping", chip))
       pkg <- new("OrganismMappingDatPkg", name=chip)
+    else if (strMatch("^org\\.[a-zA-Z]+\\.eg\\.db$", chip))
+      pkg <- new("Org.XX.egDatPkg", name=chip)
     else
       pkg <- new("AffyDatPkg", name=chip)
     pkg

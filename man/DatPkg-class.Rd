@@ -4,6 +4,7 @@
 \alias{AffyDatPkg-class}
 \alias{YeastDatPkg-class}
 \alias{OrganismMappingDatPkg-class}
+\alias{Org.XX.egDatPkg-class}
 
 \alias{DatPkgFactory}
 
@@ -16,8 +17,10 @@
 \alias{ID2EntrezID,AffyDatPkg-method}
 \alias{ID2EntrezID,YeastDatPkg-method}
 \alias{ID2EntrezID,OrganismMappingDatPkg-method}
+\alias{ID2EntrezID,Org.XX.egDatPkg-method}
 \alias{GO2AllProbes,DatPkg-method}
 \alias{GO2AllProbes,OrganismMappingDatPkg-method}
+\alias{GO2AllProbes,Org.XX.egDatPkg-method}
 
 \title{Class "DatPkg"}
 \description{

@@ -18,14 +18,22 @@ setMethod("ID2GO", "OrganismMappingDatPkg",
 setMethod("ID2EntrezID", "AffyDatPkg",
           function(p) getAnnMap("ENTREZID", p@name))
 
+.createIdentifyMap <- function(keys) {
+    e <- new.env(parent=emptyenv(), hash=TRUE)
+    for (n in keys) {
+        e[[n]] <- n
+    }
+    e
+}
+
 setMethod("ID2EntrezID", "YeastDatPkg",
           function(p) {
-              ## Create an identity map
-              e <- new.env(parent=emptyenv(), hash=TRUE)
-              for (n in ls(getAnnMap("CHR", p@name))) {
-                  e[[n]] <- n
-              }
-              e
+              .createIdentifyMap(ls(getAnnMap("CHR", p@name)))
+          })
+
+setMethod("ID2EntrezID", "Org.XX.egDatPkg",
+          function(p) {
+              .createIdentifyMap(ls(getAnnMap("CHR", p@name)))
           })
 
 
@@ -64,6 +72,35 @@ setMethod("GO2AllProbes", "OrganismMappingDatPkg",
               go2eg <- l2e(removeLengthZeroAndMissing(go2eg))
               goEnvName <- paste(ontology, "OFFSPRING", sep="")
               offspring <- mget(ls(go2eg), getAnnMap(goEnvName, "GO"),
+                                ifnotfound=NA)
+              go2allEg <- new.env(parent=emptyenv(), hash=TRUE,
+                                  size=length(go2eg)*1.20)
+              for (goid in names(offspring)) {
+                  goids <- c(goid, offspring[[goid]])
+                  goids <- goids[!is.na(goids)]
+                  if (length(goids)) {
+                      egids <- mget(goids, go2eg, ifnotfound=NA)
+                      egids <- unique(unlist(egids))
+                      go2allEg[[goid]] <- egids[!is.na(egids)]
+                  }
+              }
+              go2allEg
+          })
+
+setMethod("GO2AllProbes", "Org.XX.egDatPkg",
+          function(p, ontology=c("BP", "CC", "MF")) {
+
+              db <- get("db_conn", paste("package:", p@name, sep=""))
+              sqlQ <- "SELECT DISTINCT _left.gene_id,_right.go_id
+              FROM genes AS _left INNER JOIN go_%s AS _right
+              ON _left.id=_right.id WHERE _right.go_id IS NOT NULL"
+              sqlQ <- sprintf(sqlQ, tolower(ontology))
+              go2egTab <- dbGetQuery(db, sqlQ)
+              go2eg <- l2e(split(go2egTab[["gene_id"]], go2egTab[["go_id"]]))
+
+              goEnvName <- paste(ontology, "OFFSPRING", sep="")
+              offspring <- mget(ls(go2eg),
+                                getAnnMap(goEnvName, "GO"),
                                 ifnotfound=NA)
               go2allEg <- new.env(parent=emptyenv(), hash=TRUE,
                                   size=length(go2eg)*1.20)
