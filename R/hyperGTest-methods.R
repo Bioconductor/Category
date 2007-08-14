@@ -1,27 +1,28 @@
 setMethod("hyperGTest",
           signature(p="HyperGParams"),
-          function(p) {
-              p <- makeValidParams(p)
-              origGeneIds <- geneIds(p)
-              universeGeneIds(p) <- universeBuilder(p)
-              selected <- intersect(geneIds(p), universeGeneIds(p))
-              geneIds(p) <- selected
-              cat2Entrez <- categoryToEntrezBuilder(p)
-              stats <- .doHyperGTest(p, cat2Entrez, list(),
-                                     selected)
-              ord <- order(stats$p)
-              new("HyperGResult",
-                  pvalues=stats$p[ord],
-                  oddsRatios=stats$odds[ord],
-                  expectedCounts=stats$expected[ord],
-                  catToGeneId=cat2Entrez[ord],
-                  annotation=annotation(p),
-                  geneIds=geneIds(p),
-                  testName=categoryName(p),
-                  pvalueCutoff=pvalueCutoff(p),
-                  testDirection=testDirection(p))
-          })
+          function(p) .hyperGTestInternal(p))
 
+.hyperGTestInternal <- function(p, className="HyperGResult") {
+    p <- makeValidParams(p)
+    origGeneIds <- geneIds(p)
+    universeGeneIds(p) <- universeBuilder(p)
+    selected <- intersect(geneIds(p), universeGeneIds(p))
+    geneIds(p) <- selected
+    cat2Entrez <- categoryToEntrezBuilder(p)
+    stats <- .doHyperGTest(p, cat2Entrez, list(),
+                           selected)
+    ord <- order(stats$p)
+    new(className,
+        pvalues=stats$p[ord],
+        oddsRatios=stats$odds[ord],
+        expectedCounts=stats$expected[ord],
+        catToGeneId=cat2Entrez[ord],
+        annotation=annotation(p),
+        geneIds=geneIds(p),
+        testName=categoryName(p),
+        pvalueCutoff=pvalueCutoff(p),
+        testDirection=testDirection(p))
+}
 
 chrMap_hg_test <- function(p) {
     chrGraph <- p@chrGraph
