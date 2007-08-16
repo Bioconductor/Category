@@ -41,7 +41,7 @@ setMethod("summary", signature(object="HyperGResultBase"),
           })
 
 
-htmlReportFromDf <- function(r, caption, file="", append=FALSE)
+htmlReportFromDf <- function(r, caption, file="", append=FALSE, digits=3)
 {
     have_xtable <- suppressWarnings({
         require("xtable", quietly=TRUE, warn.conflicts=FALSE)
@@ -54,7 +54,7 @@ htmlReportFromDf <- function(r, caption, file="", append=FALSE)
         return(invisible(FALSE))
     }
     ## XXX: Hard-coded column formatting here
-    dig <- rep(2, ncol(r)+1)  ## need +1 for xtable row name
+    dig <- rep(digits, ncol(r)+1)  ## need +1 for xtable row name
     dig[5:7] <- 0
     xt <- xtable(r, caption=caption,
                  digits=dig)
@@ -84,11 +84,16 @@ XXX_getSummaryGeneric_XXX <- function() {
 }
 
 setMethod("htmlReport", signature(r="HyperGResultBase"),
-          function(r, file="", append=FALSE, label="", ...)
+          function(r, file="", append=FALSE, label="", digits=3,
+                   summary.args=NULL)
           {
               summary <- XXX_getSummaryGeneric_XXX()
-              htmlReportFromDf(r=summary(r, ...),
+              if (!is.null(summary.args) && !is.list(summary.args))
+                stop("'summary.args' must be NULL or a list of arguments for",
+                     " the summary method")
+              df <- do.call(summary, c(list(r), summary.args))
+              htmlReportFromDf(r=df,
                                caption=paste(label, description(r)),
-                               file=file, append=append)
+                               file=file, append=append, digits=digits)
           })
 

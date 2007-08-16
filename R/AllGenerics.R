@@ -88,7 +88,8 @@ setGeneric("isConditional", function(r) {
     standardGeneric("isConditional")
     })
 
-setGeneric("htmlReport", function(r, file="", append=FALSE, label="", ...)
+setGeneric("htmlReport", function(r, file="", append=FALSE, label="",
+                                  digits=3, summary.args=NULL)
            standardGeneric("htmlReport"),
            signature=c("r"))
 
