@@ -25,6 +25,6 @@ probes2MAP(pids, data = "hgu133plus2")
   set.seed(123)
   library("hgu95av2.db")
   v1 = sample(names(as.list(hgu95av2MAP)), 100)
-  pp = probes2MAP(v1, "hgu95av2")
+  pp = probes2MAP(v1, "hgu95av2.db")
 }
 \keyword{ manip }

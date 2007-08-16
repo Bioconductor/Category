@@ -27,7 +27,7 @@ probes2Path(pids, data = "hgu133plus2")
 \examples{
  library("hgu95av2.db")
  x = c("1001_at", "1000_at")
- probes2Path(x, "hgu95av2")
+ probes2Path(x, "hgu95av2.db")
 
 }
 \keyword{manip}

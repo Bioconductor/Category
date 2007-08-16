@@ -6,12 +6,12 @@ base_cbind <- function (..., deparse.level = 1)
   .Internal(cbind(deparse.level, ...))
 
 probes2MAP <- function (pids, data = "hgu133plus2") {
-    pEnv = get(paste(data, "MAP", sep = ""))
+    pEnv = getAnnMap("MAP", chip=data)
     inMAP = mget(pids, pEnv, ifnotfound = NA)
     inMAP[!is.na(inMAP)]
 }
 
-   MAPAmat <- function (data, minCount=5) {
+MAPAmat <- function (data, minCount=5) {
     if (!is.character(data) || length(data) != 1)
         stop("wrong argument")
     dataE = as.list(getAnnMap("MAP", chip=data))

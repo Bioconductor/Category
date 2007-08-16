@@ -77,10 +77,10 @@ Objects should be created using \code{NewChrBandTree} or
 }
 
 \examples{
-library("hgu95av2")
+library("hgu95av2.db")
 set.seed(0xfeee)
 univ = NULL ## use all Entrez Gene IDs on the chip (not recommended)
-ct = NewChrBandTree("hgu95av2", univ)
+ct = NewChrBandTree("hgu95av2.db", univ)
 
 length(allGeneIds(ct))
 

@@ -36,7 +36,7 @@ makeChrBandGraph(chip, univ = NULL)
 \author{Seth Falcon}
 
 \examples{
-chrGraph <- makeChrBandGraph("hgu95av2")
+chrGraph <- makeChrBandGraph("hgu95av2.db")
 chrGraph
 }
 

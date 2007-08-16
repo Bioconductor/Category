@@ -24,7 +24,7 @@ applyByCategory = function(stats, Amat, FUN=mean, ...)
 
 ##given a set of AffyIDs, which have pathway data
 probes2Path = function(pids, data="hgu133plus2") {
-    pEnv = get(paste(data, "PATH", sep=""))
+    pEnv = getAnnMap("PATH", data)
     inPW = mget(pids, pEnv, ifnotfound=NA)
     inPW[!is.na(inPW)]
 }

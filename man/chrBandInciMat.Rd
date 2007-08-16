@@ -41,7 +41,7 @@ makeChrBandInciMat(chrGraph)
 \seealso{\code{\link{makeChrBandGraph}}}
 \examples{
 \dontrun{
-mm <- chrBandInciMat("hgu95av2")
+mm <- chrBandInciMat("hgu95av2.db")
 }
 }
 
