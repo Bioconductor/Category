@@ -3,7 +3,7 @@
 % likely to be overwritten.
 %
 % \VignetteIndexEntry{Using Categories to Analyze Microarray Data}
-%\VignetteDepends{Biobase, genefilter, hgu95av2.db, RColorBrewer}
+%\VignetteDepends{Biobase, genefilter, hgu95av2.db, RColorBrewer, KEGG.db}
 %\VignetteSuggests{Rgraphviz}
 %\VignetteKeywords{EDA, graphs, ontology, visualization}
 %\VignettePackage{GOstats}
@@ -109,7 +109,7 @@ to taking a more global view.
 library("Biobase")
 library("annotate")
 library("hgu95av2.db")
-library("KEGG")
+library("KEGG.db")
 library("genefilter")
 library("Category")
 library("ALL")

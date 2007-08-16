@@ -1,9 +1,9 @@
 ## x: a vector of GO categories
 augmentByAncestors = function(x) {
-
-   s1 = x %in% ls(GOMFANCESTOR)
-   s2 = x %in% ls(GOBPANCESTOR)
-   s3 = x %in% ls(GOCCANCESTOR)
+   ## NOTE: this function implicitly does require("GO.db") or require("GO")
+   s1 = x %in% ls(getAnnMap("MFANCESTOR", "GO", load=TRUE))
+   s2 = x %in% ls(getAnnMap("BPANCESTOR", "GO"))
+   s3 = x %in% ls(getAnnMap("CCANCESTOR", "GO"))
    s4 = is.na(x)
 
    ## throw warning if some not found

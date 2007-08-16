@@ -51,7 +51,9 @@ setMethod("summary", signature(object="KEGGHyperGResult"),
                   return(df)
               }
               keggIds <- df[[1]]
-              keggTerms <- unlist(mget(keggIds, KEGGPATHID2NAME, ifnotfound=NA))
+              ## implicit require("KEGG.db") or require("KEGG")
+              keggEnv <- getAnnMap("PATHID2NAME", "KEGG", load=TRUE)
+              keggTerms <- unlist(mget(keggIds, keggEnv, ifnotfound=NA))
               if(htmlLinks){
                   keggIdUrls <- sapply(keggIds,
                                        function(x) sprintf(KEGG_URL, x))

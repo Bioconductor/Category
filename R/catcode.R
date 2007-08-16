@@ -29,8 +29,11 @@ probes2Path = function(pids, data="hgu133plus2") {
     inPW[!is.na(inPW)]
 }
 
-getPathNames = function(iPW)
-    mget(iPW, KEGGPATHID2NAME, ifnotfound = NA)
+getPathNames = function(iPW) {
+    ## implicit require("KEGG.db") or require("KEGG")
+    keggEnv = getAnnMap("PATHID2NAME", "KEGG", load=TRUE)
+    mget(iPW, keggEnv, ifnotfound = NA)
+}
 
 ttperm = function(x, fac, B=100, tsO=TRUE) {
     obs = rowttests(x, fac, tstatOnly= tsO)
