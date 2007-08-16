@@ -90,6 +90,11 @@ setClass("HyperGResult",
            expectedCounts="numeric",
            catToGeneId="list"))
 
+setClass("KEGGHyperGResult",
+         contains="HyperGResult")
+
+setClass("PFAMHyperGResult",
+         contains="HyperGResult")
 
 setClass("ChrMapHyperGResult",
          contains="HyperGResultBase",

@@ -44,7 +44,9 @@ exportClasses("DatPkg",
               "HyperGResultBase",
               "HyperGResult",
               "ChrMapHyperGResult",
-              "ChrBandTree")
+              "ChrBandTree",
+              "KEGGHyperGResult",
+              "PFAMHyperGResult")
 
 exportMethods("hyperGTest",
 
