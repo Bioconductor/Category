@@ -90,6 +90,7 @@ setClass("HyperGResult",
            expectedCounts="numeric",
            catToGeneId="list"))
 
+
 setClass("ChrMapHyperGResult",
          contains="HyperGResultBase",
          representation=representation(

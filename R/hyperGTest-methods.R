@@ -3,6 +3,7 @@ setMethod("hyperGTest",
           function(p) .hyperGTestInternal(p))
 
 .hyperGTestInternal <- function(p, className="HyperGResult") {
+    className <- paste(categoryName(p), className, sep="")
     p <- makeValidParams(p)
     origGeneIds <- geneIds(p)
     universeGeneIds(p) <- universeBuilder(p)
