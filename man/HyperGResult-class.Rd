@@ -1,6 +1,8 @@
 \name{HyperGResult-class}
 \docType{class}
 \alias{HyperGResult-class}
+\alias{KEGGHyperGResult-class}
+\alias{PFAMHyperGResult-class}
 
 \title{Class "HyperGResult"}
 \description{

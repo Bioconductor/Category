@@ -4,6 +4,8 @@
 \alias{hyperGTest}
 \alias{hyperGTest,HyperGParams-method}
 \alias{hyperGTest,ChrMapHyperGParams-method}
+\alias{hyperGTest,KEGGHyperGParams-method}
+\alias{hyperGTest,PFAMHyperGParams-method}
 
 \title{Hypergeometric Test for association of categories and genes}
 

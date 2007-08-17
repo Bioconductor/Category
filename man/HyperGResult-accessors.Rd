@@ -67,9 +67,13 @@
 \alias{expectedCounts,ChrMapHyperGResult-method}
 
 \alias{summary,HyperGResultBase-method}
+\alias{summary,KEGGHyperGResult-method}
+\alias{summary,PFAMHyperGResult-method}
 
 \alias{htmlReport}
 \alias{htmlReport,HyperGResultBase-method}
+\alias{htmlReport,KEGGHyperGResult-method}
+\alias{htmlReport,PFAMHyperGResult-method}
 
 
 \docType{genericFunction}
