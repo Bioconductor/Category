@@ -43,7 +43,14 @@ setMethod("summary", signature(object="HyperGResultBase"),
 setMethod("summary", signature(object="KEGGHyperGResult"),
           function(object, pvalue=pvalueCutoff(object),
                    categorySize=NULL, htmlLinks=FALSE){
-              KEGG_URL <- "http://www.genome.jp/dbget-bin/www_bget?path:hsa%s"
+              KEGG_URL <- "http://www.genome.jp/dbget-bin/www_bget?path:%s%s"
+              annOrg <- get(paste(annotation(object), "ORGANISM", sep=""))
+              orgSpecifier <- switch(annOrg,
+                                     "Homo sapiens"="hsa",
+                                     "Mus musculus"="mmu",
+                                     "Rattus norvegicus"="rnu",
+                                     ## will need others in future
+                                     "hsa")
               df <- callNextMethod(object=object, pvalue=pvalue,
                                    categorySize=categorySize)
               if(nrow(df) == 0){
@@ -56,7 +63,8 @@ setMethod("summary", signature(object="KEGGHyperGResult"),
               keggTerms <- unlist(mget(keggIds, keggEnv, ifnotfound=NA))
               if(htmlLinks){
                   keggIdUrls <- sapply(keggIds,
-                                       function(x) sprintf(KEGG_URL, x))
+                                       function(x)
+                                       sprintf(KEGG_URL, orgSpecifier, x))
                   keggTerms <- paste('<a href="', keggIdUrls, '">', keggTerms,
                                      '</a>', sep="")
               }
