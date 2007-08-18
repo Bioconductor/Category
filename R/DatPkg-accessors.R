@@ -58,6 +58,7 @@ setMethod("GO2AllProbes", "DatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
               ontIds <- aqListGOIDs(ontology)
               go2all <- getAnnMap("GO2ALLPROBES", p@name)
+              ontIds <- intersect(ontIds, ls(go2all))
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
               l2e(go2allOnt)
