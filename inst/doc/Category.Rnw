@@ -532,6 +532,7 @@ to do this is available as the \Rfunction{applyByCategory} function.
 
 @
 
+\bibliography{cat}
 
 \end{document}
 
