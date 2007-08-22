@@ -1,0 +1,6 @@
+Output formatting
+  - pvalue should default to 3 digits
+  - exp count should be float with 2 digits
+  - odds can be 2 as well.
+  - need a way to allow customization for these :-(
+  - mark conditional items with a star or color?
