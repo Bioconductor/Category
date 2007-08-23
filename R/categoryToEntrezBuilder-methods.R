@@ -22,6 +22,9 @@ setMethod("categoryToEntrezBuilder",
 getGoToEntrezMap_db <- function(p) {
     annPkgNS <- getNamespace(annotation(p))
     db <- get("db_conn", annPkgNS)
+    ## Obtain all unique GO IDs from specified ontology that have at
+    ## least one of the genes from geneIds(p) annotated at it.  These
+    ## are the GO IDs that form the keys in our GO_to_Entrez map.
     SQL <- "SELECT DISTINCT _right.go_id
 FROM genes AS _left INNER JOIN go_%s_all AS _right
 ON _left.id = _right.id
@@ -29,6 +32,9 @@ WHERE _left.gene_id IN (%s) AND 1 AND _right.go_id IS NOT NULL"
     inClause <- paste(sQuote(geneIds(p)), collapse=",")
     SQL <- sprintf(SQL, ontology(p), inClause)
     wantedGO <- dbGetQuery(db, SQL)[[1]]
+    ## Now collect the Entrez IDs annotated at our wantedGO IDs making
+    ## sure to only keep those that are in the gene ID universe
+    ## specified in p.
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
     SQL <- "SELECT DISTINCT _left.gene_id, _right.go_id
 FROM genes AS _left INNER JOIN go_%s_all AS _right ON
