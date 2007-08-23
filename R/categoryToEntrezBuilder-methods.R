@@ -7,7 +7,7 @@ setMethod("categoryToEntrezBuilder",
 setMethod("categoryToEntrezBuilder",
           signature(p="GOHyperGParams"),
           function(p) {
-              if (isDBDatPkg(p@datPkg)  && testDirection(p) == "over")
+              if (isDBDatPkg(p@datPkg))
                 getGoToEntrezMap_db(p)
               else
                 getGoToEntrezMap(p)
@@ -20,29 +20,45 @@ setMethod("categoryToEntrezBuilder",
           })
 
 getGoToEntrezMap_db <- function(p) {
+    keep.all <- switch(testDirection(p),
+                       over=FALSE,
+                       under=TRUE,
+                       stop("Bad testDirection slot"))
     annPkgNS <- getNamespace(annotation(p))
     db <- get("db_conn", annPkgNS)
+    univ <- unlist(universeGeneIds(p), use.names=FALSE)
+
+    ## For over representation:
     ## Obtain all unique GO IDs from specified ontology that have at
-    ## least one of the genes from geneIds(p) annotated at it.  These
-    ## are the GO IDs that form the keys in our GO_to_Entrez map.
+    ## least one of the genes from geneIds(p) annotated at it.
+    ##
+    ## For under representation:
+    ## Obtain all unique GO IDs from specified ontology that have at
+    ## least one of the genes from univ annotated at it.
+    ##
+    ## These are the GO IDs that form the keys in our GO_to_Entrez map.
     SQL <- "SELECT DISTINCT _right.go_id
 FROM genes AS _left INNER JOIN go_%s_all AS _right
 ON _left.id = _right.id
 WHERE _left.gene_id IN (%s) AND 1 AND _right.go_id IS NOT NULL"
-    inClause <- paste(sQuote(geneIds(p)), collapse=",")
-    SQL <- sprintf(SQL, ontology(p), inClause)
+    inClause1 <- if (!keep.all)
+      geneIds(p)
+    else
+      univ
+    inClause1 <- paste(sQuote(inClause1), collapse=",")
+    SQL <- sprintf(SQL, ontology(p), inClause1)
     wantedGO <- dbGetQuery(db, SQL)[[1]]
     ## Now collect the Entrez IDs annotated at our wantedGO IDs making
     ## sure to only keep those that are in the gene ID universe
     ## specified in p.
-    univ <- unlist(universeGeneIds(p), use.names=FALSE)
     SQL <- "SELECT DISTINCT _left.gene_id, _right.go_id
 FROM genes AS _left INNER JOIN go_%s_all AS _right ON
 _left.id=_right.id WHERE _left.gene_id IS NOT NULL AND 1 AND
 _right.go_id IN (%s) AND _left.gene_id IN (%s)"
-    inClause1 <- paste(sQuote(wantedGO), collapse=",")
-    inClause2 <- paste(sQuote(univ), collapse=",")
-    SQL <- sprintf(SQL, ontology(p), inClause1, inClause2)
+    inClauseGO <- paste(sQuote(wantedGO), collapse=",")
+    if (!keep.all)                      # avoid recomputing
+      inClause1 <- paste(sQuote(univ), collapse=",")
+    SQL <- sprintf(SQL, ontology(p), inClauseGO, inClause1)
     ans <- dbGetQuery(db, SQL)
     split(ans[["gene_id"]], ans[["go_id"]])
 }
@@ -51,7 +67,7 @@ getGoToEntrezMap <- function(p) {
     keep.all <- switch(testDirection(p),
                        over=FALSE,
                        under=TRUE,
-                       stop("Bad testDirection slot"))    
+                       stop("Bad testDirection slot"))
     lib <- p@datPkg
     ontology <- ontology(p)
     ## Return a list mapping GO ids to the Entrez Gene ids annotated
@@ -104,7 +120,6 @@ probeToEntrezMapHelper <- function(probeAnnot, selected, lib, universe,
     ## selected list.
     id2entrezEnv <- ID2EntrezID(lib)
     egAnnot <- lapply(probeAnnot, function(x) {
-        z <- unique(x)
         z <- unique(unlist(mget(unique(x), id2entrezEnv)))
         z  <- intersect(z, universe)
         ## would be nice to have a short-circuiting way to do this
