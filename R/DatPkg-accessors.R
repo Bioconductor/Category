@@ -116,3 +116,8 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
               }
               go2allEg
           })
+
+isDBDatPkg <- function(dpkg) {
+    ## FIXME: this is fragile
+    typeof(getAnnMap("ENTREZID", dpkg@name)) != "environment"
+}

@@ -7,6 +7,9 @@ setMethod("categoryToEntrezBuilder",
 setMethod("categoryToEntrezBuilder",
           signature(p="GOHyperGParams"),
           function(p) {
+              if (isDBDatPkg(p@datPkg)  && testDirection(p) == "over")
+                getGoToEntrezMap_db(p)
+              else
                 getGoToEntrezMap(p)
           })
 
@@ -16,34 +19,27 @@ setMethod("categoryToEntrezBuilder",
               getPfamToEntrezMap(p)
           })
 
-
-XXXgetGoToEntrezMap_db <- function(p) {
-    keep.all <- switch(testDirection(p), over=FALSE, under=TRUE,
-                       stop("Bad testDirection slot"))    
-    db <- p@datPkg@getdb()
-    ontology <- ontology(p)
-    ourGeneIds <- paste("'", geneIds(p), "'", sep="", collapse=",")
-    SQL <- "
-select gene_id, go_id from go_XX_all, genes where
-  go_id in (select distinct go_id from go_XX_all, genes
-           where gene_id in (%s) and go_XX_all.id = genes.id)
-  and go_XX_all.id = genes.id
-"
-    SQL <- gsub("XX", ontology, SQL)
-    SQL <- sprintf(SQL, ourGeneIds)
-    rs <- dbSendQuery(db, SQL)
-    on.exit(dbClearResult(rs))
-    ans <- fetch(rs, n=-1)
-    go2all <- split(ans[[1]], ans[[2]])
+getGoToEntrezMap_db <- function(p) {
+    annPkgNS <- getNamespace(annotation(p))
+    db <- get("db_conn", annPkgNS)
+    SQL <- "SELECT DISTINCT _right.go_id
+FROM genes AS _left INNER JOIN go_%s_all AS _right
+ON _left.id = _right.id
+WHERE _left.gene_id IN (%s) AND 1 AND _right.go_id IS NOT NULL"
+    inClause <- paste(sQuote(geneIds(p)), collapse=",")
+    SQL <- sprintf(SQL, ontology(p), inClause)
+    wantedGO <- dbGetQuery(db, SQL)[[1]]
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
-    go2all <- lapply(go2all, function(eg) {
-        z <- intersect(univ, eg)
-        stopifnot(length(z) > 0)
-        z
-    })
-    go2all
+    SQL <- "SELECT DISTINCT _left.gene_id, _right.go_id
+FROM genes AS _left INNER JOIN go_%s_all AS _right ON
+_left.id=_right.id WHERE _left.gene_id IS NOT NULL AND 1 AND
+_right.go_id IN (%s) AND _left.gene_id IN (%s)"
+    inClause1 <- paste(sQuote(wantedGO), collapse=",")
+    inClause2 <- paste(sQuote(univ), collapse=",")
+    SQL <- sprintf(SQL, ontology(p), inClause1, inClause2)
+    ans <- dbGetQuery(db, SQL)
+    split(ans[["gene_id"]], ans[["go_id"]])
 }
-
 
 getGoToEntrezMap <- function(p) {
     keep.all <- switch(testDirection(p),
