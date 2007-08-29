@@ -53,7 +53,7 @@ getUniverseViaGo <- function(p) {
         ## FIXME: *Mapping packages don't have a list,
         ##        but just the GO ID, so we have to branch
         if (!is.character(goids[[1]])) ## the Affy case
-          goids <- sapply(goids, function(x) x$GOID)
+          goids <- subListExtract(goids, "GOID", simplify=TRUE)
         if (any(goids %in% ontIds))
           return(TRUE)
         FALSE
