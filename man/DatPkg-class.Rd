@@ -41,6 +41,10 @@
   format of the \code{*LLMappings} packages is unique and this class
   allows for interface methods to make it interchangeable with the other
   formats.
+
+  \code{Org.XX.egDatPkg} is a subclass of \code{DatPkg} used to
+  represent the \code{org.*.eg.db} organism-level Entez Gene based
+  annotation data packages.
   
 }
 \section{Objects from the Class}{
@@ -65,6 +69,5 @@
 DatPkgFactory("hgu95av2.db")
 DatPkgFactory("YEAST")
 DatPkgFactory("fooLLMappings")
-
 }
 \keyword{classes}
