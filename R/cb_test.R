@@ -1,4 +1,4 @@
-local_test_factory <- function(selids, PCUT=0.05, tableTest=chisq.test)
+local_test_factory <- function(selids, tableTest=chisq.test)
 {
     force(selids)
     anyexist <- function(keys, env) {
@@ -178,7 +178,7 @@ cb_test <- function(selids, chrtree, level,
                    down=topdown_iter,
                    stop("'dir' must be 'up' or 'down'"))
     tfun <- switch(type,
-                   local=local_test_factory(selids, pval),
+                   local=local_test_factory(selids),
                    global=hg_test_factory(selids, pval, COND=conditional),
                    stop("'type' must be 'local' or 'global'"))
 
