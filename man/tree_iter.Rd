@@ -37,7 +37,7 @@ tree_iter(g, start, tfun, nfun, relationOf)
 \value{
   See the return value of \code{cb_test} to get an idea.
 }
-\author{S. Falcon}
+\author{Seth Falcon}
 
 \keyword{ }
 

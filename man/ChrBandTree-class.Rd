@@ -57,7 +57,7 @@ Objects should be created using \code{NewChrBandTree} or
   \item{geneIds}{Return a vector of gene IDs for a single band.}
   
   \item{lgeneIds}{Return a list of vectors of gene IDs when given more
-    than one band.}
+    than one band.  The "l" prefix is for list.}
   
   \item{parentOf}{Return the parents of the specified bands.  See
     \code{childrenOf} for a description of the structure of the return

@@ -3,7 +3,10 @@
 
 \title{Chromosome Band Tree-Based Hypothesis Testing}
 \description{
-  ... SOON ...
+  \code{cb_test} is a flexible tool for discovering interesting
+  chromosome bands relative to a selected gene list.  The function
+  supports local and global tests which can be carried out in a top down
+  or bottom up fashion on the tree of chromosome bands.
 }
 \usage{
 cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global"), pval = 0.05, conditional = FALSE)
@@ -58,8 +61,8 @@ cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global
   depending on \code{dir}.
 
   Each level element is itself a list consisting of a result list for
-  each node or set of nodes tested.  These inner-most lists will have
-  components:
+  each node or set of nodes tested.  These inner-most lists will have,
+  at least, the following components:
 
     \item{nodes}{A character vector of the nodes involved in the test.}
     \item{p.value}{The p-value for the test}
@@ -67,7 +70,7 @@ cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global
     \item{method}{A brief description of the test method}
 }
 
-\author{S. Falcon}
+\author{Seth Falcon}
 
 \keyword{ }
 

@@ -1,6 +1,5 @@
 tree_iter <- function(g, start, tfun, nfun, relationOf)
 {
-    ## assumes g has edges from parent to child
     i <- 1L
     e <- new.env(hash=TRUE, parent=emptyenv())
     prev_ans <- list()
