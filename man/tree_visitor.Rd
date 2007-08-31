@@ -1,5 +1,5 @@
-\name{tree_iter}
-\alias{tree_iter}
+\name{tree_visitor}
+\alias{tree_visitor}
 \alias{bottomup_iter}
 \alias{topdown_iter}
 
@@ -9,7 +9,7 @@
   determined by the \code{relationOf} function.
 }
 \usage{
-tree_iter(g, start, tfun, nfun, relationOf)
+tree_visitor(g, start, tfun, nfun, relationOf)
 }
 
 \arguments{

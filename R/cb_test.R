@@ -98,7 +98,7 @@ hg_test_factory <- function(selids, PCUT=0.05, COND=FALSE, OVER=TRUE)
     }
 }
 
-## these are for testing the tree_iter functions
+## these are for testing the tree_visitor functions
 global_tdummy <- function(start, g, prev_ans)
 {
     set.seed(0xeeff)

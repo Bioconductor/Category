@@ -1,4 +1,4 @@
-tree_iter <- function(g, start, tfun, nfun, relationOf)
+tree_visitor <- function(g, start, tfun, nfun, relationOf)
 {
     i <- 1L
     e <- new.env(hash=TRUE, parent=emptyenv())
@@ -21,10 +21,10 @@ tree_iter <- function(g, start, tfun, nfun, relationOf)
 
 topdown_iter <- function(g, start, tfun, nfun)
 {
-    tree_iter(g, start, tfun, nfun, childrenOf)
+    tree_visitor(g, start, tfun, nfun, childrenOf)
 }
 
 bottomup_iter <- function(g, start, tfun, nfun)
 {
-    tree_iter(g, start, tfun, nfun, parentOf)
+    tree_visitor(g, start, tfun, nfun, parentOf)
 }
