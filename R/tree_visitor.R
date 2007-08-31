@@ -19,12 +19,12 @@ tree_visitor <- function(g, start, tfun, nfun, relationOf)
     as.list(e)
 }
 
-topdown_iter <- function(g, start, tfun, nfun)
+topdown_tree_visitor <- function(g, start, tfun, nfun)
 {
     tree_visitor(g, start, tfun, nfun, childrenOf)
 }
 
-bottomup_iter <- function(g, start, tfun, nfun)
+bottomup_tree_visitor <- function(g, start, tfun, nfun)
 {
     tree_visitor(g, start, tfun, nfun, parentOf)
 }

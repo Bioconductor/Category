@@ -5,7 +5,7 @@
 \title{Local and Global Test Function Factories}
 \description{
   These functions return functions appropriate for use as the
-  \code{tfun} argument to \code{topdown_iter} or \code{bottomup_iter}.
+  \code{tfun} argument to \code{topdown_tree_visitor} or \code{bottomup_tree_visitor}.
   In particular, it is these functions that are associated with the
   "local" and "global" options for the \code{type} argument to
   \code{cb_test}.

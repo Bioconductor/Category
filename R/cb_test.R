@@ -67,7 +67,7 @@ hg_test_factory <- function(selids, PCUT=0.05, COND=FALSE, OVER=TRUE)
             aNodeGenes <- geneIds(g, aNode)
             univ <- allGeneIds(g)
             if (COND) {
-                ## XXX: this only makes sense with bottomup_iter for now.
+                ## XXX: this only makes sense with bottomup_tree_visitor for now.
                 kids <- childrenOf(g, aNode)[[1]]
                 kids_ans <- list()
                 if (length(kids)) {
@@ -174,8 +174,8 @@ cb_test <- function(selids, chrtree, level,
       stop("'pval' must be bewteen 0 and 1")
 
     iter <- switch(dir,
-                   up=bottomup_iter,
-                   down=topdown_iter,
+                   up=bottomup_tree_visitor,
+                   down=topdown_tree_visitor,
                    stop("'dir' must be 'up' or 'down'"))
     tfun <- switch(type,
                    local=local_test_factory(selids),
