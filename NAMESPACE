@@ -10,6 +10,7 @@ export(
        "cb_children",
        "cb_contingency",
        "cb_parse_band_hsa",
+       "cb_parse_band_mmus",
        "cb_sigBands",
        "cb_test",
        "chrBandInciMat",

@@ -73,7 +73,7 @@ Objects should be created using \code{NewChrBandTree} or
   and all bands on the path to the root will be represented in the
   resulting tree.
 
-  Currently there is only support for human data.
+  Currently there is only support for human and mouse data.
 }
 
 \examples{

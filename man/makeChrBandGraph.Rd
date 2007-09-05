@@ -26,7 +26,7 @@ makeChrBandGraph(chip, univ = NULL)
   This function parses the data stored in the
   \code{<chip>MAP} map from the appropriate annotation data package.
   Although cytogenetic bands are observed in all organisms, currently,
-  only human band nomenclature is supported.
+  only human and mouse band nomenclatures are supported.
 }
 \value{
   A \code{\link[graph]{graph-class}} instance.  The graph will be a

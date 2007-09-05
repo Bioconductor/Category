@@ -39,18 +39,20 @@ MAPAmat <- function (data, minCount=5) {
 
 ### ------------------------------------------------------------------
 
-cleanMapAndsOrs <- function(e2m) {
+cleanMapAndsOrs <- function(e2m, org) {
     ## The map data is a bit odd and we get things like: "Xq28 and Yq12"
     ## and "Xp22.3 or Yp11.3".  This function maps these to a proper
     ## vector of length 2.
-    for (eg in ls(e2m)) {
-        e2m[[eg]] <- unlist(strsplit(e2m[[eg, exact=TRUE]], " and | or "))
-    }
+     if(org == "ORGANISM:Homo sapiens"){
+         for (eg in ls(e2m)) {
+             e2m[[eg]] <- unlist(strsplit(e2m[[eg, exact=TRUE]], " and | or "))
+         }
+     }
     e2m
 }
 
 
-cleanMapWeird <- function(e2m) {
+cleanMapWeird <- function(e2m, org) {
     ## Current MAP annotation data contains weird entries like:
     ##     "1 69.9 cM"
     ##     "1 E4"
@@ -65,64 +67,87 @@ cleanMapWeird <- function(e2m) {
     ## look for annotations with spaces and drop them.
     for (eg in ls(e2m)) {
         val <- e2m[[eg, exact=TRUE]]
-        badIdx <- grep(" ", val)
-        if (length(badIdx) > 0) {
-            good <- val[-badIdx]
-            if (length(good) == 0)
-              good <- as.character(NA)
-        } else {
-            good <- val
+        if(org == "ORGANISM:Homo sapiens"){
+            badIdx <- grep(" ", val)
+            if (length(badIdx) > 0) {
+                good <- val[-badIdx]
+                if (length(good) == 0)
+                  good <- as.character(NA)
+            } else {
+                good <- val
+            }
+            e2m[[eg]] <- good
         }
-        e2m[[eg]] <- good
+               
     }
     e2m
 }
 
 
-cleanRanges <- function(e2m) {
+cleanRanges <- function(e2m, org) {
     ## We use (p|q) even though it will match nonsense annotations like
     ## "6p23-q24".  These seem to appear in the data.  But it is OK
     ## since we are taking the longest common suffix and that will just
     ## be the chromosome in these cases.
-    rangePat <- "[0-9XY]+(q|p)([0-9.]+|ter)-(q|p)([0-9.]+|ter)"
-    cenPat <- "cen"
-
-    for (eg in ls(e2m)) {
-        e2m[[eg]] <- sapply(e2m[[eg, exact=TRUE]], function(z) {
-            if (length(grep("-", z, fixed=TRUE))) {
-                if (length(grep(rangePat, z, perl=TRUE))) {
-                    arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
-                    lhs <- substr(z, 1L, arm.loc[2L]-1L)
-                    rhs <- paste(substr(z, 1L, arm.loc[1L]-1L),
-                                 substr(z, arm.loc[2L]+1L, nchar(z)), sep="")
-                    ans <- lcPrefixC(c(lhs, rhs))
-                    nc <- nchar(ans)
-                    if (substr(ans, nc, nc) == ".")
-                      ans <- substr(ans, 1L, nc - 1L)
-                    ans
-                } else if (length(grep(cenPat, z, perl=TRUE))) {
-                    ## FIXME:
-                    ## for range including centromere, we just
-                    ## take the entire chromosome.
-                    ## Could we do better and include arm info?
-                    substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+    
+    if(org == "ORGANISM:Homo sapiens"){
+        rangePat <- "[0-9XY]+(q|p)([0-9.]+|ter)-(q|p)([0-9.]+|ter)"
+        cenPat <- "cen"
+        for (eg in ls(e2m)) {
+            e2m[[eg]] <- sapply(e2m[[eg, exact=TRUE]], function(z) {
+                if (length(grep("-", z, fixed=TRUE))) {
+                    if (length(grep(rangePat, z, perl=TRUE))) {
+                        arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
+                        lhs <- substr(z, 1L, arm.loc[2L]-1L)
+                        rhs <- paste(substr(z, 1L, arm.loc[1L]-1L),
+                                     substr(z, arm.loc[2L]+1L, nchar(z)), sep="")
+                        ans <- lcPrefixC(c(lhs, rhs))
+                        nc <- nchar(ans)
+                        if (substr(ans, nc, nc) == ".")
+                          ans <- substr(ans, 1L, nc - 1L)
+                        ans
+                    } else if (length(grep(cenPat, z, perl=TRUE))) {
+                        ## FIXME:
+                        ## for range including centromere, we just
+                        ## take the entire chromosome.
+                        ## Could we do better and include arm info?
+                        substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+                    } else {
+                        parts <- strsplit(z, "-", fixed=TRUE)[[1]]
+                        ans <- lcPrefix(parts)
+                        if (nchar(ans) < 1)
+                          ans <- substr(z, 1L, regexpr("cen|q|p", z) - 1L)
+                        warning("unexpected band notation: ", z, " using ", ans,
+                                call.=FALSE)
+                        ans
+                    }
                 } else {
-                    parts <- strsplit(z, "-", fixed=TRUE)[[1]]
-                    ans <- lcPrefix(parts)
-                    if (nchar(ans) < 1)
-                      ans <- substr(z, 1L, regexpr("cen|q|p", z) - 1L)
-                    warning("unexpected band notation: ", z, " using ", ans,
-                            call.=FALSE)
-                    ans
+                    z
                 }
-            } else {
-                z
-            }
-        })
+            })
+        }
+    }
+    if(org == "ORGANISM:Mus musculus"){
+        cmPat <- "[[:space:]].*cM$"
+        cenPat <- "[[:space:]]centromere$"
+        rangePat <- "[0-9XY]+[[:space:]][A-Z]+(-|/)[A-Z]+"
+        for (eg in ls(e2m)) {
+            e2m[[eg]] <- sapply(e2m[[eg, exact=TRUE]], function(z) {
+                if (length(grep(rangePat, z, fixed=TRUE))) {
+                    arm.loc <- gregexpr("(q|p|-)", z)[[1L]]
+                }else  if (length(grep(cenPat, z, perl=TRUE))){
+                    substr(z, 1L, regexpr(cenPat, z) - 1L)
+                } else if (length(grep(cmPat, z, perl=TRUE))){
+                    substr(z, 1L, regexpr(cmPat, z) - 1L)
+                }
+                else {
+                    z
+                }
+            })
+        }
     }
     e2m
 }
-
 
 annBaseName <- function(p) {
     baseName <- p@datPkg@baseName
@@ -132,8 +157,11 @@ makeChrMapToEntrez <- function(chip, univ) {
     .getMap <- function(map)
       getAnnMap(map=map, chip=chip)
     probe2chr <- .getMap(map="MAP")
+    org <- paste("ORGANISM:", getAnnMap("ORGANISM", chip), sep="")
+    
     if (!is.environment(probe2chr))
       probe2chr <- l2e(as.list(probe2chr))
+        
     egs <- unique(unlist(mget(ls(probe2chr), .getMap(map="ENTREZID"))))
     egs <- egs[!is.na(egs)]
     if (!is.null(univ))
@@ -149,14 +177,17 @@ makeChrMapToEntrez <- function(chip, univ) {
         if (length(bands))
           eg2chr[[eg]] <- unique(unlist(bands))
     }
-    eg2chr <- cleanMapAndsOrs(eg2chr)
-    eg2chr <- cleanMapWeird(eg2chr)
-    eg2chr <- cleanRanges(eg2chr)
-
+    
+   
+    eg2chr <- cleanMapAndsOrs(eg2chr, org)
+    eg2chr <- cleanMapWeird(eg2chr, org)
+    eg2chr <- cleanRanges(eg2chr, org)
+   
+    
     m2eg <- reverseSplit(as.list(eg2chr))
     
     ## XXX: remove all annotations that remain that have '-'
-    hasRange <- grep("-", names(m2eg))
+    hasRange <- grep("-|/", names(m2eg))
     if (length(hasRange)) {
         warning("dropping ", length(hasRange), " items with weird range")
         m2eg <- m2eg[-hasRange]
@@ -164,13 +195,18 @@ makeChrMapToEntrez <- function(chip, univ) {
     onlyDot <- grep("^\\.$", names(m2eg))
     if (length(onlyDot))
       m2eg <- m2eg[-onlyDot]
-    invalid <- grep("[^0-9.qpXYter]+", names(m2eg))
-    if (length(invalid)) {
-        warning("dropping invalid items: ",
-                paste(names(m2eg)[invalid], collapse=", "))
-        m2eg <- m2eg[-invalid]
+
+    
+    if(org == "ORGANISM:Homo sapiens"){
+        invalid <- grep("[^0-9.qpXYter]+", names(m2eg))
+        if (length(invalid)) {
+            warning("dropping invalid items: ",
+                    paste(names(m2eg)[invalid], collapse=", "))
+            m2eg <- m2eg[-invalid]
+        }
     }
     m2eg
+    
 }
 
 
@@ -196,6 +232,7 @@ cb_parse_band_hsa <- function(x) {
       return(c(chr, chrArm))
     sbs <- strsplit(substr(x, arm.pos+1, nchar(x)), "")[[1]]
     bands <- character(length(sbs)+1)
+    
     bands[1] <- chrArm
     i <- 1
     j <- 2
@@ -222,11 +259,16 @@ cb_parse_band_hsa <- function(x) {
 
 makeChrBandGraph <- function(chip, univ=NULL) {
     org <- paste("ORGANISM:", getAnnMap("ORGANISM", chip), sep="")
-    if (org != "ORGANISM:Homo sapiens")
-      stop("makeChrBandGraph can only deal with 'Homo sapiens' annotation",
+    if ((org != "ORGANISM:Homo sapiens") & (org !="ORGANISM:Mus musculus"))
+      stop("makeChrBandGraph can only deal with 'Homo sapiens' and 'Mus musculus' annotation",
            " found ", sQuote(org))
+
+    parser <- switch(org,
+       "ORGANISM:Homo sapiens"= cb_parse_band_hsa,
+       "ORGANISM:Mus musculus"= cb_parse_band_mmus)
+    
     m2p <- makeChrMapToEntrez(chip, univ)
-    allMaps <- lapply(names(m2p), cb_parse_band_hsa)
+    allMaps <- lapply(names(m2p), parser)
     vv <- lapply(allMaps, function(x) {
         L <- length(x)
         ## XXX: some will have L == 1, will induce NA's
@@ -255,6 +297,7 @@ makeChrBandGraph <- function(chip, univ=NULL) {
     chrNames <- names(getAnnMap("CHRLENGTHS", chip))
     orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
+    
     g <- ftM2graphNEL(vvT, edgemode="directed")
     g <- addChrBandAnnotation(g, m2p)
     g
