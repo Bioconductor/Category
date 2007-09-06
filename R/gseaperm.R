@@ -15,7 +15,7 @@ pvalFromPermMat <- function(obs, perms) {
     pvals
 }
 
-gseaperm <- function(eset, fac, mat, nperm) {
+gseattperm <- function(eset, fac, mat, nperm) {
     usingMatrix <- qRequire("Matrix")
     mkSparseMat <-
       if (usingMatrix)

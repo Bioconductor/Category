@@ -1,5 +1,5 @@
-\name{gseaperm}
-\alias{gseaperm}
+\name{gseattperm}
+\alias{gseattperm}
 
 \title{Permutation p-values for GSEA}
 \description{
@@ -8,7 +8,7 @@
   labels.
 }
 \usage{
-gseaperm(eset, fac, mat, nperm)
+gseattperm(eset, fac, mat, nperm)
 }
 
 \arguments{
@@ -42,7 +42,7 @@ gseaperm(eset, fac, mat, nperm)
 \examples{
 ## This example uses a random sample of probesets and a randomly
 ## generated category matrix.  The results, therefore, are not
-## meaningful, but the code demonstrates how to use gseaperm without
+## meaningful, but the code demonstrates how to use gseattperm without
 ## requiring any expensive computations.
 
 ## Obtain an ExpressionSet with two types of samples (mol.biol)
@@ -66,9 +66,9 @@ rndCatMat <- matrix(sample(c(0L, 1L), replace=TRUE),
                       paste("c", 1:nCats, sep=""),
                       featureNames(s)))
 
-## Demonstrate use of gseaperm
+## Demonstrate use of gseattperm
 N <- 10
-pvals <- gseaperm(s, s$mol.biol, rndCatMat, N)
+pvals <- gseattperm(s, s$mol.biol, rndCatMat, N)
 pvals[1:5, ]
 }
 }
