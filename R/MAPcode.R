@@ -1,10 +1,3 @@
-## Since we now depends on the Matrix package, and Matrix
-## does evil things to base::cbind, we make our own copy
-## for basic uses.  The cbind that results from loading Matrix
-## is unusable for perf reasons.
-base_cbind <- function (..., deparse.level = 1) 
-  .Internal(cbind(deparse.level, ...))
-
 probes2MAP <- function (pids, data = "hgu133plus2") {
     pEnv = getAnnMap("MAP", chip=data)
     inMAP = mget(pids, pEnv, ifnotfound = NA)
@@ -249,7 +242,7 @@ makeChrBandGraph <- function(chip, univ=NULL) {
         ## XXX: some will have L == 1, will induce NA's
         rbind(x[1:(L - 1)], x[2:L])
     })
-    vvAll <- do.call(base_cbind, vv)
+    vvAll <- do.call(cbind, vv)
     vvStr <- paste(vvAll[1, ], vvAll[2, ], sep="+")
     ## remove duplicate edges
     dupIdx <- which(duplicated(vvStr))
@@ -270,7 +263,7 @@ makeChrBandGraph <- function(chip, univ=NULL) {
       vvT <- vvT[-selfLoops, ]
     ## add root node
     chrNames <- names(getAnnMap("CHRLENGTHS", chip))
-    orgLinks <- base_cbind(rep(org, length(chrNames)), chrNames)
+    orgLinks <- cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
     
     g <- ftM2graphNEL(vvT, edgemode="directed")
