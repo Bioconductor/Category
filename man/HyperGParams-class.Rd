@@ -21,6 +21,7 @@
 \alias{geneIds<-,HyperGParams-method}
 
 \alias{annotation,HyperGParams-method}
+\alias{annotation<-,HyperGParams-method}
 \alias{conditional,HyperGParams-method}
 
 \alias{ontology,HyperGParams-method}
@@ -92,7 +93,9 @@ Objects of this class cannot be instantiated directly.
       the gene identifiers that will be used as the selected gene
       list.}
     
-  \item{code{annotation(object)}}{Accessor for annotation}
+  \item{code{annotation(object)}}{Accessor for annotation.  If you want
+    to change the annotation for an existing instance, use the
+    replacement form.}
     
   \item{\code{ontology(r)}}{Accessor for GO ontology.}
     

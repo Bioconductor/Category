@@ -77,6 +77,7 @@ setReplaceMethod("categoryName", "HyperGParams", function(r, value) {
 setMethod("annotation", "HyperGParams", function(object) object@annotation)
 setReplaceMethod("annotation", "HyperGParams", function(object, value) {
     object@annotation <- value
+    object@datPkg <- DatPkgFactory(value)
     object
 })
 

@@ -1,6 +1,6 @@
 import("methods")
 import("AnnotationDbi")
-importMethodsFrom("Biobase", "annotation", "description")
+importMethodsFrom("Biobase", "annotation", "annotation<-", "description")
 importFrom("RBGL", "tsort", "dijkstra.sp")
 
 export(
@@ -66,6 +66,7 @@ exportMethods("hyperGTest",
               "universeMappedCount",
               "geneMappedCount",
               "annotation",
+              "annotation<-",
               "geneIds",
               "geneIds<-",
               "geneIdsByCategory",
