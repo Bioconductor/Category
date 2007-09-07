@@ -1,3 +1,13 @@
+checkChrOrg <- function(org) {
+    supportedChrOrgs <- c("ORGANISM:Homo sapiens", "ORGANISM:Mus musculus")
+    if (!(org %in% supportedChrOrgs)) {
+        msg <- paste(sprintf("'%s' is not a supported.\n", org),
+                     "organism must be one of:",
+                     paste(supportedChrOrgs, collapse=", "))
+        stop(msg, call.=FALSE)
+    }
+}
+
 probes2MAP <- function (pids, data = "hgu133plus2") {
     pEnv = getAnnMap("MAP", chip=data)
     inMAP = mget(pids, pEnv, ifnotfound = NA)
@@ -5,15 +15,11 @@ probes2MAP <- function (pids, data = "hgu133plus2") {
 }
 ### ------------------------------------------------------------------
 cleanMapAndsOrs <- function(e2m, org) {
+    checkChrOrg(org)
     func <- switch(org,
        "ORGANISM:Homo sapiens"= cleanMapAndsOrs_Hs,
-       "ORGANISM:Mus musculus"= NULL)
-    if(is.null(func)){
-        e2m
-    }
-    else{
-        do.call(func, list(e2m))
-    }
+       "ORGANISM:Mus musculus"= function(x) x)
+    func(e2m)
 }
 cleanMapAndsOrs_Hs <- function(e2m) {
     ## The map data is a bit odd and we get things like: "Xq28 and Yq12"
@@ -27,15 +33,11 @@ cleanMapAndsOrs_Hs <- function(e2m) {
 
 
 cleanMapWeird <- function(e2m, org) {
+    checkChrOrg(org)
     func <- switch(org,
        "ORGANISM:Homo sapiens"= cleanMapWeird_Hs,
-       "ORGANISM:Mus musculus"= NULL)
-    if(is.null(func)){
-        e2m
-    }
-    else{
-        do.call(func, list(e2m))
-    }
+       "ORGANISM:Mus musculus"= function(x) x)
+    func(e2m)
 }
 cleanMapWeird_Hs <- function(e2m) {
     ## Current MAP annotation data contains weird entries like:
@@ -65,18 +67,14 @@ cleanMapWeird_Hs <- function(e2m) {
     e2m
 }
 
-
 cleanRanges <- function(e2m, org) {
+    checkChrOrg(org)
     func <- switch(org,
        "ORGANISM:Homo sapiens"= cleanRanges_Hs,
        "ORGANISM:Mus musculus"= cleanRanges_Mm)
-    if(is.null(func)){
-        e2m
-    }
-    else{
-        do.call(func, list(e2m))
-    }
+    func(e2m)
 }
+
 cleanRanges_Hs<- function(e2m) {
     ## We use (p|q) even though it will match nonsense annotations like
     ## "6p23-q24".  These seem to appear in the data.  But it is OK
@@ -119,6 +117,7 @@ cleanRanges_Hs<- function(e2m) {
         }
         e2m
 }
+
 cleanRanges_Mm<- function(e2m) {
     ## We use (p|q) even though it will match nonsense annotations like
     ## "6p23-q24".  These seem to appear in the data.  But it is OK
@@ -173,11 +172,9 @@ makeChrMapToEntrez <- function(chip, univ) {
           eg2chr[[eg]] <- unique(unlist(bands))
     }
 
-
     eg2chr <- cleanMapAndsOrs(eg2chr, org)
     eg2chr <- cleanMapWeird(eg2chr, org)
     eg2chr <- cleanRanges(eg2chr, org)
-
 
     m2eg <- reverseSplit(as.list(eg2chr))
 
@@ -204,10 +201,10 @@ makeChrMapToEntrez <- function(chip, univ) {
 }
 
 cb_parse_band_hsa <- function(x) {
-    .Deprecated(cb_parse_band_Hs, package=NULL,
-                "cb_parse_band_hsa is deprecated please use cb_parse_band_Hs")
+    .Deprecated("cb_parse_band_Hs")
     cb_parse_band_Hs(x)
 }
+
 cb_parse_band_Hs <- function(x) {
     ## Given a chromosome band annotation (see examples below),
     ## return a vector giving the path from the root:
@@ -235,7 +232,6 @@ cb_parse_band_Hs <- function(x) {
     i <- 1
     j <- 2
     prev <- bands[1]
-    print(prev)
     while (TRUE) {
         if (sbs[i] == ".") {
             prev <- paste(prev, ".", sep="")
@@ -258,10 +254,7 @@ cb_parse_band_Hs <- function(x) {
 
 makeChrBandGraph <- function(chip, univ=NULL) {
     org <- getOrganism(chip)
-    supportedOrg <- c("ORGANISM:Homo sapiens", "ORGANISM:Mus musculus")
-    if (!org%in%supportedOrg)
-      stop("makeChrBandGraph can only deal with 'Homo sapiens' and 'Mus musculus' annotation",
-           " found ", sQuote(org))
+    checkChrOrg(org)
 
     parser <- switch(org,
        "ORGANISM:Homo sapiens"= cb_parse_band_Hs,
