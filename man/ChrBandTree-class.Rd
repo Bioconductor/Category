@@ -6,12 +6,17 @@
 \alias{childrenOf}
 \alias{parentOf}
 \alias{lgeneIds}
+\alias{treeLevels}
+\alias{level2nodes}
 
 \alias{allGeneIds,ChrBandTree-method}
 \alias{childrenOf,ChrBandTree,character-method}
 \alias{geneIds,ChrBandTree-method}
 \alias{lgeneIds,ChrBandTree-method}
 \alias{parentOf,ChrBandTree,character-method}
+\alias{treeLevels,ChrBandTree-method}
+\alias{level2nodes,ChrBandTree,numeric-method}
+\alias{level2nodes,ChrBandTree,character-method}
 
 \alias{show,ChrBandTree-method}
 
@@ -64,6 +69,14 @@ Objects should be created using \code{NewChrBandTree} or
   \item{parentOf}{Return the parents of the specified bands.  See
     \code{childrenOf} for a description of the structure of the return
     value.}
+
+  \item{treeLevels}{Return an integer vector identifying the levels of
+    the tree.}
+
+  \item{level2nodes(g, level)}{Return the nodes in the tree that are at
+    the level specified by \code{level}.  The \code{level} argument can
+    be either numeric or character, but should match a level returned by
+    \code{treeLevels}.}
 }
 }
 \author{S. Falcon}
@@ -94,6 +107,14 @@ lgeneIds(ct, c("10p11", "Yq11.22"))
 
 pp = parentOf(ct, c("10p11", "Yq11.22"))
 childrenOf(ct, unlist(pp))
+
+treeLevels(ct)
+
+level2nodes(ct, 0)
+level2nodes(ct, 0L)
+level2nodes(ct, "0")
+
+level2nodes(ct, 1)
 
 }
 \keyword{classes}

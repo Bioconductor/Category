@@ -101,5 +101,7 @@ exportMethods("hyperGTest",
               ## accessors for ChrBandTree
               "allGeneIds",
               "childrenOf",
+              "level2nodes",
               "lgeneIds",
-              "parentOf")
+              "parentOf",
+              "treeLevels")

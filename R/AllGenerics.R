@@ -119,3 +119,8 @@ setGeneric("parentOf",
 setGeneric("allGeneIds",
            function(g, ...) standardGeneric("allGeneIds"))
 
+setGeneric("treeLevels",
+           function(g, ...) standardGeneric("treeLevels"))
+
+setGeneric("level2nodes",
+           function(g, level, ...) standardGeneric("level2nodes"))

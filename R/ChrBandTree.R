@@ -26,6 +26,24 @@ setMethod("allGeneIds", "ChrBandTree",
                                      attr="geneIds")))
           })
 
+setMethod("treeLevels", "ChrBandTree",
+          function(g, ...) {
+              as.integer(names(g@level2nodes))
+          })
+
+setMethod("level2nodes", c("ChrBandTree", "numeric"),
+          function(g, level, ...) {
+              level2nodes(g, as.character(level), ...)
+          })
+
+setMethod("level2nodes", c("ChrBandTree", "character"),
+          function(g, level, ...) {
+              ans <- g@level2nodes[[level, exact=TRUE]]
+              if (is.null(ans))
+                stop("no such level: ", as.character(level))
+              ans
+          })
+
 exampleLevels <- function(g)
 {
     sapply(g@level2nodes, function(x) x[1])
