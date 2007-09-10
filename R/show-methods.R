@@ -17,3 +17,12 @@ setMethod("show", signature(object="HyperGParams"),
               cat("  category:", object@categoryName, "\n")
               cat("annotation:", object@annotation, "\n")
           })
+
+
+setMethod("show", signature(object="ChrBandTree"),
+          function(object) {
+              cat(class(object), "object\n")
+              cat("Root:", object@root, "\n")
+              cat("Number of bands: ", numNodes(object@toParentGraph), "\n")
+              cat("Number of levels: ", length(object@level2nodes) - 1, "\n")
+          })

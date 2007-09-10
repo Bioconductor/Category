@@ -13,6 +13,8 @@
 \alias{lgeneIds,ChrBandTree-method}
 \alias{parentOf,ChrBandTree,character-method}
 
+\alias{show,ChrBandTree-method}
+
 \title{Class "ChrBandTree"}
 \description{
   This class represents chromosome band annotation data for a
