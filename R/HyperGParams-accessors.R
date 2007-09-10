@@ -75,11 +75,12 @@ setReplaceMethod("categoryName", "HyperGParams", function(r, value) {
 })
 
 setMethod("annotation", "HyperGParams", function(object) object@annotation)
-setReplaceMethod("annotation", "HyperGParams", function(object, value) {
-    object@annotation <- value
-    object@datPkg <- DatPkgFactory(value)
-    object
-})
+setReplaceMethod("annotation", c("HyperGParams", "character"),
+                 function(object, value) {
+                   object@annotation <- value
+                   object@datPkg <- DatPkgFactory(value)
+                   object
+                 })
 
 setMethod("pvalueCutoff", "HyperGParams", function(r) r@pvalueCutoff)
 setReplaceMethod("pvalueCutoff", "HyperGParams", function(r, value) {

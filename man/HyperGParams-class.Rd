@@ -21,7 +21,7 @@
 \alias{geneIds<-,HyperGParams-method}
 
 \alias{annotation,HyperGParams-method}
-\alias{annotation<-,HyperGParams-method}
+\alias{annotation<-,HyperGParams,character-method}
 \alias{conditional,HyperGParams-method}
 
 \alias{ontology,HyperGParams-method}
