@@ -78,7 +78,7 @@ hg_test_factory <- function(selids, PCUT=0.05, COND=FALSE, OVER=TRUE)
                 if (length(kids_ans)) {
                     sigKids <- sapply(kids_ans, function(x) x[["nodes"]])
                     sigKids <- sigKids[sapply(kids_ans,
-                                              function(x) x[["p"]] < PCUT)]
+                                              function(x) x[["p.value"]] <= PCUT)]
                     sigKidGenes <- unlist(lapply(sigKids,
                                                  function(x) geneIds(g, x)))
                     sigKidGenes <- unique(sigKidGenes)
@@ -136,7 +136,7 @@ ans_acceptor_factory <- function(PCUT=0.05)
     function(ans, g) {
         ret <- lapply(ans, function(x) {
             p <- x[["p.value"]]
-            if (!is.na(p) && p < PCUT)
+            if (!is.na(p) && p <= PCUT)
               x$nodes
             else NULL
         })
@@ -160,7 +160,8 @@ toDF <- function(ans) {
 cb_test <- function(selids, chrtree, level,
                     dir=c("up", "down"),
                     type=c("local", "global"),
-                    pval=0.05,
+                    next.pval=0.05,
+                    cond.pval=0.05,
                     conditional=FALSE)
 {
     dir <- match.arg(dir)
@@ -170,7 +171,7 @@ cb_test <- function(selids, chrtree, level,
            paste(names(chrtree@level2nodes), collapse=", "))
     if ((type == "local" || dir == "down") && conditional)
       stop('conditional can only be used for type="global" and dir="up"')
-    if (pval < 0 || pval > 1)
+    if (next.pval < 0 || next.pval > 1)
       stop("'pval' must be bewteen 0 and 1")
 
     iter <- switch(dir,
@@ -179,18 +180,20 @@ cb_test <- function(selids, chrtree, level,
                    stop("'dir' must be 'up' or 'down'"))
     tfun <- switch(type,
                    local=local_test_factory(selids),
-                   global=hg_test_factory(selids, pval, COND=conditional),
+                   global=hg_test_factory(selids, cond.pval, COND=conditional),
                    stop("'type' must be 'local' or 'global'"))
 
     start <- switch(type,
                     local={
-                        oneUp <- as.character(level -1L)
+                        oneUp <- as.character(level - 1L)
+                        ## FIXME: don't we need to branch on dir here?
+                        ## using either childrenOf or parentOf?
                         s <- childrenOf(chrtree, chrtree@level2nodes[[oneUp]])
                         s[listLen(s) > 0]
                     },
                     global=chrtree@level2nodes[[level]])
 
-    iter(chrtree, start, tfun, ans_acceptor_factory(pval))
+    iter(chrtree, start, tfun, ans_acceptor_factory(next.pval))
 }
 
 ## notes: return the table because then odds ratio becomes a method,

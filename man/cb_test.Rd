@@ -9,7 +9,9 @@
   or bottom up fashion on the tree of chromosome bands.
 }
 \usage{
-cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global"), pval = 0.05, conditional = FALSE)
+cb_test(selids, chrtree, level, dir = c("up", "down"),
+       type = c("local", "global"), next.pval = 0.05,
+       cond.pval = 0.05, conditional = FALSE)
 }
 
 \arguments{
@@ -42,8 +44,16 @@ cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global
     uses the Hypergeometric distribution to compute a p-value for the 2
     x 2 tables induced by each band treated independently.}
 
-  \item{pval}{The p-value cutoff used to determine whether the parents
-    or children of a node should be tested.}
+  \item{next.pval}{The p-value cutoff used to determine whether the parents
+    or children of a node should be tested.  After testing a given level
+    of the tree, the decision of whether or not to continue testing the
+    children (or parents) of the already tested nodes is made by
+    comparing the p-value result for a given node with this cutoff;
+    relatives of nodes with values strictly greater than the cutoff are
+    skipped.}
+
+  \item{cond.pval}{The p-value cutoff used to determine whether a node
+    is significant during a conditional test.  See \code{conditional}.}
 
   \item{conditional}{A logical value.  Can only be used when
     \code{dir="up"} and \code{type="global"}.  In this case, a
@@ -51,9 +61,7 @@ cb_test(selids, chrtree, level, dir = c("up", "down"), type = c("local", "global
     be performed.  The genes annotated at significant children of a
     given band are removed before testing.}
 }
-\details{
-... SOON ...  
-}
+
 \value{
   A list with an element for each level of the tree that was tested.
   Note that the first element will correspond to the level given by
