@@ -24,8 +24,9 @@ getGoToEntrezMap_db <- function(p) {
                        over=FALSE,
                        under=TRUE,
                        stop("Bad testDirection slot"))
-    annPkgNS <- getNamespace(annotation(p))
-    db <- get("db_conn", annPkgNS)
+    #annPkgNS <- getNamespace(annotation(p))
+    #db <- get("db_conn", annPkgNS)
+    db <- do.call(paste(p@name, "dbconn", sep="_"), list())
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
 
     ## For over representation:

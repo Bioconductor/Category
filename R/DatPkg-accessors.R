@@ -91,7 +91,8 @@ setMethod("GO2AllProbes", "OrganismMappingDatPkg",
 setMethod("GO2AllProbes", "Org.XX.egDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
 
-              db <- get("db_conn", paste("package:", p@name, sep=""))
+              #db <- get("db_conn", paste("package:", p@name, sep=""))
+              db <- do.call(paste("p@name", "dbconn", sep="_"), list())
               sqlQ <- "SELECT DISTINCT _left.gene_id,_right.go_id
               FROM genes AS _left INNER JOIN go_%s AS _right
               ON _left.id=_right.id WHERE _right.go_id IS NOT NULL"
