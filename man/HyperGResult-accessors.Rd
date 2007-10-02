@@ -114,6 +114,7 @@ testDirection(r)
 
 chrGraph(r)
 
+
 }
 
 \arguments{
@@ -200,7 +201,7 @@ chrGraph(r)
     \item{summary}{returns
       a \code{data.frame} summarizing the test result.  Optional
       arguments \code{pvalue} and \code{categorySize} allow
-      specification of maximum p-value and minimum cateogyrSize,
+      specification of maximum p-value and minimum categorySize,
       respectively.}
 
     \item{htmlReport}{writes
@@ -235,5 +236,33 @@ chrGraph(r)
   \code{\link{HyperGParams-class}}
   \code{\link{GOHyperGParams-class}}
   \code{\link{KEGGHyperGParams-class}}
+}
+\examples{
+## Note that more in-depth examples can be found in the GOstats
+## vignette (Hypergeometric tests using GOstats).
+library("hgu95av2.db")
+probids <- ls(hgu95av2GENENAME)[1:300]
+## Select for probeids that have PFAM ids
+hasPFAM <- sapply(mget(probids, hgu95av2PFAM), function(ids)
+                  if(!is.na(ids) && length(ids) > 1) TRUE else FALSE)
+probids <- probids[hasPFAM]
+## get unique Entrez Gene IDs
+probids <- unique(getLL(probids, "hgu95av2"))
+## Now do the same for the universe
+univ <- ls(hgu95av2GENENAME)
+univHasPFAM <- sapply(mget(univ, hgu95av2PFAM), function(ids)
+                      if(!is.na(ids) && length(ids) > 1) TRUE else
+                         FALSE)
+univ <- univ[univHasPFAM]
+univ <- unique(getLL(univ, "hgu95av2"))
+
+p <- new("PFAMHyperGParams", geneIds=probids, universeGeneIds=univ,
+         annotation="hgu95av2")
+## this takes a while...
+if(interactive()){
+hypt <- hyperGTest(p)
+summary(hypt)
+htmlReport(hypt, file="temp.html", summary.args=list("htmlLinks"=TRUE))
+}
 }
 \keyword{htest}
