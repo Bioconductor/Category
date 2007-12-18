@@ -22,8 +22,6 @@ augmentByAncestors = function(x) {
      })
    }
    
-   stopifnot(all(s1+s2+s3+s4==1))
-
    res = vector(length=length(x), mode="list")
    res[s1] = mget(x[s1], GOMFANCESTOR)
    res[s2] = mget(x[s2], GOBPANCESTOR)

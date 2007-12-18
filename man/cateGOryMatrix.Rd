@@ -32,7 +32,11 @@ cateGOry(x, categ, sparse=FALSE)
   For some subsequent analyses, it is useful to remove categories that
   have only a small number of members. Use the normal matrix subsetting
   syntax for this, see example.
-  
+
+  If a GO category in \code{categ} is not found in the GO annotation
+  package, a warning will be generated, and no ancestors
+  for that GO category are added (but that category itself will be part
+  of the returned adjacency matrix).
 }
 \value{
   The adjacency matrix of the bipartite category membership graph,
