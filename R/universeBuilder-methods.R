@@ -24,7 +24,7 @@ XXXgetUniverseViaGo_db <- function(p) {
     ## and the normal return value.
     ontology <- match.arg(ontology, c("BP", "CC", "MF"))
     ## FIXME: this might be faster as full-column pull and in-memory join
-    SQL <- "select distinct gene_id from genes, go_XX where genes.id = go_XX.id"
+    SQL <- "select distinct gene_id from genes, go_XX where genes._id = go_XX._id"
     SQL <- gsub("XX", ontology, SQL)
     univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
     if (!is.null(entrezIds) && length(entrezIds) > 0)
@@ -66,7 +66,7 @@ getUniverseViaGo <- function(p) {
 
 getUniverseViaKegg_db <- function(p) {
     entrezIds <- universeGeneIds(p)
-    SQL <- "select distinct gene_id from genes, kegg where genes.id = kegg.id"
+    SQL <- "select distinct gene_id from genes, kegg where genes._id = kegg._id"
     univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
     if (!is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
@@ -88,7 +88,7 @@ getUniverseViaKegg <- function(p) {
 
 getUniverseViaPfam_db <- function(p) {
     entrezIds <- universeGeneIds(p)
-    SQL <- "select distinct gene_id from genes, pfam where genes.id = pfam.id"
+    SQL <- "select distinct gene_id from genes, pfam where genes._id = pfam._id"
     univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
     if (!is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))

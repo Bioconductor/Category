@@ -94,9 +94,8 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
               #db <- get("db_conn", paste("package:", p@name, sep=""))
               pname = sub("\\.db", "", p@name)
               db <- do.call(paste(pname, "dbconn", sep="_"), list())
-              sqlQ <- "SELECT DISTINCT _left.gene_id,_right.go_id
-              FROM genes AS _left INNER JOIN go_%s AS _right
-              ON _left.id=_right.id WHERE _right.go_id IS NOT NULL"
+              sqlQ <- "SELECT DISTINCT gene_id, go_id
+              FROM genes INNER JOIN go_%s USING (_id)"
               sqlQ <- sprintf(sqlQ, tolower(ontology))
               go2egTab <- dbGetQuery(db, sqlQ)
               go2eg <- l2e(split(go2egTab[["gene_id"]], go2egTab[["go_id"]]))
