@@ -1,4 +1,4 @@
-library("hgu95av2")
+library("hgu95av2.db")
 ## Set to FALSE to see warning/error messages when running tests
 ## that verify that errors/warnings are raised.
 quiet <- TRUE

@@ -1,4 +1,4 @@
-library("hgu95av2")
+library("hgu95av2.db")
 library("YEAST")
 
 makeSimpleGOHyperGParams <- function(chip=c("hgu95av2", "YEAST")) {

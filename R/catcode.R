@@ -30,7 +30,7 @@ probes2Path = function(pids, data="hgu133plus2") {
 }
 
 getPathNames = function(iPW) {
-    ## implicit require("KEGG.db") or require("KEGG")
+    ## implicit require("KEGG.db")
     keggEnv = getAnnMap("PATHID2NAME", "KEGG", load=TRUE)
     mget(iPW, keggEnv, ifnotfound = NA)
 }

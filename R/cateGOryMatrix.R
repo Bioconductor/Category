@@ -1,6 +1,6 @@
 ## x: a vector of GO categories
 augmentByAncestors = function(x) {
-   ## NOTE: this function implicitly does require("GO.db") or require("GO")
+   ## NOTE: this function implicitly does require("GO.db")
    s1 = x %in% ls(getAnnMap("MFANCESTOR", "GO", load=TRUE))
    s2 = x %in% ls(getAnnMap("BPANCESTOR", "GO"))
    s3 = x %in% ls(getAnnMap("CCANCESTOR", "GO"))
