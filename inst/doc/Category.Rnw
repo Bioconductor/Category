@@ -139,13 +139,7 @@ esetA@annotation = "hgu95av2"
 esetA$mol.biol = factor(esetA$mol.biol)
 
 
-##filter on IQR, but use fast new methods
-lowQ = rowQ(esetA, floor(.25*79))
-upQ = rowQ(esetA, ceiling(0.75*79))
-
-selected <- (upQ-lowQ) > 0.5
-sum(selected)
-esetASub <- esetA[selected,]
+esetASub = nsFilter(esetA, var.cutoff=0.5)$eset
 
 ##set up some colors
 
