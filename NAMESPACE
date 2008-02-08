@@ -48,9 +48,18 @@ exportClasses("DatPkg",
               "ChrMapHyperGResult",
               "ChrBandTree",
               "KEGGHyperGResult",
-              "PFAMHyperGResult")
+              "PFAMHyperGResult",
+
+              "LinearMParams",
+              "ChrMapLinearMParams",
+
+              "LinearMResultBase",
+              "LinearMResult",
+              "ChrMapLinearMResult")
+
 
 exportMethods("hyperGTest",
+              "linearMTest",
 
               "universeBuilder",
               "categoryToEntrezBuilder",

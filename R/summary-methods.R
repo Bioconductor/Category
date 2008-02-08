@@ -168,3 +168,31 @@ setMethod("htmlReport", signature(r="PFAMHyperGResult"),
                              summary.args=summary.args)
           })
 
+
+
+setMethod("summary", signature(object="LinearMResultBase"),
+          function(object, pvalue=pvalueCutoff(object), categorySize=NULL)
+          {
+              ## Filter based on p-value and category size
+              wanted <- getWantedResults(object, pvalue, categorySize)
+              pvals <- pvalues(object)
+              ucounts <- universeCounts(object)
+              if (!any(wanted)) {
+                  warning("No results met the specified criteria.  ",
+                          "Returning 0-row data.frame", call.=FALSE)
+                  catIds <- character(0)
+                  pvals <- numeric(0)
+                  ucounts <- integer(0)
+              } else {
+                  pvals <- pvals[wanted]
+                  ucounts <- ucounts[wanted]
+                  catIds <- names(pvals)
+              }
+              df <- data.frame(ID=catIds, Pvalue=pvals, 
+                               Size=ucounts,
+                               stringsAsFactors=FALSE, row.names=NULL)
+              names(df)[1] <- paste(paste(testName(object), collapse=""),
+                                    "ID", sep="")
+              df
+          })
+

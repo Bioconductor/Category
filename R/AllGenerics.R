@@ -2,6 +2,10 @@ setGeneric("hyperGTest",
            function(p) standardGeneric("hyperGTest"),
            valueClass="HyperGResultBase")
 
+setGeneric("linearMTest", 
+           function(p) standardGeneric("linearMTest"),
+           valueClass="LinearMResultBase")
+
 setGeneric("categoryToEntrezBuilder", 
            function(p) standardGeneric("categoryToEntrezBuilder"))
 

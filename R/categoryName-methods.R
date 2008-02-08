@@ -8,3 +8,9 @@ setMethod("categoryName", signature(r="GOHyperGParams"),
               c(r@categoryName, r@ontology)
           })
 
+
+
+setMethod("categoryName", signature(r="LinearMParams"),
+          function(r) {
+              r@categoryName
+          })

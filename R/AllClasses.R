@@ -77,7 +77,7 @@ setClass("ChrMapHyperGParams",
 
 setClass("HyperGResultBase",
          representation(annotation="character",
-                         geneIds="ANY",
+                        geneIds="ANY",
                         testName="character",
                         pvalueCutoff="numeric",
                         testDirection="character"),
@@ -114,4 +114,71 @@ setClass("ChrBandTree",
            toChildGraph="graph",
            root="character",
            level2nodes="list"))
+
+
+
+
+### DS: Similar structures for 'linear model'-based tests. minSize is
+### needed mostly for conditional tests, becausewe don't want to leave
+### out sub-genesets that are too small, even if they are significant
+### (or do we?)
+
+
+setClass("LinearMParams",
+         contains="VIRTUAL",
+         representation =
+         representation(geneStats="numeric",
+                        universeGeneIds="ANY",
+                        annotation="character",
+                        datPkg="DatPkg",
+                        cateogrySubsetIds="ANY",
+                        categoryName="character",
+                        pvalueCutoff="numeric",
+                        minSize="integer",
+                        testDirection="character"), ## less, greater, two-sided?
+         prototype=
+         prototype(pvalueCutoff=0.01,
+                   testDirection="over",
+                   minSize=5L,
+                   datPkg=DatPkgFactory("UNKNOWN")))
+
+setClass("ChrMapLinearMParams",
+         contains="LinearMParams",
+         representation =
+         representation(chrGraph="graph",
+                        conditional="logical"),
+         prototype =
+         prototype(categoryName="ChrMap",
+                   chrGraph=new("graphNEL", edgemode="directed")))
+
+
+
+
+
+setClass("LinearMResultBase",
+         representation(annotation="character",
+                        geneIds="ANY",
+                        testName="character",
+                        pvalueCutoff="numeric",
+                        minSize="integer",
+                        testDirection="character"),
+         contains="VIRTUAL",
+         prototype=prototype(pvalueCutoff=0.01))
+
+
+setClass("LinearMResult",
+         contains="LinearMResultBase",
+         representation=
+         representation(pvalues="numeric",
+                        catToGeneId="list"))
+
+
+setClass("ChrMapLinearMResult",
+         contains="LinearMResult", ## FIXME: is hyperG version correct?
+         representation=
+         representation(pvalue.order="integer",
+                        conditional="logical",
+                        chrGraph="graph"),
+         prototype=
+         prototype(chrGraph=new("graphNEL", edgemode="directed")))
 
