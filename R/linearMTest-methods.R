@@ -147,7 +147,8 @@ linearMTest_ChrMap <-
     ## min.genes: keep only nodes with these many genes
 {
     ## print(system.time(
-    inc.mat <- t(MAPAmat(chip, univ = names(stats)))
+    ## inc.mat <- t(MAPAmat(chip, univ = names(stats)))
+    inc.mat <- makeChrBandInciMat(g)
     ## ))
     stopifnot(setequal(names(stats), rownames(inc.mat)))
 
