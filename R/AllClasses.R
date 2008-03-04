@@ -27,8 +27,11 @@ DatPkgFactory <- function(chip) {
       pkg <- new("OrganismMappingDatPkg", name=chip)
     else if (strMatch("^org\\.[a-zA-Z]+\\.eg\\.db$", chip))
       pkg <- new("Org.XX.egDatPkg", name=chip)
-    else
-      pkg <- new("AffyDatPkg", name=chip)
+    else { ##we now prefer the db packages
+     notDB = length(grep("\\.db$", chip) ) == 0
+     if( notDB ) chip = paste(chip, ".db", sep="")
+     pkg <- new("AffyDatPkg", name=chip)
+    }
     pkg
 }
 

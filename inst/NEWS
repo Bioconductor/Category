@@ -1,0 +1,9 @@
+**************************************************
+*              2.5 SERIES NEWS                   *
+**************************************************
+
+ o Modified the DatPkgFactory to preferentially produce
+   package names that correspond to the db variants. 
+
+
+
