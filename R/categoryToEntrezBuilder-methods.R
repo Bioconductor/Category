@@ -92,7 +92,11 @@ getKeggToEntrezMap <- function(p) {
                        under=TRUE,
                        stop("Bad testDirection slot"))
     lib <- annotation(p)
-    kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
+    isORGEG = grep("org.*.eg.db", lib)
+    if( length(isORGEG) > 0 )
+        kegg2allprobes <- getDataEnv("PATH2EG", lib)
+    else
+        kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
     probeAnnot <- getKeggToProbeMap(kegg2allprobes)
     probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
