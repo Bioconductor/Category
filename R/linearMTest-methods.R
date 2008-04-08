@@ -148,10 +148,9 @@ linearMTest_ChrMap <-
 {
     ## print(system.time(
     ## inc.mat <- t(MAPAmat(chip, univ = names(stats)))
-    inc.mat <- makeChrBandInciMat(g)
+    inc.mat <- t(makeChrBandInciMat(g))
     ## ))
     stopifnot(setequal(names(stats), rownames(inc.mat)))
-
     ## leave out nodes that have no genes (or rather, too few genes)
     cb.names <- colnames(inc.mat)
     cb.names <- cb.names[ (colSums(inc.mat) >= min.genes) & (cb.names %in% nodes(g)) ]
