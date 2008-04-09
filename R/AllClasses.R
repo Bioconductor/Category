@@ -173,6 +173,7 @@ setClass("LinearMResult",
          contains="LinearMResultBase",
          representation=
          representation(pvalues="numeric",
+                        effectSize="numeric",
                         catToGeneId="list"))
 
 

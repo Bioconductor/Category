@@ -44,6 +44,7 @@ setMethod("linearMTest",
                            conditional = conditional(p))
     new(className,
         pvalues = if (p@conditional) ans$conditional.pvals else ans$marginal.pvals,
+        effectSize = if (p@conditional) ans$conditional.effects else ans$marginal.effects,
         annotation = p@annotation,
         geneIds = p@universeGeneIds,
         testName = p@categoryName,
@@ -127,6 +128,11 @@ linearMTestMarginal <- function(stats, x, upreg = TRUE)
     if (upreg) 1 - pnorm(tt) else pnorm(tt)
 }
 
+linearMEffectSizeMarginal <- function(stats, x)
+{
+    tail(coef(lm(stats ~ 1 + x)), 1)
+}
+
 
 ## This function does the conditional test (for the whole graph, not
 ## just one category).  As the marginal/unconditional tests are done
@@ -171,21 +177,29 @@ linearMTest_ChrMap <-
         inc.mat <- inc.mat[keep, ]
     }
 
-    ## set up logical vectors to track quantities of interest
-    marginal.pvals <- ## implies names(.) <- cb.names
+    ## set up vectors to track quantities of interest
+    marginal.pvals <-
         sapply(cb.names,
                function(n) {
                    linearMTestMarginal(stats, inc.mat[, n],
                                        upreg = upreg)
                })
+    marginal.effects <-
+        sapply(cb.names,
+               function(n) {
+                   linearMEffectSizeMarginal(stats, inc.mat[, n])
+               })
+    names(marginal.pvals) <- names(marginal.effects) <- cb.names
     marginal <- marginal.pvals < cutoff
     if (!conditional)
         return(list(marginal = marginal,
                     marginal.pvals = marginal.pvals,
+                    marginal.effects = marginal.effects,
                     catToGeneId = catToGeneId))
 
     ## otherwise, proceed with conditional testing
     excluded <- conditional <- logical(length(cb.names))
+    conditional.effects <- marginal.effects
     names(excluded) <- names(conditional) <- cb.names
 
     ## containter for adjusted (conditional) p-values
@@ -247,6 +261,7 @@ linearMTest_ChrMap <-
                 cond.pval <- if (upreg) 1 - pnorm(cond.t) else pnorm(cond.t)
 
                 ## good, now set these results
+                conditional.effects[i] <- tail(coef(lm.res), 1)
                 adjusted.pvals[i] <- cond.pval
                 conditional[i] <- !is.na(cond.pval) && cond.pval < cutoff
             }
@@ -259,6 +274,8 @@ linearMTest_ChrMap <-
          conditional = conditional,
          marginal.pvals = marginal.pvals,
          conditional.pvals = adjusted.pvals,
+         marginal.effects = marginal.effects,
+         conditional.effects = conditional.effects,
          catToGeneId = catToGeneId)
 }
 

@@ -7,6 +7,10 @@ setMethod("pvalues", signature(r="ChrMapLinearMResult"),
               r@pvalues[r@pvalue.order]
           })
 
+setMethod("effectSize", signature(r="ChrMapLinearMResult"),
+          function(r) {
+              r@effectSize[r@pvalue.order]
+          })
 
 setMethod("geneIdUniverse", signature(r="ChrMapLinearMResult"),
           function(r, cond=TRUE) {

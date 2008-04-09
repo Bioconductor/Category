@@ -176,19 +176,23 @@ setMethod("summary", signature(object="LinearMResultBase"),
               ## Filter based on p-value and category size
               wanted <- getWantedResults(object, pvalue, categorySize)
               pvals <- pvalues(object)
+              esize <- object@effectSize
               ucounts <- universeCounts(object)
               if (!any(wanted)) {
                   warning("No results met the specified criteria.  ",
                           "Returning 0-row data.frame", call.=FALSE)
                   catIds <- character(0)
                   pvals <- numeric(0)
+                  esize <- numeric(0)
                   ucounts <- integer(0)
               } else {
                   pvals <- pvals[wanted]
+                  esize <- esize[wanted]
                   ucounts <- ucounts[wanted]
                   catIds <- names(pvals)
               }
-              df <- data.frame(ID=catIds, Pvalue=pvals, 
+              df <- data.frame(ID=catIds, Pvalue=pvals,
+                               Effect=esize,
                                Size=ucounts,
                                stringsAsFactors=FALSE, row.names=NULL)
               names(df)[1] <- paste(paste(testName(object), collapse=""),

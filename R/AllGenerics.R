@@ -13,8 +13,10 @@ setGeneric("universeBuilder",
            function(p) standardGeneric("universeBuilder"))
 
 
-## Accessors for HyperGResult objects
+## Accessors for HyperGResult and LinearMResult objects
 setGeneric("pvalues", function(r) standardGeneric("pvalues"))
+
+setGeneric("effectSize", function(r) standardGeneric("effectSize"))
 
 setGeneric("geneCounts", function(r) standardGeneric("geneCounts"))
 

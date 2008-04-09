@@ -80,6 +80,8 @@ setMethod("condGeneIdUniverse", signature(r="LinearMResultBase"),
 setMethod("pvalues", signature(r="LinearMResult"),
           function(r) r@pvalues)
 
+setMethod("effectSize", signature(r="LinearMResult"),
+          function(r) r@effectSize)
 
 setMethod("geneIdUniverse", signature(r="LinearMResult"),
           function(r, cond=TRUE) r@catToGeneId)
