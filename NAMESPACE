@@ -67,9 +67,10 @@ exportMethods("hyperGTest",
               "categoryName",
               "makeValidParams",
 
-              ## accessors for HyperGResult
+              ## accessors for HyperGResult and LinearMResult
               "chrGraph",
               "pvalues",
+              "effectSize",
               "geneCounts",
               "universeCounts",
               "universeMappedCount",

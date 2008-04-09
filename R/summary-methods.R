@@ -176,7 +176,7 @@ setMethod("summary", signature(object="LinearMResultBase"),
               ## Filter based on p-value and category size
               wanted <- getWantedResults(object, pvalue, categorySize)
               pvals <- pvalues(object)
-              esize <- object@effectSize
+              esize <- effectSize(object)
               ucounts <- universeCounts(object)
               if (!any(wanted)) {
                   warning("No results met the specified criteria.  ",
