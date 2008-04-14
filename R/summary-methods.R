@@ -2,7 +2,7 @@ getWantedResults <- function(result, pvalue, categorySize=NULL) {
     ## Returns a logical vector with TRUE indicating selected
     ## results from those tested in the specified result instance.
     pvals <- pvalues(result)
-    wanted <- pvals < pvalue
+    wanted <- is.finite(pvals) & pvals < pvalue
     if (!is.null(categorySize)) {
         ucounts <- universeCounts(result)
         hasMinSize <- ucounts >= categorySize
