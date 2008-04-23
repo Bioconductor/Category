@@ -141,7 +141,7 @@ setClass("LinearMParams",
                         testDirection="character"), ## less, greater, two-sided?
          prototype=
          prototype(pvalueCutoff=0.01,
-                   testDirection="over",
+                   testDirection="up",
                    minSize=5L,
                    datPkg=DatPkgFactory("UNKNOWN")))
 
