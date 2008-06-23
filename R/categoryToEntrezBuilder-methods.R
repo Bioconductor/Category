@@ -39,31 +39,39 @@ getGoToEntrezMap_db <- function(p) {
     ## least one of the genes from univ annotated at it.
     ##
     ## These are the GO IDs that form the keys in our GO_to_Entrez map.
+    ## First we need to handle the fact that different species have different
+    ## mappings for their names.
+    if( is(p@datPkg, "YeastDatPkg") ) {
+       TABLENAME = "sgd"; GENEIDS="systematic_name"
+    } else {
+       TABLENAME = "genes"; GENEIDS="gene_id"
+    }
     SQL <- "SELECT DISTINCT go_id
-FROM genes INNER JOIN go_%s_all USING (_id)
-WHERE gene_id IN (%s)"
+FROM %s INNER JOIN go_%s_all USING (_id)
+WHERE %s IN (%s)"
     inClause1 <- if (!keep.all)
       geneIds(p)
     else
       univ
     inClause1 <- toSQLStringSet(inClause1) # may get reused below
-    SQL <- sprintf(SQL, ontology(p), inClause1)
+    SQL <- sprintf(SQL, TABLENAME, ontology(p), GENEIDS, inClause1)
     wantedGO <- dbGetQuery(db, SQL)[[1]]
     ## Now collect the Entrez IDs annotated at our wantedGO IDs making
     ## sure to only keep those that are in the gene ID universe
     ## specified in p.
-    SQL <- "SELECT DISTINCT gene_id, go_id
-FROM genes INNER JOIN go_%s_all USING (_id)
-WHERE gene_id IN (%s) AND go_id IN (%s)"
+    SQL <- "SELECT DISTINCT %s, go_id
+FROM %s INNER JOIN go_%s_all USING (_id)
+WHERE %s IN (%s) AND go_id IN (%s)"
     inClauseGO <- toSQLStringSet(wantedGO)
     if (!keep.all)                      # avoid recomputing
       inClause1 <- toSQLStringSet(univ)
-    SQL <- sprintf(SQL, ontology(p), inClause1, inClauseGO)
+    SQL <- sprintf(SQL, GENEIDS, TABLENAME, ontology(p), GENEIDS, inClause1, 
+                   inClauseGO)
     ans <- dbGetQuery(db, SQL)
     if (nrow(ans) == 0)
         list()
-    else
-        split(ans[["gene_id"]], ans[["go_id"]])
+    else 
+        split(ans[[GENEIDS]], ans[["go_id"]])
 }
 
 getGoToEntrezMap <- function(p) {

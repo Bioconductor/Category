@@ -18,10 +18,9 @@ DatPkgFactory <- function(chip) {
     if (chip == "UNKNOWN")
       return(new("AffyDatPkg", name=chip))
     ## XXX: ugly name-based computations ahead
-    if (strMatch("org.Sc.sgd.db", chip))
-      stop("Sorry, org.Sc.sgd.db is not yet supported, ",
-           "use the YEAST package instead")
-    if (strMatch("YEAST", chip))
+    ## All yeast packages here - for now
+    if (strMatch("org.Sc.sgd.db", chip) ||
+          strMatch("YEAST", chip) || strMatch("yeast2", chip))
       pkg <- new("YeastDatPkg", name=chip)
     else if (strMatch("LLMapping", chip))
       pkg <- new("OrganismMappingDatPkg", name=chip)

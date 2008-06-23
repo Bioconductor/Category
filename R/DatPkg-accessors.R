@@ -18,22 +18,31 @@ setMethod("ID2GO", "OrganismMappingDatPkg",
 setMethod("ID2EntrezID", "AffyDatPkg",
           function(p) getAnnMap("ENTREZID", p@name))
 
-.createIdentifyMap <- function(keys) {
-    e <- new.env(parent=emptyenv(), hash=TRUE)
-    for (n in keys) {
-        e[[n]] <- n
-    }
-    e
+##FIXME: this is seriously slow - try l2e to speed up a bit
+.createIdentityMap <- function(keys) {
+    keys = as.list(keys)
+    names(keys) = keys 
+    l2e(keys)
+#    e <- new.env(parent=emptyenv(), hash=TRUE)
+#    for (n in keys) {
+#        e[[n]] <- n
+#    }
+#    e
 }
 
+##this needs to handle all new, old and org based yeast packages
 setMethod("ID2EntrezID", "YeastDatPkg",
           function(p) {
-              .createIdentifyMap(ls(getAnnMap("CHR", p@name)))
+              bname = sub("\\.db$", "", p@name)
+              if( exists( paste(bname, "ORF", sep="")) ) 
+	        return(getAnnMap("ORF", p@name))
+              else
+              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
           })
 
 setMethod("ID2EntrezID", "Org.XX.egDatPkg",
           function(p) {
-              .createIdentifyMap(ls(getAnnMap("CHR", p@name)))
+              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
           })
 
 
