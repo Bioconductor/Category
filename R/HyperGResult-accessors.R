@@ -24,8 +24,8 @@ setMethod("universeMappedCount", signature(r="HyperGResultBase"),
 setMethod("geneMappedCount", signature(r="HyperGResultBase"),
            function(r) length(geneIds(r)))
 
-setMethod("geneIds", signature(r="HyperGResultBase"),
-          function(r, ...) r@geneIds)
+setMethod("geneIds", signature(object="HyperGResultBase"),
+          function(object, ...) object@geneIds)
 
 setMethod("geneIdsByCategory", signature(r="HyperGResultBase"),
           function(r, catids=NULL) {

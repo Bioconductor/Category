@@ -19,8 +19,8 @@ setMethod("universeMappedCount", signature(r="LinearMResultBase"),
 setMethod("geneMappedCount", signature(r="LinearMResultBase"),
            function(r) length(geneIds(r)))
 
-setMethod("geneIds", signature(r="LinearMResultBase"),
-          function(r, ...) r@geneIds)
+setMethod("geneIds", signature(object="LinearMResultBase"),
+          function(object, ...) object@geneIds)
 
 setMethod("geneIdsByCategory", signature(r="LinearMResultBase"),
           function(r, catids=NULL) {

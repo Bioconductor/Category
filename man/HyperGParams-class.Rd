@@ -89,7 +89,7 @@ Objects of this class cannot be instantiated directly.
       must be called with a proper subclass of
       \code{HyperGParams}.}
     
-  \item{\code{geneIds(r)}, \code{geneIds(r) <- value}}{Accessors for
+  \item{\code{geneIds(object)}, \code{geneIds(object) <- value}}{Accessors for
       the gene identifiers that will be used as the selected gene
       list.}
     
@@ -97,7 +97,7 @@ Objects of this class cannot be instantiated directly.
     to change the annotation for an existing instance, use the
     replacement form.}
     
-  \item{\code{ontology(r)}}{Accessor for GO ontology.}
+  \item{\code{ontology(object)}}{Accessor for GO ontology.}
     
   \item{\code{pvalueCutoff(r)}, \code{pvalueCutoff(r) <-
         value}}{Accessor for the p-value cutoff.  When setting,

@@ -1,7 +1,7 @@
 setMethod("geneIds", "ChrBandTree",
-          function(r, n, ...) {
+          function(object, n, ...) {
               stopifnot(length(n) == 1L)
-              nodeData(r@toChildGraph, n=n, attr="geneIds")[[1L]]
+              nodeData(object@toChildGraph, n=n, attr="geneIds")[[1L]]
           })
 
 setMethod("lgeneIds", "ChrBandTree",

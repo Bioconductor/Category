@@ -44,8 +44,8 @@
     \item{condGeneIdUniverse}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{conditional}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{description}{\code{signature(object = "LinearMResultBase")}: ... }
-    \item{geneIdsByCategory}{\code{signature(r = "LinearMResultBase")}: ... }
-    \item{geneIds}{\code{signature(r = "LinearMResultBase")}: ... }
+    \item{geneIdsByCategory}{\code{signature(object = "LinearMResultBase")}: ... }
+    \item{geneIds}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneMappedCount}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{isConditional}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{pvalueCutoff}{\code{signature(r = "LinearMResultBase")}: ... }

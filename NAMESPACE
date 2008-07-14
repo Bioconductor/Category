@@ -2,6 +2,8 @@ import("methods")
 import("AnnotationDbi")
 importMethodsFrom("Biobase", "annotation", "annotation<-", "description")
 importFrom("RBGL", "tsort", "dijkstra.sp")
+importFrom("GSEABase", "geneIds", "geneIds<-", "ontology")
+
 
 export(
        ".doHyperGTest",
@@ -19,6 +21,8 @@ export(
        "exampleLevels",
        "findAMstats",
        "geneGoHyperGeoTest",
+       "geneIds",
+       "geneIds<-",
        "geneKeggHyperGeoTest",
        "getPathNames",
        "gseattperm",
@@ -27,6 +31,7 @@ export(
        "makeEBcontr",
        "NewChrBandTree",
        "MAPAmat",
+       "ontology",
        "probes2MAP",
        "probes2Path",
        "ttperm")
@@ -56,7 +61,6 @@ exportClasses("DatPkg",
               "LinearMResultBase",
               "LinearMResult",
               "ChrMapLinearMResult")
-
 
 exportMethods("hyperGTest",
               "linearMTest",

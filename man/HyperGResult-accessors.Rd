@@ -98,7 +98,7 @@ universeCounts(r)
 universeMappedCount(r)
 geneMappedCount(r)
 
-geneIds(r, ...)
+geneIds(object, ...)
 geneIdUniverse(r, cond = TRUE)
 condGeneIdUniverse(r)
 geneIdsByCategory(r, catids = NULL)
@@ -118,7 +118,7 @@ chrGraph(r)
 }
 
 \arguments{
-  \item{r}{An instance of a subclass of
+  \item{r, object}{An instance of a subclass of
     \code{HyperGResultBase}.}
 
   \item{catids}{A character vector of category identifiers.}

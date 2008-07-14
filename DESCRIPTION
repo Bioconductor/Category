@@ -9,7 +9,7 @@ Depends: methods, Biobase (>= 1.15.29), graph,
          annotate (>= 1.15.6), genefilter, AnnotationDbi (>= 0.1.15)
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-6),
           hgu95av2.db, Matrix, KEGG.db, GO.db
-Imports: methods, Biobase (>= 1.15.14), AnnotationDbi (>= 0.1.15), RBGL
+Imports: methods, Biobase (>= 1.15.14), AnnotationDbi (>= 0.1.15), RBGL, GSEABase
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
          categoryName-methods.R hyperGTest-methods.R linearMTest-methods.R

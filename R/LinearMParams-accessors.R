@@ -1,8 +1,8 @@
 
-setMethod("geneIds", "LinearMParams", function(r, ...) r@geneIds)
-setReplaceMethod("geneIds", "LinearMParams", function(r, value) {
-    r@geneIds <- value
-    r
+setMethod("geneIds", "LinearMParams", function(object, ...) object@geneIds)
+setReplaceMethod("geneIds", "LinearMParams", function(object, value) {
+    object@geneIds <- value
+    object
 })
 
 

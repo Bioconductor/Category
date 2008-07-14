@@ -41,8 +41,8 @@
     \item{annotation}{\code{signature(object = "LinearMParams")}: ... }
     \item{categoryName}{\code{signature(r = "LinearMParams")}: ... }
     \item{conditional}{\code{signature(r = "LinearMParams")}: ... }
-    \item{geneIds<-}{\code{signature(r = "LinearMParams")}: ... }
-    \item{geneIds}{\code{signature(r = "LinearMParams")}: ... }
+    \item{geneIds<-}{\code{signature(object = "LinearMParams")}: ... }
+    \item{geneIds}{\code{signature(object = "LinearMParams")}: ... }
     \item{pvalueCutoff<-}{\code{signature(r = "LinearMParams")}: ... }
     \item{pvalueCutoff}{\code{signature(r = "LinearMParams")}: ... }
     \item{show}{\code{signature(object = "LinearMParams")}: ... }

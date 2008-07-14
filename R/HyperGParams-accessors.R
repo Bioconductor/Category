@@ -44,10 +44,10 @@
 }
 setMethod("makeValidParams", "HyperGParams", .makeValidParams)
 
-setMethod("geneIds", "HyperGParams", function(r, ...) r@geneIds)
-setReplaceMethod("geneIds", "HyperGParams", function(r, value) {
-    r@geneIds <- value
-    r
+setMethod("geneIds", "HyperGParams", function(object, ...) object@geneIds)
+setReplaceMethod("geneIds", "HyperGParams", function(object, value) {
+    object@geneIds <- value
+    object
 })
 
 setMethod("categorySubsetIds", "HyperGParams", function(r) r@categorySubsetIds)
@@ -113,9 +113,9 @@ setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
 
 setMethod("isConditional", "GOHyperGParams", function(r) conditional(r))
 
-setMethod("ontology", "HyperGParams", function(r) NA)
+setMethod("ontology", "HyperGParams", function(object) NA)
 
-setMethod("ontology", "GOHyperGParams", function(r) r@ontology)
+setMethod("ontology", "GOHyperGParams", function(object) object@ontology)
 
 setReplaceMethod("ontology", c("GOHyperGParams", "character"),
                  function(r, value) {
