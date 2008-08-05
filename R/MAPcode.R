@@ -404,11 +404,11 @@ expCounts <- function(tab, wh.row=1L) {
 ## }
 
 cb_buildContinTable <- function(imat, selids, min.expected=1L, min.k=1L) {
-    ## Return a 2 x k contingency table First row is selected, second is
-    ## not.  Columns are gene sets (rows of imat).  Columns with
-    ## expected count for selected row < min.expected are omitted.
-    ## Tables with fewer than min.k columns result in a return of
-    ## integer(0).
+    ## Return a 2 x k contingency table.  First row is selected,
+    ## second is not.  Columns are gene sets (rows of imat).  Columns
+    ## with expected count for selected row < min.expected are
+    ## omitted.  Tables with fewer than min.k columns result in a
+    ## return of integer(0).
     ##
     if (any(dim(imat) == 0))
       return(integer(0))
@@ -442,10 +442,12 @@ cb_contingency <- function(selids, chrVect, chrGraph, testFun=chisq.test,
     chrMat <- cb_buildInciMat(chrVect, chrGraph)
     conTab <- cb_buildContinTable(chrMat, selids,
                                   min.expected=min.expected, min.k=min.k)
-    if (!length(conTab))
-      return(list())
-    list(table=conTab, result=testFun(conTab))
+    if (is.matrix(conTab) && nrow(conTab) > 1 && ncol(conTab) > 1)
+        list(table=conTab, result=testFun(conTab))
+    else
+        list()
 }
+
 
 cb_sigBands <- function(b, p.value=0.01) {
     bands <- lapply(b, function(x) {

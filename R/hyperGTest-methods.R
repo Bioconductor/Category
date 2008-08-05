@@ -86,8 +86,10 @@ removeLengthZero <- function(x) {
     x[wanted]
 }
 
-removeSigKidGenes <- function(curCatKids, goDag, curCat2Entrez, SIGNIF,
-                              cat2Entrez) {
+removeSigKidGenes <-
+    function(curCatKids, goDag, curCat2Entrez, SIGNIF,
+             cat2Entrez)
+{
     if (length(curCatKids)) {
         ## keep only those kids with SIGNIF pvalue
         curCatKids <- lapply(curCatKids, function(x) {
@@ -199,16 +201,16 @@ geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
     ## Here is how we conceptualize the test:
     ##
     ## The urn contains genes from the gene universe.  Genes annotated at a
-    ## given cateogry term are white and the rest black.
+    ## given category term are white and the rest black.
     ##
     ## The number drawn is the size of the selected gene list.  The
     ## number of white drawn is the size of the intersection of the
     ## selected list and the genes annotated at the category.
     ##
-    ## In the conditional case, currently only implemented for GO, the
-    ## category ID annotation set has been reduced and we also adjust the
-    ## selected list (num drawn) and gene universe according to what was
-    ## removed by the conditioning.
+    ## In the conditional case, the category ID annotation set has
+    ## been reduced and we also adjust the selected list (num drawn)
+    ## and gene universe according to what was removed by the
+    ## conditioning.
     ##
     ## Here's a diagram based on using GO as the category:
     ##

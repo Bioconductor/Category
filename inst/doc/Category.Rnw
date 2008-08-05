@@ -6,7 +6,7 @@
 %\VignetteDepends{Biobase, genefilter, hgu95av2.db, RColorBrewer, KEGG.db}
 %\VignetteSuggests{Rgraphviz}
 %\VignetteKeywords{EDA, graphs, ontology, visualization}
-%\VignettePackage{GOstats}
+%\VignettePackage{Category}
 \documentclass[11pt]{article}
 
 \usepackage{times}

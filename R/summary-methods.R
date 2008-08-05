@@ -1,4 +1,6 @@
-getWantedResults <- function(result, pvalue, categorySize=NULL) {
+getWantedResults <-
+    function(result, pvalue, categorySize=NULL)
+{
     ## Returns a logical vector with TRUE indicating selected
     ## results from those tested in the specified result instance.
     pvals <- pvalues(result)
@@ -171,32 +173,38 @@ setMethod("htmlReport", signature(r="PFAMHyperGResult"),
 
 
 setMethod("summary", signature(object="LinearMResultBase"),
-          function(object, pvalue=pvalueCutoff(object), categorySize=NULL)
-          {
-              ## Filter based on p-value and category size
-              wanted <- getWantedResults(object, pvalue, categorySize)
-              pvals <- pvalues(object)
-              esize <- effectSize(object)
-              ucounts <- universeCounts(object)
-              if (!any(wanted)) {
-                  warning("No results met the specified criteria.  ",
-                          "Returning 0-row data.frame", call.=FALSE)
-                  catIds <- character(0)
-                  pvals <- numeric(0)
-                  esize <- numeric(0)
-                  ucounts <- integer(0)
-              } else {
-                  pvals <- pvals[wanted]
-                  esize <- esize[wanted]
-                  ucounts <- ucounts[wanted]
-                  catIds <- names(pvals)
-              }
-              df <- data.frame(ID=catIds, Pvalue=pvals,
-                               Effect=esize,
-                               Size=ucounts,
-                               stringsAsFactors=FALSE, row.names=NULL)
-              names(df)[1] <- paste(paste(testName(object), collapse=""),
-                                    "ID", sep="")
-              df
-          })
+          function(object,
+                   pvalue = pvalueCutoff(object),
+                   categorySize = NULL,
+                   ...)
+      {
+          ##               ## FIXME: should do this in a better way
+          ##               object@pvalues <- p.adjust(pvalues(object), method = adjust.pvalues)
+
+          ## Filter based on p-value and category size
+          wanted <- getWantedResults(object, pvalue, categorySize)
+          pvals <- pvalues(object)
+          esize <- effectSize(object)
+          ucounts <- universeCounts(object)
+          if (!any(wanted)) {
+              warning("No results met the specified criteria.  ",
+                      "Returning 0-row data.frame", call.=FALSE)
+              catIds <- character(0)
+              pvals <- numeric(0)
+              esize <- numeric(0)
+              ucounts <- integer(0)
+          } else {
+              pvals <- pvals[wanted]
+              esize <- esize[wanted]
+              ucounts <- ucounts[wanted]
+              catIds <- names(pvals)
+          }
+          df <- data.frame(ID=catIds, Pvalue=pvals,
+                           Effect=esize,
+                           Size=ucounts,
+                           stringsAsFactors=FALSE, row.names=NULL)
+          names(df)[1] <- paste(paste(testName(object), collapse=""),
+                                "ID", sep="")
+          df
+      })
 
