@@ -5,7 +5,7 @@
 \alias{annotation,LinearMParams-method}
 \alias{categoryName,LinearMParams-method}
 \alias{conditional,LinearMParams-method}
-\alias{geneIds<-,LinearMParams-method}
+\alias{geneIds<-,LinearMParams,ANY-method}
 \alias{geneIds,LinearMParams-method}
 \alias{pvalueCutoff<-,LinearMParams-method}
 \alias{pvalueCutoff,LinearMParams-method}

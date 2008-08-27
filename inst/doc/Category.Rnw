@@ -275,14 +275,14 @@ A qq-plot where each point represents a different category (in this
 In Figure~\ref{fig:qq} we see that there is one pathway for which the
 aggregate statistic seems to be unusually large, and negative. While
 there are a number of pathways that seem to have elevated levels of
-activity among those with BCR/ABL none of the stand out the way that
-the ribosome pathway does. We can find that pathway and examine the
-data a bit more. Then in the next section we make use of the
-permutation approach to assess significance.
+activity among those with BCR/ABL, the ribosome pathway stands out
+with a large and negative aggregate statistic. We can find that 
+pathway and examine the data a bit more. Then in the next section we
+make use of the permutation approach to assess significance.
 
 <<findCat>>=
 
- byTT = names(tA)[ tA< -5]
+ byTT = names(tA)[ tA< -7]
 
 @
 

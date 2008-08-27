@@ -18,7 +18,7 @@
 
 \alias{geneIds,HyperGParams-method}
 \alias{geneIds<-,HyperGParams,logical-method}
-\alias{geneIds<-,HyperGParams-method}
+\alias{geneIds<-,HyperGParams,ANY-method}
 
 \alias{annotation,HyperGParams-method}
 \alias{annotation<-,HyperGParams,character-method}
