@@ -40,6 +40,15 @@ setMethod("ID2EntrezID", "YeastDatPkg",
               .createIdentityMap(ls(getAnnMap("CHR", p@name)))
           })
 
+setMethod("ID2EntrezID", "ArabadopsisDatPkg",
+          function(p) {
+              bname = sub("\\.db$", "", p@name)
+              if( exists( paste(bname, "ACCNUM", sep="")) ) 
+	        return(getAnnMap("ACCNUM", p@name))
+              else
+              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
+          })
+
 setMethod("ID2EntrezID", "Org.XX.egDatPkg",
           function(p) {
               .createIdentityMap(ls(getAnnMap("CHR", p@name)))

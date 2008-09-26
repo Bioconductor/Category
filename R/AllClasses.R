@@ -5,6 +5,7 @@ setClass("DatPkg",
 
 setClass("AffyDatPkg", contains="DatPkg")
 setClass("YeastDatPkg", contains="DatPkg")
+setClass("ArabadopsisDatPkg", contains="DatPkg")
 
 ## For hummanLLMapping and similar
 setClass("OrganismMappingDatPkg", contains="DatPkg")
@@ -22,6 +23,8 @@ DatPkgFactory <- function(chip) {
     if (strMatch("org.Sc.sgd.db", chip) ||
           strMatch("YEAST", chip) || strMatch("yeast2", chip))
       pkg <- new("YeastDatPkg", name=chip)
+    if( strMatch("ath1121501", chip) || strMatch("ag", chip) )
+      pkg <- new("ArabadopsisDatPkg", name=chip)
     else if (strMatch("LLMapping", chip))
       pkg <- new("OrganismMappingDatPkg", name=chip)
     else if (strMatch("^org\\.[a-zA-Z]+\\.eg\\.db$", chip))
