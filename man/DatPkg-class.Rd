@@ -18,6 +18,7 @@
 \alias{ID2EntrezID,YeastDatPkg-method}
 \alias{ID2EntrezID,OrganismMappingDatPkg-method}
 \alias{ID2EntrezID,Org.XX.egDatPkg-method}
+\alias{ID2EntrezID,ArabadopsisDatPkg-method}
 \alias{GO2AllProbes,DatPkg-method}
 \alias{GO2AllProbes,OrganismMappingDatPkg-method}
 \alias{GO2AllProbes,Org.XX.egDatPkg-method}
@@ -62,6 +63,11 @@
 \section{Methods}{
   See \code{showMethods(classes="DatPkg")}.
   %% FIXME: TODO: add doc for methods
+  The set of methods, \code{ID2EntreizID} map between the standard
+  IDs for an organism, or Chip and EntrezIDs, typically to give
+  a way to get the GO terms.  Different organisms, such as S. cerevisae
+  and A. thaliana have their own internal IDs, so we need specialized methods
+  for them.
 }
 
 \author{Seth Falcon}
