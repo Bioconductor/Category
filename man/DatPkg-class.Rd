@@ -3,7 +3,6 @@
 \alias{DatPkg-class}
 \alias{AffyDatPkg-class}
 \alias{YeastDatPkg-class}
-\alias{OrganismMappingDatPkg-class}
 \alias{Org.XX.egDatPkg-class}
 
 \alias{DatPkgFactory}
@@ -13,14 +12,11 @@
 \alias{GO2AllProbes}
 
 \alias{ID2GO,DatPkg-method}
-\alias{ID2GO,OrganismMappingDatPkg-method}
 \alias{ID2EntrezID,AffyDatPkg-method}
 \alias{ID2EntrezID,YeastDatPkg-method}
-\alias{ID2EntrezID,OrganismMappingDatPkg-method}
 \alias{ID2EntrezID,Org.XX.egDatPkg-method}
-\alias{ID2EntrezID,ArabadopsisDatPkg-method}
+\alias{ID2EntrezID,ArabidopsisDatPkg-method}
 \alias{GO2AllProbes,DatPkg-method}
-\alias{GO2AllProbes,OrganismMappingDatPkg-method}
 \alias{GO2AllProbes,Org.XX.egDatPkg-method}
 
 \title{Class "DatPkg"}
@@ -36,12 +32,6 @@
   the \code{YEAST} annotation data package.  The \code{YEAST} package
   needs a class because its format differs slightly from the format of
   \code{AffyDataPkg} conforming packages.
-
-  \code{OrganismMappingDatPkg} is a subclass of \code{DatPkg} used to
-  represent the \code{*LLMappings} annotation data packages.  The
-  format of the \code{*LLMappings} packages is unique and this class
-  allows for interface methods to make it interchangeable with the other
-  formats.
 
   \code{Org.XX.egDatPkg} is a subclass of \code{DatPkg} used to
   represent the \code{org.*.eg.db} organism-level Entez Gene based

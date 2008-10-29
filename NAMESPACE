@@ -39,7 +39,6 @@ export(
 exportClasses("DatPkg",
               "AffyDatPkg",
               "YeastDatPkg",
-              "OrganismMappingDatPkg",
               "Org.XX.egDatPkg",
 
               "HyperGParams",

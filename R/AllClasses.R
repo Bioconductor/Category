@@ -5,10 +5,10 @@ setClass("DatPkg",
 
 setClass("AffyDatPkg", contains="DatPkg")
 setClass("YeastDatPkg", contains="DatPkg")
-setClass("ArabadopsisDatPkg", contains="DatPkg")
+setClass("ArabidopsisDatPkg", contains="DatPkg")
 
 ## For hummanLLMapping and similar
-setClass("OrganismMappingDatPkg", contains="DatPkg")
+## setClass("OrganismMappingDatPkg", contains="DatPkg")
 
 setClass("Org.XX.egDatPkg", contains="DatPkg")
 
@@ -20,13 +20,11 @@ DatPkgFactory <- function(chip) {
       return(new("AffyDatPkg", name=chip))
     ## XXX: ugly name-based computations ahead
     ## All yeast packages here - for now
-    if (strMatch("org.Sc.sgd.db", chip) ||
-          strMatch("YEAST", chip) || strMatch("yeast2", chip))
+    if (strMatch("^org.Sc.sgd.db$", chip) ||
+          strMatch("^ygs98.db$", chip) || strMatch("^yeast2.db$", chip))
       pkg <- new("YeastDatPkg", name=chip)
-    if( strMatch("ath1121501", chip) || strMatch("ag", chip) )
-      pkg <- new("ArabadopsisDatPkg", name=chip)
-    else if (strMatch("LLMapping", chip))
-      pkg <- new("OrganismMappingDatPkg", name=chip)
+    else if( strMatch("^ath1121501.db$", chip) || strMatch("^ag.db$", chip) )
+      pkg <- new("ArabidopsisDatPkg", name=chip)
     else if (strMatch("^org\\.[a-zA-Z]+\\.eg\\.db$", chip))
       pkg <- new("Org.XX.egDatPkg", name=chip)
     else { ##we now prefer the db packages
@@ -34,8 +32,7 @@ DatPkgFactory <- function(chip) {
      if( notDB ) chip = paste(chip, ".db", sep="")
      pkg <- new("AffyDatPkg", name=chip)
     }
-    pkg
-}
+    pkg}
 
 
 setClass("HyperGParams",
