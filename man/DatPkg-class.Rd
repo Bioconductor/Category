@@ -63,7 +63,7 @@
 \author{Seth Falcon}
 \examples{
 DatPkgFactory("hgu95av2.db")
-DatPkgFactory("YEAST")
-DatPkgFactory("fooLLMappings")
+DatPkgFactory("org.Sc.sgd.db")
+DatPkgFactory("org.Hs.eg.db")
 }
 \keyword{classes}

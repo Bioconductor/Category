@@ -13,26 +13,33 @@ setClass("ArabidopsisDatPkg", contains="DatPkg")
 setClass("Org.XX.egDatPkg", contains="DatPkg")
 
 DatPkgFactory <- function(chip) {
-
+    
     strMatch <- function(pat, s) length(grep(pat, s)) > 0
 
+    if(strMatch(".db$",chip)) chip<- sub(".db","",chip)
+    
     if (chip == "UNKNOWN")
       return(new("AffyDatPkg", name=chip))
-    ## XXX: ugly name-based computations ahead
-    ## All yeast packages here - for now
-    if (strMatch("^org.Sc.sgd.db$", chip) ||
-          strMatch("^ygs98.db$", chip) || strMatch("^yeast2.db$", chip))
-      pkg <- new("YeastDatPkg", name=chip)
-    else if( strMatch("^ath1121501.db$", chip) || strMatch("^ag.db$", chip) )
-      pkg <- new("ArabidopsisDatPkg", name=chip)
-    else if (strMatch("^org\\.[a-zA-Z]+\\.eg\\.db$", chip))
-      pkg <- new("Org.XX.egDatPkg", name=chip)
-    else { ##we now prefer the db packages
-     notDB = length(grep("\\.db$", chip) ) == 0
-     if( notDB ) chip = paste(chip, ".db", sep="")
-     pkg <- new("AffyDatPkg", name=chip)
-    }
-    pkg}
+
+    pkg = paste(chip,".db",sep="")
+    
+    ##Use standardized schema names to decide
+    if(require(pkg, character.only = TRUE)){
+        conn <- do.call(paste(chip, "_dbconn", sep=""), list())
+        schema <- dbmeta(conn, "DBSCHEMA")
+        
+        if (schema == "YEAST_DB" || schema == "YEASTCHIP_DB")
+          pkg <- new("YeastDatPkg", name=chip)
+        else if( schema == "ARABIDOPSIS_DB" || schema == "ARABIDOPSISCHIP_DB" )
+          pkg <- new("ArabidopsisDatPkg", name=chip)
+        else if( strMatch("CHIP_DB$", schema)){
+            pkg <- new("AffyDatPkg", name=chip)}
+        else { ##Otherwise its an ordinary org package
+            pkg <- new("Org.XX.egDatPkg", name=chip)
+        }
+        return(pkg)
+    }else stop(paste("Required annotation package", chip, "is not available.",sep=""))
+}
 
 
 setClass("HyperGParams",
