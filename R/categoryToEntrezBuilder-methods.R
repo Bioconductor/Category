@@ -41,7 +41,7 @@ getGoToEntrezMap_db <- function(p) {
     ## These are the GO IDs that form the keys in our GO_to_Entrez map.
     ## First we need to handle the fact that different species have different
     ## mappings for their names.
-    if( is(p@datPkg, "YeastDatPkg") ) {
+    if( is(p@datPkg, "YeastDatPkg") || is(p@datPkg, "Org.Sc.sgdDatPkg") ) {
        TABLENAME = "sgd"; GENEIDS="systematic_name"
     } else {
        TABLENAME = "genes"; GENEIDS="gene_id"

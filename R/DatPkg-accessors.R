@@ -29,6 +29,15 @@ setMethod("ID2EntrezID", "YeastDatPkg",
               .createIdentityMap(ls(getAnnMap("CHR", p@name)))
           })
 
+setMethod("ID2EntrezID", "Org.Sc.sgdDatPkg",
+          function(p) {
+              bname = sub("\\.db$", "", p@name)
+              if( exists( paste(bname, "ORF", sep="")) ) 
+	        return(getAnnMap("ORF", p@name))
+              else
+              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
+          })
+
 setMethod("ID2EntrezID", "ArabidopsisDatPkg",
           function(p) {
               bname = sub("\\.db$", "", p@name)
@@ -49,6 +58,17 @@ setMethod("GO2AllProbes", "DatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
               ontIds <- aqListGOIDs(ontology)
               go2all <- getAnnMap("GO2ALLPROBES", p@name)
+              ontIds <- intersect(ontIds, ls(go2all))
+              go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
+              go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
+              l2e(go2allOnt)
+          })
+
+
+setMethod("GO2AllProbes", "Org.Sc.sgdDatPkg",
+          function(p, ontology=c("BP", "CC", "MF")) {
+              ontIds <- aqListGOIDs(ontology)
+              go2all <- getAnnMap("GO2ALLORFS", p@name)
               ontIds <- intersect(ontIds, ls(go2all))
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)

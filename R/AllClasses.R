@@ -5,6 +5,7 @@ setClass("DatPkg",
 
 setClass("AffyDatPkg", contains="DatPkg")
 setClass("YeastDatPkg", contains="DatPkg")
+setClass("Org.Sc.sgdDatPkg", contains="DatPkg")
 setClass("ArabidopsisDatPkg", contains="DatPkg")
 
 ## For hummanLLMapping and similar
@@ -28,7 +29,9 @@ DatPkgFactory <- function(chip) {
         conn <- do.call(paste(chip, "_dbconn", sep=""), list())
         schema <- dbmeta(conn, "DBSCHEMA")
         
-        if (schema == "YEAST_DB" || schema == "YEASTCHIP_DB")
+        if(schema == "YEAST_DB")
+          pkg <- new("Org.Sc.sgdDatPkg", name=chip)
+        else if( schema == "YEASTCHIP_DB")
           pkg <- new("YeastDatPkg", name=chip)
         else if( schema == "ARABIDOPSIS_DB" || schema == "ARABIDOPSISCHIP_DB" )
           pkg <- new("ArabidopsisDatPkg", name=chip)
@@ -38,7 +41,7 @@ DatPkgFactory <- function(chip) {
             pkg <- new("Org.XX.egDatPkg", name=chip)
         }
         return(pkg)
-    }else stop(paste("Required annotation package", chip, "is not available.",sep=""))
+    }else stop(paste("Required annotation package", chip, "is not available.",sep=" "))
 }
 
 
