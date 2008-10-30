@@ -32,9 +32,9 @@
   expression array annotation.
 
   \code{YeastDatPkg} is a subclass of \code{DatPkg} used to represent
-  the \code{YEAST} annotation data package.  The \code{YEAST} package
-  needs a class because its format differs slightly from the format of
-  \code{AffyDataPkg} conforming packages.
+  the annotation data packages for yeast.  The yeast chip packages are
+  based on sgd and are internally different from the \code{AffyDataPkg}
+  conforming packages.
 
   \code{Org.Sc.sgdDatPkg} is a subclass of \code{DatPkg} used to
   represent the \code{org.Sc.sgd.db} organism-level sgd common

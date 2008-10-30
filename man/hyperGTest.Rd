@@ -44,7 +44,7 @@ hyperGTest(p)
   gene identifiers.
   
   For S. cerevisiae if the \code{annotation} slot of \code{p} is set to
-  '"YEAST"' then comparisons and statistics are computed using common
+  '"org.Sc.sgd"' then comparisons and statistics are computed using common
   names and are with respect to all genes annotated in the S. cerevisiae
   genome not with respect to any microarray chip.  This will *not* be
   the right thing to do if you are working with a yeast microarray.

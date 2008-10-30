@@ -46,7 +46,7 @@ geneGoHyperGeoTest(entrezGeneIds, lib, ontology, universe=NULL)
   well as the universe of Entrez Gene ids in the case that the
   'universe' argument is omitted.
 
-  For S. cerevisiae if the 'lib' argument is set to \code{"YEAST"} then
+  For S. cerevisiae if the 'lib' argument is set to \code{"org.Sc.sgd"} then
   comparisons and statistics are computed using common names and are
   with respect to all genes annotated in the S. cerevisiae genome not
   with respect to any microarray chip.  This will \bold{not} be the
