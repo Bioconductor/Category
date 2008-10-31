@@ -70,8 +70,10 @@
 \author{Seth Falcon}
 \examples{
 DatPkgFactory("hgu95av2")
+\dontrun{
 DatPkgFactory("org.Sc.sgd")
 DatPkgFactory("org.Hs.eg.db")
 DatPkgFactory("ag")
+}
 }
 \keyword{classes}
