@@ -29,15 +29,6 @@ setMethod("ID2EntrezID", "YeastDatPkg",
               .createIdentityMap(ls(getAnnMap("CHR", p@name)))
           })
 
-setMethod("ID2EntrezID", "Org.Sc.sgdDatPkg",
-          function(p) {
-              bname = sub("\\.db$", "", p@name)
-              if( exists( paste(bname, "ORF", sep="")) ) 
-	        return(getAnnMap("ORF", p@name))
-              else
-              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
-          })
-
 setMethod("ID2EntrezID", "ArabidopsisDatPkg",
           function(p) {
               bname = sub("\\.db$", "", p@name)
@@ -65,14 +56,22 @@ setMethod("GO2AllProbes", "DatPkg",
           })
 
 
-setMethod("GO2AllProbes", "Org.Sc.sgdDatPkg",
+setMethod("GO2AllProbes", "YeastDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
+              conn <- do.call(paste(sub("\\.db", "", p@name), "_dbconn", sep=""), list())
+              schema <- dbmeta(conn, "DBSCHEMA")
+              env = environment()
+              if(schema == "YEASTCHIP_DB"){
+                  env = callNextMethod()
+                  return(env)
+              }
               ontIds <- aqListGOIDs(ontology)
               go2all <- getAnnMap("GO2ALLORFS", p@name)
               ontIds <- intersect(ontIds, ls(go2all))
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
-              l2e(go2allOnt)
+              env = l2e(go2allOnt)
+              return(env)
           })
 
 

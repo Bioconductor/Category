@@ -3,7 +3,6 @@
 \alias{DatPkg-class}
 \alias{AffyDatPkg-class}
 \alias{YeastDatPkg-class}
-\alias{Org.Sc.sgdDatPkg-class}
 \alias{Org.XX.egDatPkg-class}
 
 \alias{DatPkgFactory}
@@ -15,11 +14,10 @@
 \alias{ID2GO,DatPkg-method}
 \alias{ID2EntrezID,AffyDatPkg-method}
 \alias{ID2EntrezID,YeastDatPkg-method}
-\alias{ID2EntrezID,Org.Sc.sgdDatPkg-method}
 \alias{ID2EntrezID,Org.XX.egDatPkg-method}
 \alias{ID2EntrezID,ArabidopsisDatPkg-method}
 \alias{GO2AllProbes,DatPkg-method}
-\alias{GO2AllProbes,Org.Sc.sgdDatPkg-method}
+\alias{GO2AllProbes,YeastDatPkg-method}
 \alias{GO2AllProbes,Org.XX.egDatPkg-method}
 
 \title{Class "DatPkg"}
@@ -36,10 +34,6 @@
   based on sgd and are internally different from the \code{AffyDataPkg}
   conforming packages.
 
-  \code{Org.Sc.sgdDatPkg} is a subclass of \code{DatPkg} used to
-  represent the \code{org.Sc.sgd.db} organism-level sgd common
-  identifier based annotation data packages.
-  
   \code{Org.XX.egDatPkg} is a subclass of \code{DatPkg} used to
   represent the \code{org.*.eg.db} organism-level Entez Gene based
   annotation data packages.
