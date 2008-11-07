@@ -26,7 +26,7 @@ setMethod("ID2EntrezID", "YeastDatPkg",
               if( exists( paste(bname, "ORF", sep="")) ) 
 	        return(getAnnMap("ORF", p@name))
               else
-              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
+              .createIdentityMap(allValidKeys(p@name))
           })
 
 setMethod("ID2EntrezID", "ArabidopsisDatPkg",
@@ -35,12 +35,12 @@ setMethod("ID2EntrezID", "ArabidopsisDatPkg",
               if( exists( paste(bname, "ACCNUM", sep="")) ) 
 	        return(getAnnMap("ACCNUM", p@name))
               else
-              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
+              .createIdentityMap(allValidKeys(p@name))
           })
 
 setMethod("ID2EntrezID", "Org.XX.egDatPkg",
           function(p) {
-              .createIdentityMap(ls(getAnnMap("CHR", p@name)))
+              .createIdentityMap(allValidKeys(p@name))
           })
 
 
