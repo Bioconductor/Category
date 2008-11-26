@@ -22,7 +22,7 @@ setMethod("ID2EntrezID", "AffyDatPkg",
 ##this needs to handle all new, old and org based yeast packages
 setMethod("ID2EntrezID", "YeastDatPkg",
           function(p) {
-              bname = sub("\\.db$", "", p@name)
+              bname = p@name 
               if( exists( paste(bname, "ORF", sep="")) ) 
 	        return(getAnnMap("ORF", p@name))
               else
@@ -31,7 +31,7 @@ setMethod("ID2EntrezID", "YeastDatPkg",
 
 setMethod("ID2EntrezID", "ArabidopsisDatPkg",
           function(p) {
-              bname = sub("\\.db$", "", p@name)
+              bname = p@name 
               if( exists( paste(bname, "ACCNUM", sep="")) ) 
 	        return(getAnnMap("ACCNUM", p@name))
               else
@@ -58,7 +58,7 @@ setMethod("GO2AllProbes", "DatPkg",
 
 setMethod("GO2AllProbes", "YeastDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
-              conn <- do.call(paste(sub("\\.db", "", p@name), "_dbconn", sep=""), list())
+              conn <- do.call(paste(p@name, "_dbconn", sep=""), list())
               schema <- dbmeta(conn, "DBSCHEMA")
               env = environment()
               if(schema == "YEASTCHIP_DB"){
@@ -80,8 +80,7 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
 
               #db <- get("db_conn", paste("package:", p@name, sep=""))
-              pname = sub("\\.db", "", p@name)
-              db <- do.call(paste(pname, "dbconn", sep="_"), list())
+              db <- do.call(paste(p@name, "dbconn", sep="_"), list())
               sqlQ <- "SELECT DISTINCT gene_id, go_id
               FROM genes INNER JOIN go_%s USING (_id)"
               sqlQ <- sprintf(sqlQ, tolower(ontology))
@@ -107,5 +106,7 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
           })
 
 isDBDatPkg <- function(dpkg) {
-    length(grep("\\.db$", dpkg@name)) > 0
+    ##If there is a connection object then it's a db package.
+    require(paste(dpkg@name, ".db", sep=""), character.only=TRUE)
+    exists(paste(dpkg@name, "_dbconn", sep=""), mode="function")
 }

@@ -26,8 +26,7 @@ getGoToEntrezMap_db <- function(p) {
                        stop("Bad testDirection slot"))
     #annPkgNS <- getNamespace(annotation(p))
     #db <- get("db_conn", annPkgNS)
-    pname = sub("\\.db", "", p@annotation)
-    db <- do.call(paste(pname, "dbconn", sep="_"), list())
+    db <- do.call(paste(p@annotation, "dbconn", sep="_"), list())
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
 
     ## For over representation:
@@ -100,7 +99,7 @@ getKeggToEntrezMap <- function(p) {
                        under=TRUE,
                        stop("Bad testDirection slot"))
     lib <- annotation(p)
-    isORGEG = grep("org.*.eg.db", lib)
+    isORGEG = grep("org.*.eg", lib)
     if( length(isORGEG) > 0 )
         kegg2allprobes <- getDataEnv("PATH2EG", lib)
     else

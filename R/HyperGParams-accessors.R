@@ -2,6 +2,15 @@
     ## check HyperGParams instance for validity.
     ## If we can fix it, we do (and issue a warning)
     ## Return a more valid instance or error
+
+    ##Check if annotation has been written "long form"
+    ##If it is, then shorten the name appropriately.
+    ann <- annotation(object)
+    if(length(grep(".db$", ann)) > 0){
+        ann<- sub("\\.db$", "", ann)
+        annotation(object) <- ann
+    }
+    
     sel <- geneIds(object)
     if (is.list(sel)) {
         warning("converting geneIds from list to atomic vector via unlist")

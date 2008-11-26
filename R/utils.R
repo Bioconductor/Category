@@ -1,5 +1,4 @@
 getDataEnv <- function(name, lib) {
-    lib <- sub(".db$", "", lib)
     get(paste(lib, name, sep=""))
 }
 
