@@ -1,8 +1,66 @@
-import("methods")
-import("AnnotationDbi")
-importMethodsFrom("Biobase", "annotation", "annotation<-", "description")
-importFrom("RBGL", "tsort", "dijkstra.sp")
-importFrom("GSEABase", "geneIds", "geneIds<-", "ontology")
+import(AnnotationDbi)
+import(methods)
+
+importClassesFrom(graph,
+                  graph)
+
+importMethodsFrom(Biobase,
+                  annotation,
+                  "annotation<-",
+                   description)
+
+importMethodsFrom(GSEABase,
+                  geneIds,
+                  "geneIds<-",
+                  ontology)
+
+importMethodsFrom(genefilter,
+                  rowttests)
+
+importMethodsFrom(graph,
+                  edges,
+                  leaves,
+                  nodeData,
+                  "nodeData<-",
+                  "nodeDataDefaults<-",
+                  nodes,
+                  numNodes,
+                  subGraph)
+
+importFrom(Biobase,
+           contents,
+           l2e,
+           lcPrefix,
+           lcPrefixC,
+           listLen,
+           reverseSplit,
+           subListExtract)
+
+importFrom(RBGL,
+           dijkstra.sp,
+           tsort)
+
+importFrom(annotate,
+           allValidKeys,
+           aqListGOIDs,
+           filterGOByOntology,
+           getAnnMap)
+
+importFrom(graph,
+           ftM2graphNEL,
+           reverseEdgeDirections)
+
+importFrom(stats,
+           chisq.test,
+           coef,
+           formula,
+           lm,
+           phyper,
+           pnorm,
+           runif)
+
+importFrom(utils,
+           find)
 
 
 export(

@@ -3,7 +3,8 @@
 % likely to be overwritten.
 %
 %\VignetteIndexEntry{Using Chromosome Bands as Categories}
-%\VignetteDepends{Biobase, genefilter, hgu95av2.db, RColorBrewer, ALL}
+%\VignetteDepends{ALL, hgu95av2.db, annotate, genefilter, SNPchip,
+% geneplotter, limma, lattice, graph}
 %\VignetteKeywords{graphs, visualization}
 %\VignettePackage{Category}
 \documentclass[11pt]{article}
@@ -106,6 +107,7 @@ library("SNPchip")
 library("geneplotter")
 library("limma")
 library("lattice")
+library("graph")
 @ 
 
 

@@ -241,6 +241,8 @@ chrGraph(r)
 ## Note that more in-depth examples can be found in the GOstats
 ## vignette (Hypergeometric tests using GOstats).
 library("hgu95av2.db")
+library("annotate")
+
 probids <- ls(hgu95av2GENENAME)[1:300]
 ## Select for probeids that have PFAM ids
 hasPFAM <- sapply(mget(probids, hgu95av2PFAM), function(ids)
