@@ -8,7 +8,7 @@ License: Artistic-2.0
 Depends: AnnotationDbi (>= 0.1.15), Biobase (>= 1.15.29)
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-6),
           hgu95av2.db, Matrix, KEGG.db, GO.db, SNPchip, geneplotter, 
-	  limma, lattice, graph, Biobase, genefilter, methods
+          limma, lattice, graph, Biobase, genefilter, methods
 Imports: graph, methods, Biobase (>= 1.15.29), AnnotationDbi (>= 0.1.15), RBGL, 
          GSEABase, genefilter, annotate (>= 1.15.6), stats, utils
 LazyLoad: Yes
