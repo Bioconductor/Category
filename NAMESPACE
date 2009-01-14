@@ -1,13 +1,33 @@
-import(AnnotationDbi)
-import(methods)
-
 importClassesFrom(graph,
                   graph)
+
+importClassesFrom(methods,
+                  ANY,
+                  character,
+                  integer,
+                  list,
+                  logical,
+                  numeric)
+
+importMethodsFrom(AnnotationDbi,
+                  as.list,
+                  colnames,
+                  dbmeta,
+                  eapply,
+                  exists,
+                  get,
+                  ls,
+                  mget,
+                  ncol,
+                  nrow,
+                  revmap,
+                  sample,
+                  tail)
 
 importMethodsFrom(Biobase,
                   annotation,
                   "annotation<-",
-                   description)
+                  description)
 
 importMethodsFrom(GSEABase,
                   geneIds,
@@ -26,6 +46,13 @@ importMethodsFrom(graph,
                   nodes,
                   numNodes,
                   subGraph)
+
+importMethodsFrom(methods,
+                  initialize,
+                  show)
+
+importFrom(AnnotationDbi,
+           toSQLStringSet)
 
 importFrom(Biobase,
            contents,
@@ -49,6 +76,15 @@ importFrom(annotate,
 importFrom(graph,
            ftM2graphNEL,
            reverseEdgeDirections)
+
+importFrom(methods,
+           .valueClassTest,
+           "@<-",
+           as,
+           callNextMethod,
+           is,
+           new,
+           slotNames)
 
 importFrom(stats,
            chisq.test,
