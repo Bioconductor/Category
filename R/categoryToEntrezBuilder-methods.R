@@ -99,11 +99,16 @@ getKeggToEntrezMap <- function(p) {
                        under=TRUE,
                        stop("Bad testDirection slot"))
     lib <- annotation(p)
-    isORGEG = grep("org.*.eg", lib)
-    if( length(isORGEG) > 0 )
+    conn <- do.call(paste(lib, "_dbconn", sep=""), list())
+    schema <- dbmeta(conn, "DBSCHEMA")
+    
+    if(schema == "YEASTCHIP_DB")
+      kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
+    else if(schema == "YEAST_DB")
+      kegg2allprobes <- getDataEnv("PATH2ORF", lib)
+    else{ ##IOW it's an org "eg" package
         kegg2allprobes <- getDataEnv("PATH2EG", lib)
-    else
-        kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
+    }
     probeAnnot <- getKeggToProbeMap(kegg2allprobes)
     probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
