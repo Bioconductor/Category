@@ -102,7 +102,7 @@ getKeggToEntrezMap <- function(p) {
     conn <- do.call(paste(lib, "_dbconn", sep=""), list())
     schema <- dbmeta(conn, "DBSCHEMA")
     
-    if(schema == "YEASTCHIP_DB")
+    if(length(grep("CHIP_DB", schema)) > 0) ##if the schema contains "CHIP_DB"
       kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
     else if(schema == "YEAST_DB")
       kegg2allprobes <- getDataEnv("PATH2ORF", lib)
