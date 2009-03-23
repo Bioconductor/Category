@@ -201,7 +201,7 @@ makeChrMapToEntrez <- function(chip, univ) {
 }
 
 cb_parse_band_hsa <- function(x) {
-    .Deprecated("cb_parse_band_Hs")
+    .Defunct("cb_parse_band_Hs")
     cb_parse_band_Hs(x)
 }
 
@@ -339,7 +339,7 @@ MAPAmat <- function(chip, univ=NULL, minCount=0) {
 }
 
 chrBandInciMat <- function(chip, univ=NULL, minCount=0) {
-    .Deprecated("MAPAmat")
+    .Defunct("MAPAmat")
     MAPAmat(chip=chip, univ=univ, minCount=minCount)
 }
 

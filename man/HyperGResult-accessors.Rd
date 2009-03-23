@@ -132,34 +132,37 @@ chrGraph(r)
 
 \section{Accessor Methods (Generic Functions)}{
  \describe{
+   
+   \item{geneCounts}{returns an \code{"integer"}
+    vector: for each category term tested, the number of genes from
+    the gene set that are annotated at the term.}
 
-  \item{geneCounts}{returns an \code{"integer"}
-      vector: for each category term tested, the number of genes from
-      the gene set that are annotated at the term.}
-
-  \item{pvalues}{returns a \code{"numeric"}
+    \item{pvalues}{returns a \code{"numeric"}
       vector: the ordered p-values for each category term tested.}
-
-  \item{universeCounts}{returns an \code{"integer"}
+    
+    \item{universeCounts}{returns an \code{"integer"}
       vector: for each category term tested, the number of genes from
       the gene universe that are annotated at the term.}
-
-  \item{universeMappedCount}{returns an \code{"integer"}
+    
+    \item{universeMappedCount}{returns an \code{"integer"}
       vector of length one giving the size of the gene universe set.}
-
-  \item{expectedCounts}{returns a \code{"numeric"} vector
+    
+    \item{expectedCounts}{returns a \code{"numeric"} vector
       giving the expected number of genes in the selected gene list to
-      be found at each tested category term.}
+      be found at each tested category term.  These values may surprise
+      you if you forget that your gene list and gene universe might have
+      had to undergo further filtering to ensure that each gene has been
+      labeled by at least one GO term.}
 
-  \item{oddsRatios}{returns a \code{"numeric"} vector giving
+    \item{oddsRatios}{returns a \code{"numeric"} vector giving
       the odds ratio for each category term tested.}
 
     \item{annotation}{returns the name
-        of the annotation data package used.  }
+      of the annotation data package used.  }
 
     \item{geneIds}{returns the input
-        vector of gene identifiers intersected with the universe of
-        gene identifiers used in the computation. }
+      vector of gene identifiers intersected with the universe of
+      gene identifiers used in the computation. }
 
     \item{geneIdUniverse}{returns a list named by the
       tested categories.  Each element of the list is a vector of gene
@@ -175,34 +178,42 @@ chrGraph(r)
     \item{sigCategories}{returns a character vector of category
       identifiers with a significant p-value.  If argument \code{p} is
       missing, then the cutoff obtained from \code{pvalueCutoff(r)} will
-    be used.}
+      be used.}
 
     \item{geneMappedCount}{returns the size of
-        the selected gene set used in the computation.  This is simply
-        \code{length(geneIds(obj))}.}
+      the selected gene set used in the computation.  This is simply
+      \code{length(geneIds(obj))}.}
 
     \item{pvalueCutoff}{accessor for the
-        \code{pvalueCutoff} slot.}
+      \code{pvalueCutoff} slot.}
 
     \item{testDirection}{accessor for the
-        \code{testDirection} slot.  Contains a string indicating
-        whether the test was for \code{"over"} or \code{"under"}
-        representation of the categories.}
+      \code{testDirection} slot.  Contains a string indicating
+      whether the test was for \code{"over"} or \code{"under"}
+      representation of the categories.}
 
     \item{description}{returns a character
-        string description of the test result. }
+      string description of the test result. }
 
     \item{testName}{returns a string
-        describing the testing method used.}
+      describing the testing method used.}
 
     \item{isConditional}{returns \code{TRUE} if the
-          result was obtained using a conditional algorithm.}
+      result was obtained using a conditional algorithm.}
 
     \item{summary}{returns
       a \code{data.frame} summarizing the test result.  Optional
       arguments \code{pvalue} and \code{categorySize} allow
       specification of maximum p-value and minimum categorySize,
-      respectively.}
+      respectively.}  The data frame contains the \code{GOID},
+      \code{Pvalue}, \code{OddsRatio}, \code{ExpCount}, \code{Count},
+      and \code{Size}.  \code{ExpCount} is the expected count and
+      the \code{Count} is how many instances of that term were actually
+      oberved in your gene list while the \code{Size} is the number that
+      could have been found in your gene list if every instance had
+      turned up.  Values like the \code{ExpCount} and the \code{Size}
+      are going to be affected by what is included in the gene universe
+      as well as by whether or not it was a conditional test.
 
     \item{htmlReport}{writes
       an HTML version of the table produced by the \code{summary}
@@ -226,8 +237,6 @@ chrGraph(r)
   }
 }
 
-\details{
-}
 
 \author{Seth Falcon}
 \seealso{

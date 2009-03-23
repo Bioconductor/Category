@@ -80,5 +80,4 @@ cb_test(selids, chrtree, level, dir = c("up", "down"),
 
 \author{Seth Falcon}
 
-\keyword{ }
 

@@ -79,5 +79,4 @@ cb_children(n, chrGraph)
 
 \author{Seth Falcon}
 
-\keyword{ }
 

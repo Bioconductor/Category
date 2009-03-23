@@ -13,7 +13,7 @@ setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
                 getUniverseViaPfam(p)
           })
 
-
+##The _db versions of these seem to never have been finished or been used.
 XXXgetUniverseViaGo_db <- function(p) {
     datPkg <- p@datPkg
     ontology <- ontology(p)
@@ -93,7 +93,7 @@ getUniverseViaPfam_db <- function(p) {
     if (!is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
     if (length(univ) < 1)
-      stop("No Entrez Gene ids left in universe")
+      stop("No ids left in gene universe")
     univ
 }
 
@@ -112,8 +112,8 @@ getUniverseHelper <- function(probes, datPkg, entrezIds) {
     univ <- unique(unlist(mget(probes, ID2EntrezID(datPkg))))
     if (!missing(entrezIds) && !is.null(entrezIds) && length(entrezIds) > 0)
       univ <- intersect(univ, unlist(entrezIds))
-    if (length(univ) < 1) ##FIXME: improve error msg
-      stop("No Entrez Gene ids left in universe")
+    if (length(univ) < 1)
+      stop("After filtering, there are no valid IDs that can be used as the Gene universe.\n  Check input values to confirm they are the same type as the central ID used by your annotation package.\n  For chip packages, this will still mean the central GENE identifier used by the package (NOT the probe IDs).")
     univ
 }
 

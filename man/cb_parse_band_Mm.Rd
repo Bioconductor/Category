@@ -24,6 +24,3 @@ cb_parse_band_Mm(x)
 \examples{
 cb_parse_band_Mm("10 B3")
 }
-
-\keyword{ }
-

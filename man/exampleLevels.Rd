@@ -22,5 +22,4 @@ exampleLevels(g)
 
 \author{S. Falcon}
 % R documentation directory.
-\keyword{ }
 

@@ -28,5 +28,3 @@ cb_parse_band_Hs(x)
 \examples{
 cb_parse_band_Hs("12q32.12")
 }
-
-\keyword{ }

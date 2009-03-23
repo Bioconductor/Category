@@ -42,8 +42,6 @@ hg_test_factory(selids, PCUT = 0.05, COND = FALSE, OVER = TRUE)
 
 \author{Seth Falcon}
 \seealso{\code{\link{cb_test}}}
-\examples{
-}
 
 \keyword{internal}
 

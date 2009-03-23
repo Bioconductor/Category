@@ -36,7 +36,7 @@ setGeneric("geneIdUniverse", signature="r",
 
 setGeneric("condGeneIdUniverse",
            function(r) {
-               .Deprecated(msg=paste("use unconditional version with",
+               .Defunct(msg=paste("use unconditional version with",
                              "'cond' argument"))
                standardGeneric("condGeneIdUniverse")
            })
@@ -90,7 +90,7 @@ setGeneric("categorySubsetIds", function(r) standardGeneric("categorySubsetIds")
 setGeneric("categorySubsetIds<-", function(r, value) standardGeneric("categorySubsetIds<-"))
 
 setGeneric("isConditional", function(r) {
-    .Deprecated("conditional")
+    .Defunct("conditional")
     standardGeneric("isConditional")
     })
 

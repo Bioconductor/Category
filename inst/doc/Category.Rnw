@@ -106,7 +106,7 @@ over the experimental conditions than in sets of differentially
 expressed genes. The methods presented in this paper are one approach
 to taking a more global view.
 
-<<Setup, echo=FALSE, results=hide>>=
+<<Setup, echo=TRUE, results=hide>>=
 library("Biobase")
 library("annotate")
 library("hgu95av2.db")
@@ -264,7 +264,7 @@ Figure~\ref{fig:qq}.
 
 \begin{figure}[tp]
   \centering
-<<qqplot, fig=TRUE, include=FALSE, width=5, height=5, echo=FALSE, results=hide>>=
+<<qqplot, fig=TRUE, include=FALSE, width=5, height=5, echo=TRUE, results=hide>>=
  qqnorm(tA)
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-qqplot}
@@ -289,7 +289,7 @@ make use of the permutation approach to assess significance.
 
 \begin{figure}[tp]
   \centering
-<<KEGGmnplot, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<KEGGmnplot, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
     KEGGmnplot(byTT, eS, group=eS$mol, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[byTT], 3)), sep="\n"))
@@ -316,14 +316,14 @@ in the top bar for Figure~\ref{fig:hmRib1} are gold for BCR/ABL and
 blue for NEG, while in Figure~\ref{fig:hmRib2} they are green for
 males and grey for females.
 
-<<setupHMcols, results=hide, echo=FALSE>>=
+<<setupHMcols, results=hide, echo=TRUE>>=
 hmcol <- rev(colorRampPalette(brewer.pal(10, "RdBu"))(256))
 spcol <- ifelse(eS$mol.biol=="BCR/ABL", "goldenrod", "skyblue")
 @
 
 \begin{figure}[tp]
   \centering
-<<Ribosomeheatmap, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<Ribosomeheatmap, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
     tmp1 = KEGG2heatmap(byTT, eS, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[byTT], 3)), sep="\n"), col=hmcol,
@@ -349,7 +349,7 @@ and females (and suggest that there may be some errors in the meta-data).
 
 \begin{figure}[tp]
   \centering
-<<HMbysex, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<HMbysex, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
 
   spcol2 <- ifelse(eS$sex=="M", "lightgreen", "slategrey")
     tmp2 = KEGG2heatmap(byTT, eS, data="hgu95av2",
@@ -380,7 +380,6 @@ GSEA analysis.
 <<setupperms, results=hide, echo=FALSE>>=
 NPERM = 500
 set.seed(444)
-
 @
 
 If you are uncomfortable with the Normal-theory argument given in the
@@ -422,7 +421,7 @@ highC = row.names(pvals)[pvals[,2] < 0.05]
  getPathNames(lowC)
 @
 
-<<setupHC, echo=FALSE, results=hide>>=
+<<setupHC, echo=TRUE, results=hide>>=
 lnhC = length(highC)
 @
 
@@ -442,7 +441,7 @@ Figures~\ref{fig:mn1} through \ref{fig:mn3}.
 
 \begin{figure}[tp]
   \centering
-<<mnplot1, fig=TRUE, width=5, height=5, include=FALSE, echo=FALSE, results=hide>>=
+<<mnplot1, fig=TRUE, width=5, height=5, include=FALSE, echo=TRUE, results=hide>>=
     KEGGmnplot(highC[lnhC], eS, group=eS$mol, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[highC[lnhC]]], paste("Overall:",
                round(tA[highC[lnhC]], 3)), sep="\n"), pch=16, col="blue")
@@ -459,7 +458,7 @@ differentially expressed using a permutation approach.}
 
 \begin{figure}[tp]
   \centering
-<<mnplot2, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<mnplot2, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
     KEGGmnplot(highC[lnhC-1], eS, group=eS$mol, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[highC[lnhC-1]]], paste("Overall:",
                round(tA[highC[lnhC-1]], 3)), sep="\n"))
@@ -474,7 +473,7 @@ differentially expressed using a permutation approach.}
 
 \begin{figure}[tp]
   \centering
-<<mnplot3, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<mnplot3, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
     KEGGmnplot(highC[lnhC-2], eS, group=eS$mol, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[highC[lnhC-2]]], paste("Overall:",
                round(tA[highC[lnhC-2]], 3)), sep="\n"))
@@ -496,7 +495,7 @@ $p$-value is \Sexpr{pvals[byTT, 2]}.
 
 \begin{figure}[tp]
   \centering
-<<HMperm, fig=TRUE, include=FALSE, echo=FALSE, results=hide>>=
+<<HMperm, fig=TRUE, include=FALSE, echo=TRUE, results=hide>>=
     tmp2 = KEGG2heatmap(highC[lnhC-2], eS, data="hgu95av2",
                main=paste(KEGGPATHID2NAME[[byTT]], paste("Overall:",
                round(tA[highC[lnhC-2]], 3)), sep="\n"), col=hmcol,

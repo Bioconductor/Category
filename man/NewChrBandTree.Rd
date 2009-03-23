@@ -29,5 +29,4 @@ ChrBandTreeFromGraph(g)
 \author{S. Falcon}
 \seealso{\code{\link{ChrBandTree-class}}}
 
-\keyword{ }
 
