@@ -147,16 +147,17 @@ annBaseName <- function(p) {
     baseName <- p@datPkg@baseName
 }
 
-makeChrMapToEntrez <- function(chip, univ) {
+makeChrMapToEntrez <- function(datPkg, univ) {
+    
     .getMap <- function(map)
-      getAnnMap(map=map, chip=chip)
+      getAnnMap(map=map, chip=datPkg@name)
     probe2chr <- .getMap(map="MAP")
-    org <- getOrganism(chip)
+    org <- getOrganism(datPkg@name)
 
     if (!is.environment(probe2chr))
       probe2chr <- l2e(as.list(probe2chr))
 
-    egs <- unique(unlist(mget(ls(probe2chr), .getMap(map="ENTREZID"))))
+    egs <- unique(unlist(mget(ls(probe2chr), ID2EntrezID(datPkg))))
     egs <- egs[!is.na(egs)]
     if (!is.null(univ))
       egs <- intersect(egs, univ)
@@ -164,7 +165,7 @@ makeChrMapToEntrez <- function(chip, univ) {
     eg2chr <- new.env(parent=emptyenv(), hash=TRUE,
                       size=as.integer(1.20 * length(egs)))
     ## XXX: need to define a revmap method for environments
-    eg2p <- l2e(mget(egs, revmap(.getMap(map="ENTREZID"))))
+    eg2p <- l2e(mget(egs, revmap(ID2EntrezID(datPkg))))
     for (eg in egs) {
         bands <- mget(eg2p[[eg, exact=TRUE]], probe2chr)
         bands <- bands[!is.na(bands)]
@@ -253,7 +254,12 @@ cb_parse_band_Hs <- function(x) {
 
 
 makeChrBandGraph <- function(chip, univ=NULL) {
-    org <- getOrganism(chip)
+    if(class(chip) == "character"){
+        ##chip must be a datPkg (of correct type)
+        chip = Category:::DatPkgFactory(chip)
+    }
+    
+    org <- getOrganism(chip@name)
     checkChrOrg(org)
 
     parser <- switch(org,
@@ -287,7 +293,7 @@ makeChrBandGraph <- function(chip, univ=NULL) {
     if (length(selfLoops) > 0 && any(selfLoops > 0))
       vvT <- vvT[-selfLoops, ]
     ## add root node
-    chrNames <- names(getAnnMap("CHRLENGTHS", chip))
+    chrNames <- names(getAnnMap("CHRLENGTHS", chip@name))
     orgLinks <- cbind(rep(org, length(chrNames)), chrNames)
     vvT <- rbind(orgLinks, vvT)
 
