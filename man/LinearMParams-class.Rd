@@ -28,7 +28,7 @@
     \item{\code{universeGeneIds}:}{Object of class \code{"ANY"} ~~ }
     \item{\code{annotation}:}{Object of class \code{"character"} ~~ }
     \item{\code{datPkg}:}{Object of class \code{"DatPkg"} ~~ }
-    \item{\code{cateogrySubsetIds}:}{Object of class \code{"ANY"} ~~ }
+    \item{\code{categorySubsetIds}:}{Object of class \code{"ANY"} ~~ }
     \item{\code{categoryName}:}{Object of class \code{"character"} ~~ }
     \item{\code{pvalueCutoff}:}{Object of class \code{"numeric"} ~~ }
     \item{\code{minSize}:}{Object of class \code{"integer"} ~~ }

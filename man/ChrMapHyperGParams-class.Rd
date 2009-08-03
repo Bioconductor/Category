@@ -45,7 +45,7 @@
     \item{\code{annotation}:}{A string giving the name of the
       annotation data package for the chip used to generate the data.}
 
-    \item{\code{cateogrySubsetIds}:}{Object of class \code{"ANY"}:
+    \item{\code{categorySubsetIds}:}{Object of class \code{"ANY"}:
       If the test method supports it, can be used to specify a subset of
       category ids to include in the test instead of all possible
       category ids.}

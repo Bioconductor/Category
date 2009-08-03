@@ -62,22 +62,24 @@ Objects of this class cannot be instantiated directly.
       be used.}
     \item{\code{annotation}:}{A string giving the name of the
       annotation data package for the chip used to generate the data.}
-    \item{\code{cateogrySubsetIds}:}{Object of class \code{"ANY"}:
+    \item{\code{categorySubsetIds}:}{Object of class \code{"ANY"}:
       If the test method supports it, can be used to specify a subset of
       category ids to include in the test instead of all possible
       category ids.}
     \item{\code{categoryName}:}{A string describing the category.
       Usually set automatically by subclasses.  For example "GO".}
-
     \item{\code{pvalueCutoff}:}{The p-value to use as a cutoff for
-        significance for testing methods that require it.  This value
-        will also be passed on to the result instance and used for
-        display and counting of significant results.  The default is
-        0.01.}
+      significance for testing methods that require it.  This value
+      will also be passed on to the result instance and used for
+      display and counting of significant results.  The default is
+      0.01.}
+    \item{\code{testDirection}:}{A string indicating whether the test
+      should be for overrepresentation (\code{"over"}) or
+      underrepresentation (\code{"under"}).}
+    \item{\code{datPkg}:}{Holds a DatPkg object which is of a
+     particular type that in turn varies with the kind of annotation
+     package this is.}
 
-      \item{\code{testDirection}:}{A string indicating whether the
-          test should be for overrepresentation (\code{"over"}) or
-          underrepresentation (\code{"under"}).}
   }
 }
 \section{Methods}{

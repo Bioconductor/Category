@@ -44,7 +44,7 @@
     \item{\code{datPkg}:}{Object of class \code{"DatPkg"} used to assist
       with dispatch based on type of annotation data available. }
 
-    \item{\code{cateogrySubsetIds}:}{Object of class \code{"ANY"}:
+    \item{\code{categorySubsetIds}:}{Object of class \code{"ANY"}:
       If the test method supports it, can be used to specify a subset of
       category ids to include in the test instead of all possible
       category ids.}
