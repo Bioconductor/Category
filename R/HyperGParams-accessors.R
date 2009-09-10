@@ -3,6 +3,7 @@
     ## If we can fix it, we do (and issue a warning)
     ## Return a more valid instance or error
 
+  if(class(object@datPkg)!="GeneSetCollectionDatPkg"){
     ##Check if annotation has been written "long form"
     ##If it is, then shorten the name appropriately.
     ann <- annotation(object)
@@ -10,7 +11,9 @@
         ann<- sub("\\.db$", "", ann)
         annotation(object) <- ann
     }
-    
+    if (length(annotation(object)) != 1)
+      stop("annotation must be a length 1 character vector", .Call=FALSE)
+  }
     sel <- geneIds(object)
     if (is.list(sel)) {
         warning("converting geneIds from list to atomic vector via unlist")
@@ -45,13 +48,12 @@
         }
     }
     pv <- pvalueCutoff(object)
-    if (pv > 1 || pv < 0)
-      stop("invalid pvalueCutoff, must be between 0 and 1", .Call=FALSE)
-    if (length(annotation(object)) != 1)
-      stop("annotation must be a length 1 character vector", .Call=FALSE)
-    object
+    if (pv > 1 || pv < 0){
+      stop("invalid pvalueCutoff, must be between 0 and 1", .Call=FALSE)}
+  return(object)
 }
 setMethod("makeValidParams", "HyperGParams", .makeValidParams)
+
 
 setMethod("geneIds", "HyperGParams", function(object, ...) object@geneIds)
 setReplaceMethod("geneIds", "HyperGParams", function(object, value) {
@@ -112,27 +114,32 @@ setReplaceMethod("conditional", c("ChrMapHyperGParams", "logical"),
 
 setMethod("conditional", "GOHyperGParams", function(r) r@conditional)
 
-setReplaceMethod("conditional", c("GOHyperGParams", "logical"),
-                 function(r, value) {
-                     if (is.na(value))
-                       stop("value must be TRUE or FALSE")
-                     r@conditional <- value
-                     r
-                 })
+.replaceGOConditional <- function(r, value) {
+  if (is.na(value))
+    stop("value must be TRUE or FALSE")
+  r@conditional <- value
+  r
+}
+setReplaceMethod("conditional", c("GOHyperGParams", "logical"), function(r, value) .replaceGOConditional(r, value))
+
 
 setMethod("isConditional", "GOHyperGParams", function(r) conditional(r))
+
 
 setMethod("ontology", "HyperGParams", function(object) NA)
 
 setMethod("ontology", "GOHyperGParams", function(object) object@ontology)
 
-setReplaceMethod("ontology", c("GOHyperGParams", "character"),
-                 function(r, value) {
-                     if (is.na(value) || length(value) != 1)
-                       stop("value must be a length one character vector")
-                     r@ontology <- value
-                     r
-                 })
+.replaceGOOntology <- function(r, value) {
+  if (is.na(value) || length(value) != 1)
+    stop("value must be a length one character vector")
+  r@ontology <- value
+  r
+}
+setReplaceMethod("ontology", c("GOHyperGParams", "character"), function(r, value) .replaceGOOntology(r, value))
+
+
+
 
 ##FIXME, this shouldn't be as hard as it is :-( :-(
 ## autogenerate accessors
@@ -165,4 +172,3 @@ setReplaceMethod("ontology", c("GOHyperGParams", "character"),
     
 ##     setReplaceMethod(s, signature("HyperGParams"), setter)
 ## }
-

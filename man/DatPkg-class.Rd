@@ -4,21 +4,30 @@
 \alias{AffyDatPkg-class}
 \alias{YeastDatPkg-class}
 \alias{Org.XX.egDatPkg-class}
+\alias{GeneSetCollectionDatPkg}
 
 \alias{DatPkgFactory}
+\alias{DatPkgFactory,character-method}
+
 
 \alias{ID2GO}
 \alias{ID2EntrezID}
 \alias{GO2AllProbes}
 
 \alias{ID2GO,DatPkg-method}
+\alias{ID2GO,GeneSetCollectionDatPkg-method}
 \alias{ID2EntrezID,AffyDatPkg-method}
 \alias{ID2EntrezID,YeastDatPkg-method}
 \alias{ID2EntrezID,Org.XX.egDatPkg-method}
 \alias{ID2EntrezID,ArabidopsisDatPkg-method}
+\alias{ID2EntrezID,GeneSetCollectionDatPkg-method}
 \alias{GO2AllProbes,DatPkg-method}
 \alias{GO2AllProbes,YeastDatPkg-method}
 \alias{GO2AllProbes,Org.XX.egDatPkg-method}
+\alias{GO2AllProbes,GeneSetCollectionDatPkg-method}
+\alias{isDBDatPkg,DatPkg-method}
+\alias{isDBDatPkg,GeneSetCollectionDatPkg-method}
+
 
 \title{Class "DatPkg"}
 \description{
@@ -38,6 +47,10 @@
   represent the \code{org.*.eg.db} organism-level Entez Gene based
   annotation data packages.
   
+  \code{GeneSetCollectionDatPkg} is a subclass of \code{DatPkg} used to
+  represent annotations in the form of \code{GeneSetCollection} objects
+  which are not based on any annotation packages but are instead derived
+  from custom (user supplied) annotations.  
 }
 \section{Objects from the Class}{
   A virtual Class: No objects may be created from it.

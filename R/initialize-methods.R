@@ -1,6 +1,7 @@
 setMethod("initialize", "HyperGParams",
           function(.Object, ...) {
               .Object <- callNextMethod(.Object, ...)
-              .Object@datPkg <- DatPkgFactory(.Object@annotation)
+              configureDatPkg(annotation(.Object), .Object)
               makeValidParams(.Object)
           })
+

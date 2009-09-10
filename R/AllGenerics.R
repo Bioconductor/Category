@@ -107,11 +107,12 @@ setGeneric("makeValidParams", function(object) {
            v
            })
 
-## accessors for DatPkg
+## DatPkg
 setGeneric("ID2GO", function(p) standardGeneric("ID2GO"))
 setGeneric("ID2EntrezID", function(p) standardGeneric("ID2EntrezID"))
 setGeneric("GO2AllProbes", signature=c("p"),
            function(p, ontology) standardGeneric("GO2AllProbes"))
+setGeneric("isDBDatPkg", function(d) standardGeneric("isDBDatPkg"))
 
 ## ChrBandTree accessors
 setGeneric("lgeneIds", function(r, ...) standardGeneric("lgeneIds"))

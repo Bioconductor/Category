@@ -32,7 +32,8 @@ importMethodsFrom(Biobase,
 importMethodsFrom(GSEABase,
                   geneIds,
                   "geneIds<-",
-                  ontology)
+                  ontology,
+                  geneIdType)
 
 importMethodsFrom(genefilter,
                   rowttests)
@@ -128,7 +129,8 @@ export(
        "ontology",
        "probes2MAP",
        "probes2Path",
-       "ttperm")
+       "ttperm",
+       "GSEAGOHyperGParams")
 
 exportClasses("DatPkg",
               "AffyDatPkg",
@@ -174,6 +176,7 @@ exportMethods("hyperGTest",
               "geneMappedCount",
               "annotation",
               "annotation<-",
+              "DatPkgFactory",
               "geneIds",
               "geneIds<-",
               "geneIdsByCategory",
