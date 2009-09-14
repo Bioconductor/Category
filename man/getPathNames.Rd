@@ -1,6 +1,6 @@
 \name{getPathNames}
 \alias{getPathNames}
-\title{A function to print pathway names given their numeric id.}
+\title{A function to print pathway names given their numeric ID.}
 \description{
  Given a KEGG pathway ID this function returns the character name of the
  pathway. 
@@ -24,7 +24,7 @@ getPathNames(iPW)
 
 \author{R. Gentleman }
 
-\seealso{\code{\link[KEGG]{KEGGPATHID2NAME}} }
+\seealso{\code{\link[KEGG.db]{KEGGPATHID2NAME}} }
 \examples{
 
  nms = "00031"

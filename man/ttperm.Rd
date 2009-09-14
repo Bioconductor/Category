@@ -32,7 +32,7 @@ ttperm(x, fac, B = 100, tsO = TRUE)
 
 \author{R. Gentleman }
 
-\seealso{\code{\link[genefilter]{rowttests}} }
+\seealso{\code{\link[genefilter:rowFtests]{rowttests}} }
 \examples{
    x=matrix(rnorm(100), nc=10)
    y = factor(rep(c("A","B"), c(5,5)))

@@ -65,7 +65,7 @@ See \link{HyperGResult-accessors}.
 
 \seealso{
   \code{\link{HyperGResultBase-class}}
-  \code{\link[GOstats]{GeneGoHyperGeoTestResult-class}}
+  \code{\link[GOstats]{GOHyperGResult-class}}
   \link{HyperGResult-accessors}
 }
 

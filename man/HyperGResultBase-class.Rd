@@ -14,7 +14,8 @@
   intended to implement the accessor functions documented at
   \link{HyperGResult-accessors}.
 }
-\section{Objects from the Class}{A virtual Class: No objects may be created from it.}
+\section{Objects from the Class}{A virtual Class: No objects may be
+  created from it.} 
 \section{Slots}{
 	 \describe{
 
@@ -50,7 +51,7 @@
 
 \seealso{
   \code{\link{HyperGResult-class}}
-  \code{\link[GOstats]{GeneGoHyperGeoTestResult-class}}
+  \code{\link[GOstats]{GOHyperGResult-class}}
   \link{HyperGResult-accessors}
 }
 

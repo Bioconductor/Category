@@ -1,7 +1,7 @@
 \name{cateGOry}
 \alias{cateGOry}
-\title{Construct a category membership matrix from a list of gene identifiers and their
-       annotated GO categories.}
+\title{Construct a category membership matrix from a list of gene
+  identifiers and their annotated GO categories.}
 \description{
   The function constructs a category membership matrix, such as used by
   \code{\link{applyByCategory}},
@@ -10,7 +10,7 @@
   all less specific terms (ancestors) are also included, thus one need
   only obtain the most specific set of GO term mappings, which
   can be obtained from Bioconductor annotation packages or via \pkg{biomaRt}.
-  The ancestor relationships are obtained from the \pkg{GO} package.   
+  The ancestor relationships are obtained from the \pkg{GO.db} package.   
 }
 \usage{
 cateGOry(x, categ, sparse=FALSE)
@@ -27,7 +27,7 @@ cateGOry(x, categ, sparse=FALSE)
     result in returning a sparse matrix representation.}
 }
 \details{
-  Requires the \code{\link[GO:GO-package]{GO}} package.
+  Requires the \code{\link[GO.db:GOBASE]{GO}} package.
 
   For some subsequent analyses, it is useful to remove categories that
   have only a small number of members. Use the normal matrix subsetting

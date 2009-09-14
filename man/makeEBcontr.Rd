@@ -26,7 +26,7 @@ An object of class  ``ebarraysPatterns''.
 
 \author{R. Gentleman }
 
-\seealso{ \code{\link[EBarrays]{ebPatterns}}}
+\seealso{ \code{\link[EBarrays:utilities]{ebPatterns}}}
 \examples{
  if( require("EBarrays") ) {
   myfac = factor(rep(c("A", "B"), c(12, 24)))
