@@ -12,13 +12,13 @@
 }
 
 \usage{
-  GSEAGOHyperGParams(name, gsc, geneIds, universeGeneIds, ontology,
-  pvalueCutoff, conditional, testDirection,  ...)
+  GSEAGOHyperGParams(name, geneSetCollection, geneIds, universeGeneIds,
+  ontology, pvalueCutoff, conditional, testDirection, ...)
 }
 
 \arguments{
     \item{name}{String specifying name of the GeneSetCollection.}
-    \item{gsc}{A GeneSetCollection Object.  This
+    \item{geneSetCollection}{A GeneSetCollection Object.  This
       GeneSetCollection should be based on a GO2ALLFrame mapping and so
       the idType of that GeneSetCollection should be GOAllFrameIdentifier()}
     \item{geneIds}{Object of class \code{"ANY"}: A vector of

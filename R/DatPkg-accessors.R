@@ -1,20 +1,20 @@
 setMethod("ID2GO", "DatPkg",
           function(p) getAnnMap("GO", p@name))
 
-
-setMethod("ID2GO", "GeneSetCollectionDatPkg",  ##yes, it is already a list, but its backwards of what we want here.
-          function(p){
-            coll <- p@GeneSetCollection
-            genes <- geneIds(coll)
-            genesLengths <- lapply(genes, length)
-            GOIDs <- names(coll)
-            GOIDReps <- rep(GOIDs, genesLengths)
-            collFrame <- cbind(GOIDReps, unlist(genes))
-            collList <- split(as.character(collFrame[,1]), as.character(collFrame[,2]))
-            result <- l2e(collList)
-            result
-          })
-
+setMethod("ID2GO", "GeneSetCollectionDatPkg", function(p) {
+    ## yes, it is already a list, but its backwards of what we
+    ## want here.
+    coll <- p@geneSetCollection
+    genes <- geneIds(coll)
+    genesLengths <- lapply(genes, length)
+    GOIDs <- names(coll)
+    GOIDReps <- rep(GOIDs, genesLengths)
+    collFrame <- cbind(GOIDReps, unlist(genes))
+    collList <- split(as.character(collFrame[,1]),
+                      as.character(collFrame[,2]))
+    result <- l2e(collList)
+    result
+})
 
 setMethod("ID2EntrezID", "AffyDatPkg",
           function(p) getAnnMap("ENTREZID", p@name))
@@ -57,22 +57,16 @@ setMethod("ID2EntrezID", "Org.XX.egDatPkg",
 
 
 
-setMethod("ID2EntrezID", "GeneSetCollectionDatPkg",
-          function(p) {
-            ##This method does not need to really do anything "real" since
-            ##they are going to get out the ID type that they put in: no
-            ##matter what.
-            coll <- p@GeneSetCollection
-            genes <- unique(unlist(geneIds(coll)))
-            collList <- split(genes,genes)
-            res <- l2e(collList)
-            res
-          })
-
-
-
-
-
+setMethod("ID2EntrezID", "GeneSetCollectionDatPkg", function(p) {
+    ## This method does not need to really do anything "real" since
+    ## they are going to get out the ID type that they put in: no
+    ## matter what.
+    coll <- p@geneSetCollection
+    genes <- unique(unlist(geneIds(coll)))
+    collList <- split(genes,genes)
+    res <- l2e(collList)
+    res
+})
 
 setMethod("GO2AllProbes", "DatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
@@ -138,9 +132,9 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
 
 setMethod("GO2AllProbes", "GeneSetCollectionDatPkg",  
           function(p, ontology=c("BP", "CC", "MF")) {
-            coll <- p@GeneSetCollection
-            ## Lets put the GeneSetCollection into a format that is easier to
-            ## filter (from the left OR right)
+            coll <- p@geneSetCollection
+            ## Lets put the GeneSetCollection into a format that is
+            ## easier to filter (from the left OR right)
             genes = geneIds(coll)
             genesLengths = lapply(genes, length)
             GOIDs = names(coll)
@@ -155,13 +149,12 @@ setMethod("GO2AllProbes", "GeneSetCollectionDatPkg",
             collFrame <- collFrame[ontFilt,]
             
             ##Then put things back into a list format
-            result <- split(as.character(collFrame[,2]), as.character(collFrame[,1]))
+            result <- split(as.character(collFrame[,2]),
+                            as.character(collFrame[,1]))
             
-            if(length(result)==0){
-              stop("Sorry, but there just aren't any annotations in your Gene Set Collection for any of the genes you want to test on.")
-            }
-            result <- l2e(result)
-            result
+            if(length(result)==0)
+              stop("no annotations for selected genes")
+            l2e(result)
           })
 
 
@@ -201,31 +194,29 @@ setMethod("isDBDatPkg","GeneSetCollectionDatPkg", function(d){return(FALSE)})
 
 .strMatch <- function(pat, s){length(grep(pat, s)) > 0}
 
-setMethod("DatPkgFactory", "character", function(chip){
-  if(.strMatch(".db$",chip)) chip<- sub(".db","",chip)
-  pkg = paste(chip,".db",sep="")    
-  ##Use standardized schema names to decide
-  if(require(pkg, character.only = TRUE)){
+setMethod("DatPkgFactory", "character", function(chip) {
+    if (.strMatch(".db$",chip))
+        chip<- sub(".db","",chip)
+    pkg <- paste(chip,".db",sep="")    
+    if(!require(pkg, character.only = TRUE))
+        stop("annotation package '", pkg, "' not available")
+
+    ## Use standardized schema names to decide
     conn <- do.call(paste(chip, "_dbconn", sep=""), list())
-    schema <- dbmeta(conn, "DBSCHEMA")    
-    if(schema == "YEAST_DB" || schema == "YEASTCHIP_DB")
-      pkg <- new("YeastDatPkg", name=chip)
+    schema <- dbmeta(conn, "DBSCHEMA")
+    if (schema == "YEAST_DB" || schema == "YEASTCHIP_DB")
+        new("YeastDatPkg", name=chip)
     else if( schema == "ARABIDOPSIS_DB" || schema == "ARABIDOPSISCHIP_DB" )
-      pkg <- new("ArabidopsisDatPkg", name=chip)
-    else if( .strMatch("CHIP_DB$", schema)){
-      pkg <- new("AffyDatPkg", name=chip)}
-    else { ##Otherwise its an ordinary org package
-      pkg <- new("Org.XX.egDatPkg", name=chip)
-    }
-    return(pkg)
-  }else stop(paste("Required annotation package", chip, "is not available.",sep=" "))
+        new("ArabidopsisDatPkg", name=chip)
+    else if( .strMatch("CHIP_DB$", schema))
+        new("AffyDatPkg", name=chip)
+    else ## Otherwise its an ordinary org package
+        new("Org.XX.egDatPkg", name=chip)
 })
 
-
-
-
 ####################################################################
-## Classes and constructors to support use of GSEABase objects inside of GOstats:
+## Classes and constructors to support use of GSEABase objects inside
+## of GOstats:
 
 setClass("GeneSetCollectionAnnotation", contains="character")
 
@@ -233,52 +224,50 @@ setClass("GeneSetCollectionAnnotation", contains="character")
     new("GeneSetCollectionAnnotation", annotation)
 
 
-GeneSetCollectionDatPkg <- function(GeneSetCollection) 
+GeneSetCollectionDatPkg <- function(geneSetCollection) 
 {
-  GSCTypeWarning = paste("In order for the analysis to work properly, the ",
-    "GeneSetCollection object must be based upon a GO2ALL mapping.  Using the ",
-    "GeneSetCollection constructor that starts with a GOAllFrame will help to ",
-    "guarantee this.",sep="")
-  if(class(geneIdType(GeneSetCollection@.Data[[1]]))!="GOAllFrameIdentifier")
-    {stop(paste(strwrap(GSCTypeWarning, exdent=2),collapse="\n"))}
+
+    if(!extends(class(geneIdType(geneSetCollection[[1]])),
+                "GOAllFrameIdentifier"))
+    {
+        GSCTypeWarning <-
+            paste("'geneSetCollection' elements must use GO2ALL",
+                  "mappings; use GeneSetCollection constructors",
+                  "that start with 'GOAllFrame'")
+        stop(paste(strwrap(GSCTypeWarning, exdent=2),collapse="\n"))
+    }
     new("GeneSetCollectionDatPkg",
-        GeneSetCollection=GeneSetCollection)
+        geneSetCollection=geneSetCollection)
 }
 
 
 ## Constructor function for parameter object needed by GOstats
-GSEAGOHyperGParams <- function(name, gsc, geneIds, universeGeneIds,
-                               ontology, pvalueCutoff, conditional,
-                               testDirection, ...) {
-    sizeWarning = paste("There is no data in your GeneSetCollection object ",
-      "to do any analysis with.", sep="")
-    if(length(gsc)==0){stop(paste(strwrap(sizeWarning, exdent=2),collapse="\n"))}
+GSEAGOHyperGParams <-
+    function(name, geneSetCollection, geneIds, universeGeneIds,
+             ontology, pvalueCutoff, conditional, testDirection, ...)
+{
+
+    if(length(geneSetCollection)==0)
+        stop("geneSetCollection has length 0")
     new("GOHyperGParams",
         geneIds=geneIds,
         universeGeneIds=universeGeneIds,
         ontology=ontology,
         annotation=.GeneSetCollectionAnnotation(name),
-        datPkg=GeneSetCollectionDatPkg(gsc),
+        datPkg=GeneSetCollectionDatPkg(geneSetCollection),
         pvalueCutoff=pvalueCutoff,
         conditional=conditional,
         testDirection=testDirection,
         ...)
 }
 
-
-
-
 ####################################################################
 ## configureDatPkg methods
 
-setMethod("configureDatPkg", "missing", function(annotation, object) {
-  object@datPkg <- DatPkgFactory(annotation)})
+setMethod("configureDatPkg", "character",
+          function(annotation, ...) DatPkgFactory(annotation))
 
-setMethod("configureDatPkg", "character", function(annotation, object) {
-  object@datPkg <- DatPkgFactory(annotation)})
-
-setMethod("configureDatPkg", "GeneSetCollectionAnnotation", function(annotation, object){
-  if(class(object@datPkg)!= "GeneSetCollectionDatPkg"){stop("datPkg must be a GeneSetCollectionDatPkg")}
-})
+setMethod("configureDatPkg", "GeneSetCollectionAnnotation",
+          function(annotation, object, ...) object@datPkg)
 
 

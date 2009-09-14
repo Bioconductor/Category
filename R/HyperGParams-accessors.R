@@ -3,17 +3,15 @@
     ## If we can fix it, we do (and issue a warning)
     ## Return a more valid instance or error
 
-  if(class(object@datPkg)!="GeneSetCollectionDatPkg"){
-    ##Check if annotation has been written "long form"
-    ##If it is, then shorten the name appropriately.
-    ann <- annotation(object)
-    if(length(grep(".db$", ann)) > 0){
-        ann<- sub("\\.db$", "", ann)
-        annotation(object) <- ann
+    if (class(object@datPkg)!="GeneSetCollectionDatPkg") {
+        ## Check if annotation has been written "long form". If it is,
+        ## then shorten the name appropriately.
+        ann <- annotation(object)
+        if (length(ann) != 1)
+            stop("'annotation' must be character(1)", .Call=FALSE)
+        if (grepl(".db$", ann))
+            annotation(object) <- sub("\\.db$", "", ann)
     }
-    if (length(annotation(object)) != 1)
-      stop("annotation must be a length 1 character vector", .Call=FALSE)
-  }
     sel <- geneIds(object)
     if (is.list(sel)) {
         warning("converting geneIds from list to atomic vector via unlist")
@@ -31,7 +29,7 @@
             univ <- unlist(univ)
         }
         if (typeof(sel) != typeof(univ))
-          stop(paste("geneIds and universeGeneIds must have the same mode\n",
+            stop(paste("geneIds and universeGeneIds must have the same mode\n",
                        "geneIds:", typeof(sel), "\n",
                        "universeGeneIds:", typeof(univ)), .Call=FALSE)
         if (any(duplicated(univ))) {
@@ -43,15 +41,16 @@
             warning("removing geneIds not in universeGeneIds")
             sel <- intersect(sel, univ)
             if (!length(sel))
-              stop("no geneIds in universeGeneIds", .Call=FALSE)
+                stop("no geneIds in universeGeneIds", .Call=FALSE)
             geneIds(object) <- sel
         }
     }
     pv <- pvalueCutoff(object)
     if (pv > 1 || pv < 0){
-      stop("invalid pvalueCutoff, must be between 0 and 1", .Call=FALSE)}
-  return(object)
+        stop("invalid pvalueCutoff, must be between 0 and 1", .Call=FALSE)}
+    return(object)
 }
+
 setMethod("makeValidParams", "HyperGParams", .makeValidParams)
 
 

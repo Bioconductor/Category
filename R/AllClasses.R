@@ -9,21 +9,18 @@ setClass("YeastDatPkg", contains="DatPkg")
 setClass("ArabidopsisDatPkg", contains="DatPkg")
 setClass("Org.XX.egDatPkg", contains="DatPkg")
 
-##Other typed of DatPkgs
-setClass("GeneSetCollectionDatPkg",
-         contains="DatPkg",
-         representation=representation(GeneSetCollection="GeneSetCollection"))
+## Other types of DatPkgs
+setClass("GeneSetCollectionDatPkg", contains="DatPkg",
+         representation=representation(
+           geneSetCollection="GeneSetCollection"))
 
+## These generics needed for AllClasses
+setGeneric("configureDatPkg",
+           function(annotation, ...) standardGeneric("configureDatPkg"))
 
-## I have to put these Generics here (because AllGenerics is collated AFTER AllClasses) :(
-setGeneric("configureDatPkg", function(annotation, ...) standardGeneric("configureDatPkg"))
 setGeneric("DatPkgFactory",
            function(chip) standardGeneric("DatPkgFactory"),
            useAsDefault=function(chip) new("AffyDatPkg", name="UNKNOWN"))
-
-
-
-
 
 setClass("HyperGParams",
          contains="VIRTUAL",
