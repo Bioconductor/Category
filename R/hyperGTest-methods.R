@@ -22,7 +22,8 @@ setMethod("hyperGTest",
         geneIds=geneIds(p),
         testName=categoryName(p),
         pvalueCutoff=pvalueCutoff(p),
-        testDirection=testDirection(p))
+        testDirection=testDirection(p),
+        organism=organism(p))
 }
 
 chrMap_hg_test <- function(p) {

@@ -46,7 +46,8 @@ setMethod("summary", signature(object="KEGGHyperGResult"),
           function(object, pvalue=pvalueCutoff(object),
                    categorySize=NULL, htmlLinks=FALSE){
               KEGG_URL <- "http://www.genome.jp/dbget-bin/www_bget?path:%s%s"
-              annOrg <- get(paste(annotation(object), "ORGANISM", sep=""))
+              ## annOrg <- get(paste(annotation(object), "ORGANISM", sep=""))
+              annOrg <- organism(object)
               orgSpecifier <- switch(annOrg,
                                      "Homo sapiens"="hsa",
                                      "Mus musculus"="mmu",

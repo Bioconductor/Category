@@ -72,7 +72,8 @@ importFrom(annotate,
            allValidKeys,
            aqListGOIDs,
            filterGOByOntology,
-           getAnnMap)
+           getAnnMap,
+           organism)
 
 importFrom(graph,
            ftM2graphNEL,
@@ -130,7 +131,8 @@ export(
        "probes2MAP",
        "probes2Path",
        "ttperm",
-       "GSEAGOHyperGParams")
+       "GSEAGOHyperGParams",
+       "GSEAKEGGHyperGParams")
 
 exportClasses("DatPkg",
               "AffyDatPkg",
@@ -203,7 +205,9 @@ exportMethods("hyperGTest",
               "ID2GO",
               "ID2EntrezID",
               "GO2AllProbes",
-
+              "ID2KEGG",
+              "KEGG2AllProbes",
+              
               "initialize",
               "show",
               "summary",

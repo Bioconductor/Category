@@ -11,11 +11,15 @@
 
 
 \alias{ID2GO}
+\alias{ID2KEGG}
 \alias{ID2EntrezID}
 \alias{GO2AllProbes}
+\alias{KEGG2AllProbes}
 
 \alias{ID2GO,DatPkg-method}
 \alias{ID2GO,GeneSetCollectionDatPkg-method}
+\alias{ID2KEGG,DatPkg-method}
+\alias{ID2KEGG,GeneSetCollectionDatPkg-method}
 \alias{ID2EntrezID,AffyDatPkg-method}
 \alias{ID2EntrezID,YeastDatPkg-method}
 \alias{ID2EntrezID,Org.XX.egDatPkg-method}
@@ -25,6 +29,8 @@
 \alias{GO2AllProbes,YeastDatPkg-method}
 \alias{GO2AllProbes,Org.XX.egDatPkg-method}
 \alias{GO2AllProbes,GeneSetCollectionDatPkg-method}
+\alias{KEGG2AllProbes,DatPkg-method}
+\alias{KEGG2AllProbes,GeneSetCollectionDatPkg-method}
 \alias{isDBDatPkg,DatPkg-method}
 \alias{isDBDatPkg,GeneSetCollectionDatPkg-method}
 

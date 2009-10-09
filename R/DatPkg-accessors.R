@@ -1,20 +1,31 @@
-setMethod("ID2GO", "DatPkg",
-          function(p) getAnnMap("GO", p@name))
-
-setMethod("ID2GO", "GeneSetCollectionDatPkg", function(p) {
+.geneSetParamListFlip <- function(p){
     ## yes, it is already a list, but its backwards of what we
     ## want here.
     coll <- p@geneSetCollection
     genes <- geneIds(coll)
     genesLengths <- lapply(genes, length)
-    GOIDs <- names(coll)
-    GOIDReps <- rep(GOIDs, genesLengths)
-    collFrame <- cbind(GOIDReps, unlist(genes))
+    IDs <- names(coll)
+    IDReps <- rep(IDs, genesLengths)
+    collFrame <- cbind(IDReps, unlist(genes))
     collList <- split(as.character(collFrame[,1]),
                       as.character(collFrame[,2]))
-    result <- l2e(collList)
-    result
-})
+    return(collList)
+}
+
+setMethod("ID2GO", "DatPkg",
+          function(p) getAnnMap("GO", p@name))
+
+setMethod("ID2GO", "GeneSetCollectionDatPkg",
+          function(p) l2e(.geneSetParamListFlip(p)))
+
+
+setMethod("ID2KEGG", "DatPkg",
+          function(p) getAnnMap("PATH", p@name))
+
+setMethod("ID2KEGG", "GeneSetCollectionDatPkg",
+          function(p) l2e(.geneSetParamListFlip(p)))
+
+
 
 setMethod("ID2EntrezID", "AffyDatPkg",
           function(p) getAnnMap("ENTREZID", p@name))
@@ -99,6 +110,8 @@ setMethod("GO2AllProbes", "YeastDatPkg",
 
 
 
+
+
 setMethod("GO2AllProbes", "Org.XX.egDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
 
@@ -147,6 +160,34 @@ setMethod("GO2AllProbes", "GeneSetCollectionDatPkg",
             ontIds <- aqListGOIDs(ontology)
             ontFilt <- collFrame[,1] %in% ontIds
             collFrame <- collFrame[ontFilt,]
+            
+            ##Then put things back into a list format
+            result <- split(as.character(collFrame[,2]),
+                            as.character(collFrame[,1]))
+            
+            if(length(result)==0)
+              stop("no annotations for selected genes")
+            l2e(result)
+          })
+
+
+
+
+setMethod("KEGG2AllProbes", "DatPkg",
+          function(p) {
+            revmap(getDataEnv("PATH", p@name))
+          })
+
+setMethod("KEGG2AllProbes", "GeneSetCollectionDatPkg",  
+          function(p) {
+            coll <- p@geneSetCollection
+            ## Lets put the GeneSetCollection into a format that is
+            ## easier to filter (from the left OR right)
+            genes = geneIds(coll)
+            genesLengths = lapply(genes, length)
+            KEGGIDs = names(coll)
+            KEGGIDReps = rep(KEGGIDs, genesLengths)
+            collFrame = cbind(KEGGIDReps, unlist(genes))
             
             ##Then put things back into a list format
             result <- split(as.character(collFrame[,2]),
@@ -226,7 +267,18 @@ setClass("GeneSetCollectionAnnotation", contains="character")
 
 GeneSetCollectionDatPkg <- function(geneSetCollection) 
 {
+    new("GeneSetCollectionDatPkg",
+        geneSetCollection=geneSetCollection)
+}
 
+
+
+
+## Constructor function for parameter object needed by GOstats
+GSEAGOHyperGParams <-
+    function(name, geneSetCollection, geneIds, universeGeneIds,
+             ontology, pvalueCutoff, conditional, testDirection, ...)
+{
     if(!extends(class(geneIdType(geneSetCollection[[1]])),
                 "GOAllFrameIdentifier"))
     {
@@ -236,17 +288,6 @@ GeneSetCollectionDatPkg <- function(geneSetCollection)
                   "that start with 'GOAllFrame'")
         stop(paste(strwrap(GSCTypeWarning, exdent=2),collapse="\n"))
     }
-    new("GeneSetCollectionDatPkg",
-        geneSetCollection=geneSetCollection)
-}
-
-
-## Constructor function for parameter object needed by GOstats
-GSEAGOHyperGParams <-
-    function(name, geneSetCollection, geneIds, universeGeneIds,
-             ontology, pvalueCutoff, conditional, testDirection, ...)
-{
-
     if(length(geneSetCollection)==0)
         stop("geneSetCollection has length 0")
     new("GOHyperGParams",
@@ -261,6 +302,25 @@ GSEAGOHyperGParams <-
         ...)
 }
 
+## Constructor function for parameter object needed by GOstats
+GSEAKEGGHyperGParams <-
+    function(name, geneSetCollection, geneIds, universeGeneIds,
+             pvalueCutoff, testDirection, ...)
+{
+
+    if(length(geneSetCollection)==0)
+        stop("geneSetCollection has length 0")
+    new("KEGGHyperGParams",
+        geneIds=geneIds,
+        universeGeneIds=universeGeneIds,
+        annotation=.GeneSetCollectionAnnotation(name),
+        datPkg=GeneSetCollectionDatPkg(geneSetCollection),
+        pvalueCutoff=pvalueCutoff,
+        testDirection=testDirection,
+        ...)
+}
+
+
 ####################################################################
 ## configureDatPkg methods
 
@@ -271,3 +331,21 @@ setMethod("configureDatPkg", "GeneSetCollectionAnnotation",
           function(annotation, object, ...) object@datPkg)
 
 
+
+
+####################################################################
+## organism method
+
+setMethod("organism", "HyperGParams",
+          function(object) organism(object@datPkg) )
+
+
+setMethod("organism", "GeneSetCollectionDatPkg",
+          function(object) organism(object@geneSetCollection[[1]]) )
+
+setMethod("organism", "DatPkg",
+          function(object) organism(object@name) )
+
+
+setMethod("organism", "HyperGResult",
+          function(object) object@organism )

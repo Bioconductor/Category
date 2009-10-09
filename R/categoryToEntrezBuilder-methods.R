@@ -103,19 +103,16 @@ getKeggToEntrezMap <- function(p) {
                        over=FALSE,
                        under=TRUE,
                        stop("Bad testDirection slot"))
-    lib <- annotation(p)
-    conn <- do.call(paste(lib, "_dbconn", sep=""), list())
-    schema <- dbmeta(conn, "DBSCHEMA")
+##     lib <- annotation(p) ##not unless we want to dispatch on 'character'
+
+##  Need to instead get the value from datPkg like this:
+  lib <- p@datPkg
     
-    if(length(grep("CHIP_DB", schema)) > 0) ##if the schema contains "CHIP_DB"
-      kegg2allprobes <- getDataEnv("PATH2PROBE", lib)
-    else if(schema == "YEAST_DB")
-      kegg2allprobes <- getDataEnv("PATH2ORF", lib)
-    else{ ##IOW it's an org "eg" package
-        kegg2allprobes <- getDataEnv("PATH2EG", lib)
-    }
-    probeAnnot <- getKeggToProbeMap(kegg2allprobes)
-    probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
+    ##kegg2allprobes <- revmap(getDataEnv("PATH", lib))  ## this means I should make a generic method for this step that will dispatch on the type and return something that can be "as.list()'ed"
+    kegg2allprobes <- KEGG2AllProbes(lib)
+    
+    probeAnnot <- getKeggToProbeMap(kegg2allprobes)    
+    probeToEntrezMapHelper(probeAnnot, geneIds(p), lib, universeGeneIds(p),
                            keep.all=keep.all)
 }
 

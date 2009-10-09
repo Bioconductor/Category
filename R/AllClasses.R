@@ -80,7 +80,8 @@ setClass("HyperGResult",
            pvalues="numeric",
            oddsRatios="numeric",
            expectedCounts="numeric",
-           catToGeneId="list"))
+           catToGeneId="list",
+           organism="character"))
 
 setClass("KEGGHyperGResult",
          contains="HyperGResult")

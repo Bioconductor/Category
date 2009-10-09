@@ -114,6 +114,11 @@ setGeneric("GO2AllProbes", signature=c("p"),
            function(p, ontology) standardGeneric("GO2AllProbes"))
 setGeneric("isDBDatPkg", function(d) standardGeneric("isDBDatPkg"))
 
+setGeneric("KEGG2AllProbes", function(p) standardGeneric("KEGG2AllProbes"))
+setGeneric("ID2KEGG", function(p) standardGeneric("ID2KEGG"))
+
+
+
 ## ChrBandTree accessors
 setGeneric("lgeneIds", function(r, ...) standardGeneric("lgeneIds"))
 
