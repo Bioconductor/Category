@@ -12,10 +12,11 @@ applyByCategory(stats, Amat, FUN = mean, ...)
 
 \arguments{
   \item{stats}{Numeric vector with test statistics of interest.}
-  \item{Amat}{A logical matrix: the adjacency matrix of the
+  \item{Amat}{A logical or numeric matrix: the adjacency matrix of the
     bipartite genes - category graph.
     Its rows correspond to the categories, columns
-    to the genes, and \code{TRUE} indicates membership.
+    to the genes, and \code{TRUE} or a numeric value different from \code{0}
+    indicates membership.
     The columns are assumed to be aligned with the elements of \code{stats}.}
   \item{FUN}{A function to apply to the subsets \code{stats} by
     categories.}

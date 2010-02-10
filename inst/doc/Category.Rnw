@@ -230,22 +230,23 @@ tobs = rowttests(eS, "mol.biol")
 @
 
 Next we create the adjacency matrix that maps genes/probes to
-pathways. We will make the decision that we are not interested in
-pathways that have fewer than 5 members that are in the experimentally
-observed genes.
+pathways. We compute \Robject{Amat} and rearrange its columns 
+to follow the order of genes.
 
 <<Amat>>=
-##compute the Amat, and rearrange it to follow the order of genes
 Amat = t(PWAmat("hgu95av2"))
 AmER = Amat[,names(fL)]
+@ 
+
+We will make the decision that we are not interested in
+pathways that have fewer than 5 members that are in the experimentally
+observed genes. In your own analysis, you will need to adapt this choice.
+
+<<rs>>=
 rs = rowSums(AmER)
-
-##FIXME: you need to decide how big a pathway you care about...
 AmER2 = AmER[rs>5,]
-rs2 = rs[rs>5]
-
+rs2   = rs[rs>5]
 nCats = length(rs2)
-
 @
 
 There are \Sexpr{nCats} pathways (categories) that will be used for
@@ -512,18 +513,18 @@ $p$-value is \Sexpr{pvals[byTT, 2]}.
 
 In the examples above we used, perhaps the simplest form of per
 category statistic, the summation. Extending the model to deal with
-virtually any other per-category function is quite simple and the cade
-to do this is available as the \Rfunction{applyByCategory} function.
+virtually any other per-category function is quite simple and support
+for doing this is available with the (very simple) 
+\Rfunction{applyByCategory} function.
 
 <<appByCat>>=
 
- byCmeds = applyByCategory(tobs$statistic, AmER2, FUN=median)
+med = applyByCategory(tobs$statistic, AmER2, FUN=median)
+wt  = applyByCategory(tobs$statistic, AmER2, 
+  FUN = function(x) with(wilcox.test(x), c(statistic, p=p.value)))
 
-  byCrankTest = applyByCategory(tobs$statistic, AmER2, FUN=wilcox.test)
-
- ranS = sapply(byCrankTest, function(x) x$statistic)
- ranpv = sapply(byCrankTest, function(x) x$p.value)
-
+head(t(wt[,order(wt[2,])]))
+     
 @
 
 \bibliography{cat}

@@ -11,10 +11,15 @@ findAMstats = function(Amat, tstats) {
 ## Amat: adjacency matrix of gene -> categories
 applyByCategory = function(stats, Amat, FUN=mean, ...)
 {
-  if(!(is.matrix(Amat) && is.logical(Amat)))
-    stop("'Amat' needs to be a logical matrix.")
+  if(!(is.matrix(Amat)))
+    stop("'Amat' needs to be a matrix.")
   if(ncol(Amat) != length(stats) )
     stop("'ncol(Amat)' needs to be the same as 'length(stats)'.")
+  if(!is.logical(Amat)){
+    if(!is.numeric(Amat))  
+      stop("'Amat' needs to be logical or numeric.")
+    Amat = (Amat!=0)
+  }
   
   res = apply(Amat, 1, function(x) FUN(stats[x], ...))
   names(res) = rownames(Amat)
