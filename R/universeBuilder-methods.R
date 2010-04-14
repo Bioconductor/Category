@@ -78,8 +78,8 @@ getUniverseViaKegg_db <- function(p) {
 
 getUniverseViaKegg <- function(p) {
     entrezIds <- universeGeneIds(p)
-##     probe2kegg <- as.list(getDataEnv("PATH", annotation(p)))
-    probe2kegg <- as.list(ID2GO(p@datPkg))
+##    probe2kegg <- as.list(getDataEnv("PATH", annotation(p)))
+    probe2kegg <- as.list(ID2KEGG(p@datPkg))
     notNA <- sapply(probe2kegg, function(x) !(length(x) == 1 && is.na(x)))
     probe2kegg <- probe2kegg[notNA]
     probes <- names(probe2kegg)
