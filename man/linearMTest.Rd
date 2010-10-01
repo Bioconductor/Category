@@ -1,5 +1,5 @@
 \name{linearMTest}
-\docType{genericFunction}
+\docType{methods}
 
 \alias{linearMTest}
 \alias{linearMTest,LinearMParams-method}

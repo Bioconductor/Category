@@ -76,7 +76,7 @@
 \alias{htmlReport,PFAMHyperGResult-method}
 
 
-\docType{genericFunction}
+\docType{methods}
 
 \title{Accessors for HyperGResult Objects}
 

@@ -1,5 +1,5 @@
 \name{hyperGTest}
-\docType{genericFunction}
+\docType{methods}
 
 \alias{hyperGTest}
 \alias{hyperGTest,HyperGParams-method}

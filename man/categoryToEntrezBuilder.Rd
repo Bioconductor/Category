@@ -1,5 +1,5 @@
 \name{categoryToEntrezBuilder}
-\docType{genericFunction}
+\docType{methods}
 
 \alias{categoryToEntrezBuilder}
 \alias{categoryToEntrezBuilder,GOHyperGParams-method}

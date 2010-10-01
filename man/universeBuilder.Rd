@@ -1,5 +1,5 @@
 \name{universeBuilder}
-\docType{genericFunction}
+\docType{methods}
 \alias{universeBuilder}
 \alias{universeBuilder,GOHyperGParams-method}
 \alias{universeBuilder,KEGGHyperGParams-method}
