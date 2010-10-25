@@ -16,25 +16,25 @@ setMethod("ID2GO", "DatPkg",
           function(p) getAnnMap("GO", p@name))
 
 setMethod("ID2GO", "GeneSetCollectionDatPkg",
-          function(p) l2e(.geneSetParamListFlip(p)))
+          function(p) list2env(.geneSetParamListFlip(p)))
 
 
 setMethod("ID2KEGG", "DatPkg",
           function(p) getAnnMap("PATH", p@name))
 
 setMethod("ID2KEGG", "GeneSetCollectionDatPkg",
-          function(p) l2e(.geneSetParamListFlip(p)))
+          function(p) list2env(.geneSetParamListFlip(p)))
 
 
 
 setMethod("ID2EntrezID", "AffyDatPkg",
           function(p) getAnnMap("ENTREZID", p@name))
 
-##FIXME: this is seriously slow - try l2e to speed up a bit
+##FIXME: this is seriously slow - try list2env to speed up a bit
 .createIdentityMap <- function(keys) {
     keys = as.list(keys)
     names(keys) = keys 
-    l2e(keys)
+    list2env(keys)
 #    e <- new.env(parent=emptyenv(), hash=TRUE)
 #    for (n in keys) {
 #        e[[n]] <- n
@@ -75,7 +75,7 @@ setMethod("ID2EntrezID", "GeneSetCollectionDatPkg", function(p) {
     coll <- p@geneSetCollection
     genes <- unique(unlist(geneIds(coll)))
     collList <- split(genes,genes)
-    res <- l2e(collList)
+    res <- list2env(collList)
     res
 })
 
@@ -86,7 +86,7 @@ setMethod("GO2AllProbes", "DatPkg",
               ontIds <- intersect(ontIds, ls(go2all))
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
-              l2e(go2allOnt)
+              list2env(go2allOnt)
           })
 
 
@@ -104,7 +104,7 @@ setMethod("GO2AllProbes", "YeastDatPkg",
               ontIds <- intersect(ontIds, ls(go2all))
               go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
               go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
-              env = l2e(go2allOnt)
+              env = list2env(go2allOnt)
               return(env)
           })
 
@@ -121,7 +121,7 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
               FROM genes INNER JOIN go_%s USING (_id)"
               sqlQ <- sprintf(sqlQ, tolower(ontology))
               go2egTab <- dbGetQuery(db, sqlQ)
-              go2eg <- l2e(split(go2egTab[["gene_id"]], go2egTab[["go_id"]]))
+              go2eg <- list2env(split(go2egTab[["gene_id"]], go2egTab[["go_id"]]))
 
               goEnvName <- paste(ontology, "OFFSPRING", sep="")
               offspring <- mget(ls(go2eg),
@@ -167,7 +167,7 @@ setMethod("GO2AllProbes", "GeneSetCollectionDatPkg",
             
             if(length(result)==0)
               stop("no annotations for selected genes")
-            l2e(result)
+            list2env(result)
           })
 
 
@@ -195,7 +195,7 @@ setMethod("KEGG2AllProbes", "GeneSetCollectionDatPkg",
             
             if(length(result)==0)
               stop("no annotations for selected genes")
-            l2e(result)
+            list2env(result)
           })
 
 

@@ -60,7 +60,7 @@ hg_test_factory <- function(selids, PCUT=0.05, COND=FALSE, OVER=TRUE)
         if (COND && length(prev_ans)) {
             nms <- sapply(prev_ans, function(x) x[["nodes"]])
             names(prev_ans) <- nms
-            l2e(prev_ans, prev_ans_e)
+            list2env(prev_ans, prev_ans_e)
         }
         
         lapply(unique(unlist(start)), function(aNode) {

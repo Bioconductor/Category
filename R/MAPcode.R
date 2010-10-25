@@ -155,7 +155,7 @@ makeChrMapToEntrez <- function(datPkg, univ) {
     org <- getOrganism(datPkg@name)
 
     if (!is.environment(probe2chr))
-      probe2chr <- l2e(as.list(probe2chr))
+      probe2chr <- list2env(as.list(probe2chr))
 
     egs <- unique(unlist(mget(ls(probe2chr), ID2EntrezID(datPkg))))
     egs <- egs[!is.na(egs)]
@@ -165,7 +165,7 @@ makeChrMapToEntrez <- function(datPkg, univ) {
     eg2chr <- new.env(parent=emptyenv(), hash=TRUE,
                       size=as.integer(1.20 * length(egs)))
     ## XXX: need to define a revmap method for environments
-    eg2p <- l2e(mget(egs, revmap(ID2EntrezID(datPkg))))
+    eg2p <- list2env(mget(egs, revmap(ID2EntrezID(datPkg))))
     for (eg in egs) {
         bands <- mget(eg2p[[eg, exact=TRUE]], probe2chr)
         bands <- bands[!is.na(bands)]

@@ -57,7 +57,6 @@ importFrom(AnnotationDbi,
 
 importFrom(Biobase,
            contents,
-           l2e,
            lcPrefix,
            lcPrefixC,
            listLen,
