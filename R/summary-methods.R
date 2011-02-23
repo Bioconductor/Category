@@ -78,7 +78,7 @@ setMethod("summary", signature(object="KEGGHyperGResult"),
 setMethod("summary", signature(object="PFAMHyperGResult"),
           function(object,pvalue=pvalueCutoff(object),
                    categorySize=NULL, htmlLinks=FALSE){
-              PFAM_URL <- "http://www.sanger.ac.uk/cgi-bin/Pfam/getacc?%s"
+              PFAM_URL <- "http://pfam.sanger.ac.uk/family?acc=%s"
               df <- callNextMethod(object=object, pvalue=pvalue,
                                    categorySize=categorySize)
               if(nrow(df) == 0){
