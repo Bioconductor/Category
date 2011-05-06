@@ -1,8 +1,6 @@
 \name{ChrMapLinearMParams-class}
 \docType{class}
 \alias{ChrMapLinearMParams-class}
-\alias{conditional<-,ChrMapLinearMParams,logical-method}
-\alias{conditional,ChrMapLinearMParams-method}
 
 \title{Class "ChrMapLinearMParams"}
 \description{
@@ -19,16 +17,21 @@
 \section{Slots}{
   \describe{
 
-    \item{\code{chrGraph}:}{Object of class \code{"graph"}.  The nodes
-    are the chromosome bands and the edges describe the tree structure
-    of the bands.  Each node has a "geneIds" node attributes (see
-    \code{nodeData}) which contains a vector of gene IDs annotated at
-    the given band.}
+    \item{\code{graph}:}{Object of class \code{"graph"}.  The nodes
+      are the chromosome bands and the edges describe the tree structure
+      of the bands.  Each node has a "geneIds" node attributes (see
+      \code{nodeData}) which contains a vector of gene IDs annotated at
+      the given band.}
 
     \item{\code{conditional}:}{Object of class \code{"logical"},
       indicating whether the test performed should be a conditional
       test.  }
 
+    \item{\code{gsc}:}{The
+      \code{\link[GSEABase:GeneSetCollection-class]{GeneSetCollection}}
+      object grouping the gene ids into sets.
+    }
+    
     \item{\code{geneStats}:}{Named vector of class \code{"numeric"},
     giving the gene-level statistics to be used in the tests.  }
     
@@ -70,18 +73,6 @@
 }
 \section{Extends}{
   Class \code{"\linkS4class{LinearMParams}"}, directly.
-}
-\section{Methods}{
-  \describe{
-
-    \item{conditional}{\code{signature(r = "ChrMapLinearMParams")}:
-      Accessor for the \code{conditional} slot. }
-
-    \item{conditional<-}{\code{signature(r = "ChrMapLinearMParams",
-	value = "logical")}: Replacement method for the
-      \code{conditional} slot. }
-
-  }
 }
        
 \author{ Deepayan Sarkar }

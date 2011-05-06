@@ -335,6 +335,17 @@ makeChrBandInciMat <- function(chrGraph) {
     mat
 }
 
+makeChrBandGSC <- function(chrGraph) {
+  gnodes <- nodes(chrGraph)
+  rootIdx <- grep("^ORGANISM", gnodes)
+  v1 <- nodeData(chrGraph, n=gnodes[-rootIdx] , attr="geneIds")
+  v1 <- v1[sapply(v1, function(z) !any(is.na(z)))]
+  v1 <- lapply(v1, as.character)
+  GeneSetCollection(mapply(GeneSet, v1, setIdentifier = names(v1),
+                           setName = names(v1),
+                           MoreArgs = list(geneIdType = EntrezIdentifier())))
+}
+
 MAPAmat <- function(chip, univ=NULL, minCount=0) {
     m <- makeChrBandInciMat(makeChrBandGraph(chip=chip, univ=univ))
     if (minCount > 0) {

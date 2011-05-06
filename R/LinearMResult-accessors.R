@@ -8,7 +8,7 @@ setMethod("annotation", signature(object="LinearMResultBase"),
 setMethod("universeCounts", signature(r="LinearMResultBase"),
           function(r) {
               univ <- geneIdUniverse(r)
-              ans <- listLen(univ)
+              ans <- sapply(univ)
               names(ans) <- names(univ)
               ans
           })
@@ -84,4 +84,4 @@ setMethod("effectSize", signature(r="LinearMResult"),
           function(r) r@effectSize)
 
 setMethod("geneIdUniverse", signature(r="LinearMResult"),
-          function(r, cond=TRUE) r@catToGeneId)
+          function(r, cond=TRUE) geneIds(r@gsc)[names(r@pvalues)])

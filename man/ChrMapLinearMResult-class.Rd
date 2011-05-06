@@ -1,9 +1,9 @@
 \name{ChrMapLinearMResult-class}
 \docType{class}
 \alias{ChrMapLinearMResult-class}
+
+% deprecated/hidden
 \alias{chrGraph,ChrMapLinearMResult-method}
-\alias{condGeneIdUniverse,ChrMapLinearMResult-method}
-\alias{isConditional,ChrMapLinearMResult-method}
 
 \title{Class "ChrMapLinearMResult" }
 \description{
@@ -25,18 +25,24 @@
 
 \section{Slots}{
   \describe{
-    \item{\code{pvalue.order}:}{Object of class \code{"integer"} ~~ }
-    \item{\code{conditional}:}{Object of class \code{"logical"} ~~ }
-    \item{\code{chrGraph}:}{Object of class \code{"graph"} ~~ }
-    \item{\code{pvalues}:}{Object of class \code{"numeric"} ~~ }
-    \item{\code{effectSize}:}{Object of class \code{"numeric"} ~~ }
-    \item{\code{catToGeneId}:}{Object of class \code{"list"} ~~ }
+   \item{\code{pvalues}:}{Object of class \code{"numeric"}, with the
+      p-values for each term.
+    }
+    \item{\code{pvalue.order}:}{Object of class \code{"integer"}, the
+      order vector (increasing) for the p-values.
+    }
+    \item{\code{effectSize}:}{Object of class \code{"numeric"}, with
+      the effect size for each term.
+    }
     \item{\code{annotation}:}{Object of class \code{"character"} ~~ }
     \item{\code{geneIds}:}{Object of class \code{"ANY"} ~~ }
     \item{\code{testName}:}{Object of class \code{"character"} ~~ }
     \item{\code{pvalueCutoff}:}{Object of class \code{"numeric"} ~~ }
     \item{\code{minSize}:}{Object of class \code{"integer"} ~~ }
     \item{\code{testDirection}:}{Object of class \code{"character"} ~~ }
+    \item{\code{conditional}:}{Object of class \code{"logical"} ~~ }
+    \item{\code{graph}:}{Object of class \code{"graph"} ~~ }
+    \item{\code{gsc}:}{Object of class \code{"GeneSetCollection"} ~~ }
   }
 }
 \section{Extends}{
@@ -46,13 +52,9 @@
   "LinearMResult", distance 2.
 }
 \section{Methods}{
-  \describe{
-    \item{chrGraph}{\code{signature(r = "ChrMapLinearMResult")}: ... }
-    \item{condGeneIdUniverse}{\code{signature(r = "ChrMapLinearMResult")}: ... }
-    \item{isConditional}{\code{signature(r = "ChrMapLinearMResult")}: ... }
-	 }
+  None
 }
-\author{ Deepayan Sarkar }
+\author{ Deepayan Sarkar, Michael Lawrence }
 \seealso{
   \code{\link{linearMTest}}, \code{\linkS4class{ChrMapLinearMParams}},
   \code{\linkS4class{LinearMResult}},

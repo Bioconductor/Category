@@ -3,19 +3,25 @@
 \alias{MAPAmat}
 \alias{chrBandInciMat}
 \alias{makeChrBandInciMat}
+\alias{makeChrBandGSC}
 
-\title{Create an incidence matrix mapping chromosome bands to genes}
+\title{Mapping chromosome bands to genes}
 
 \description{
-  These functions return a 0/1 incidence matrix with a row for each
-  chromosme band and a column for each gene.  Only those chromosome
-  bands with at least one gene annotation will be included.
+  These functions return a mapping of chromosome bands to genes.
+  \code{makeChrBandGSC} returns a
+  \code{\link[GSEABase:GeneSetCollection-class]{GeneSetCollection}} object,
+  with a \code{GeneSet} for each band. The other functions return a 0/1
+  incidence matrix with a row for each chromosme band and a column for
+  each gene.  Only those chromosome bands with at least one gene
+  annotation will be included.
 }
 
 \usage{
 MAPAmat(chip, univ = NULL, minCount = 0)
 chrBandInciMat(chip, univ = NULL, minCount = 0)
 makeChrBandInciMat(chrGraph)
+makeChrBandGSC(chrGraph)
 }
 
 \arguments{
@@ -42,14 +48,17 @@ makeChrBandInciMat(chrGraph)
 
 \value{
 
-  A (0/1) incidence matrix with chromosome bands as rows and gene IDs
-  as columns.  A \code{1} in \code{m[i, j]} indicates that the
-  chromosome band \code{rownames(m)[i]} contains the geneID
-  \code{colnames(m)[j]}.
+  For \code{makeChrBandGSC}, a \code{GeneSetCollection} object with
+  a \code{GeneSet} for each band.
+
+  For the other functions, (0/1) incidence matrix with chromosome bands
+  as rows and gene IDs as columns.  A \code{1} in \code{m[i, j]}
+  indicates that the chromosome band \code{rownames(m)[i]} contains the
+  geneID \code{colnames(m)[j]}.
 
 }
 
-\author{Seth Falcon}
+\author{Seth Falcon, Michael Lawrence}
 
 \seealso{
   \code{\link{makeChrBandGraph}},

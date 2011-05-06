@@ -33,7 +33,10 @@ importMethodsFrom(GSEABase,
                   geneIds,
                   "geneIds<-",
                   ontology,
-                  geneIdType)
+                  geneIdType,
+                  incidence,
+                  GeneSetCollection,
+                  GeneSet)
 
 importMethodsFrom(genefilter,
                   rowttests)
@@ -62,6 +65,9 @@ importFrom(Biobase,
            listLen,
            reverseSplit,
            subListExtract)
+
+importFrom(GSEABase,
+           EntrezIdentifier)
 
 importFrom(RBGL,
            dijkstra.sp,
@@ -123,6 +129,7 @@ export(
        "gseattperm",
        "makeChrBandGraph",
        "makeChrBandInciMat",
+       "makeChrBandGSC",
        "makeEBcontr",
        "NewChrBandTree",
        "MAPAmat",

@@ -103,7 +103,7 @@ library("ALL")
 library("hgu95av2.db")
 library("annotate")
 library("genefilter")
-library("SNPchip")
+##library("SNPchip")
 library("geneplotter")
 library("limma")
 library("lattice")
@@ -881,7 +881,6 @@ relative to NEG samples.  As with the Hypergeometric tests, we start
 by creating objects of class \Rclass{ChrMapLinearMParams}.
 %
 <<LMtestSetup,cache=TRUE>>=
-
 params <- new("ChrMapLinearMParams",
               conditional = FALSE,
               testDirection = "up",
@@ -890,7 +889,8 @@ params <- new("ChrMapLinearMParams",
               annotation = "hgu95av2",
               pvalueCutoff = 0.01, 
               minSize = 4L)
-
+params@graph <- makeChrBandGraph(params@annotation, params@universeGeneIds)
+params@gsc <- makeChrBandGSC(params@graph)
 paramsCond <- params
 paramsCond@conditional <- TRUE
 @ 

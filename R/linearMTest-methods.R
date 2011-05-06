@@ -1,60 +1,39 @@
 
-### no work done on this yet.  I think I'll start by writing prototype
-### code that works for the Cytoband paper example, and then adapt
-### that.
-
 setMethod("linearMTest",
           signature(p = "LinearMParams"),
           function(p) .linearMTestInternal(p))
 
-
-
 .linearMTestInternal <- function(p, className="LinearMResult")
 {
-
-    ## in the hyperG case, this function is used as a wrapper that
-    ## calls different backends based on class (sort of a fake method
-    ## dispatch).  As of now, we have LinearM code only for the
-    ## chromosome band case, so we won't pay too much attention to
-    ## making the code optimised for future extensions.
-
-    ## we don't use categoryToEntrezBuilder(), because our code so far
-    ## is only meant for nested categories.
-
-
-    if (categoryName(p) != "ChrMap")
-        stop("'linearMTest' currently only works for chromosome band categories")
-    className <- paste(categoryName(p), className, sep = "")
+    if (length(categoryName(p)))
+        className <- paste(categoryName(p), className, sep = "")
     ## p <- makeValidParams(p) # FIXME: not written yet
 
-    if (numNodes(p@chrGraph) == 0)
-        p@chrGraph <- makeChrBandGraph(p@annotation, p@universeGeneIds)
-    ## Note: unlike the hyperG case, we do not store results of the
-    ## tests in a graph. This may be a good idea, but needs thought
-    ## because we potentially remove some nodes from consideration if
-    ## they have too few genes.
     ans <-
-        linearMTest_ChrMap(stats = p@geneStats,
-                           g = p@chrGraph,
-                           upreg = p@testDirection == "up",
-                           chip = annotation(p),
-                           cutoff = pvalueCutoff(p),
-                           global = TRUE,
-                           min.genes = p@minSize,
-                           conditional = conditional(p))
+        .doLinearMTest(stats = p@geneStats,
+                       g = p@graph,
+                       gsc = p@gsc,
+                       upreg = p@testDirection == "up",
+                       cutoff = pvalueCutoff(p),
+                       global = TRUE,
+                       min.genes = p@minSize,
+                       conditional = conditional(p))
     new(className,
-        pvalues = if (p@conditional) ans$conditional.pvals else ans$marginal.pvals,
-        effectSize = if (p@conditional) ans$conditional.effects else ans$marginal.effects,
+        pvalues = if (p@conditional) ans$conditional.pvals
+                  else ans$marginal.pvals,
+        effectSize = if (p@conditional) ans$conditional.effects
+                     else ans$marginal.effects,
         annotation = p@annotation,
         geneIds = p@universeGeneIds,
         testName = p@categoryName,
         pvalueCutoff = p@pvalueCutoff,
         testDirection = p@testDirection,
         minSize = p@minSize,
-        pvalue.order = order(if (p@conditional) ans$conditional.pvals else ans$marginal.pvals),
+        pvalue.order = order(if (p@conditional) ans$conditional.pvals
+                             else ans$marginal.pvals),
         conditional = p@conditional,
-        chrGraph = p@chrGraph,
-        catToGeneId = ans$catToGeneId)
+        graph = p@graph,
+        gsc = p@gsc)
 }
 
 
@@ -139,8 +118,8 @@ linearMEffectSizeMarginal <- function(stats, x)
 ## anyway, we allow skipping the conditional testing through an
 ## argument.
 
-linearMTest_ChrMap <-
-    function(stats, g, upreg = TRUE, chip = "hgu95av2",
+.doLinearMTest <-
+    function(stats, g, gsc, upreg = TRUE,
              cutoff = 0.01,
              global = TRUE,
              min.genes = 4,
@@ -154,22 +133,20 @@ linearMTest_ChrMap <-
 {
     ## print(system.time(
     ## inc.mat <- t(MAPAmat(chip, univ = names(stats)))
-    inc.mat <- t(makeChrBandInciMat(g))
+    inc.mat <- t(incidence(gsc))
     ## ))
-    stopifnot(setequal(names(stats), rownames(inc.mat)))
+    common.genes <- intersect(names(stats), rownames(inc.mat))
+    inc.mat <- inc.mat[common.genes,]
     ## leave out nodes that have no genes (or rather, too few genes)
     cb.names <- colnames(inc.mat)
-    cb.names <- cb.names[ (colSums(inc.mat) >= min.genes) & (cb.names %in% nodes(g)) ]
+    cb.names <- cb.names[ (colSums(inc.mat) >= min.genes) &
+                         (cb.names %in% nodes(g)) ]
     ## cb.names <- cb.names[grep("^[1-9XY]", cb.names)]
     g <- subGraph(cb.names, g)
     inc.mat <- inc.mat[, cb.names]
     gene.names <- rownames(inc.mat)
     stats <- stats[gene.names]
-    catToGeneId <- vector(mode = "list", length = length(cb.names))
-    names(catToGeneId) <- cb.names
-    for (nm in cb.names)
-        catToGeneId[[nm]] <- gene.names[which(inc.mat[, nm] == 1)]
-
+    
     if (!global)
     {
         keep <- rowSums(inc.mat) > 0
@@ -194,8 +171,7 @@ linearMTest_ChrMap <-
     if (!conditional)
         return(list(marginal = marginal,
                     marginal.pvals = marginal.pvals,
-                    marginal.effects = marginal.effects,
-                    catToGeneId = catToGeneId))
+                    marginal.effects = marginal.effects))
 
     ## otherwise, proceed with conditional testing
     excluded <- conditional <- logical(length(cb.names))
@@ -275,8 +251,7 @@ linearMTest_ChrMap <-
          marginal.pvals = marginal.pvals,
          conditional.pvals = adjusted.pvals,
          marginal.effects = marginal.effects,
-         conditional.effects = conditional.effects,
-         catToGeneId = catToGeneId)
+         conditional.effects = conditional.effects)
 }
 
 

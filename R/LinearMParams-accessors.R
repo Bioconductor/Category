@@ -39,11 +39,9 @@ setReplaceMethod("pvalueCutoff", "LinearMParams", function(r, value) {
 })
 
 
-setMethod("conditional", "LinearMParams", function(r) FALSE)
+setMethod("conditional", "LinearMParams", function(r) r@conditional)
 
-setMethod("conditional", "ChrMapLinearMParams", function(r) r@conditional)
-
-setReplaceMethod("conditional", c("ChrMapLinearMParams", "logical"),
+setReplaceMethod("conditional", c("LinearMParams", "logical"),
                  function(r, value) {
                      if (is.na(value))
                          stop("value must be TRUE or FALSE")
