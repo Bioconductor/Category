@@ -8,7 +8,7 @@ setMethod("annotation", signature(object="LinearMResultBase"),
 setMethod("universeCounts", signature(r="LinearMResultBase"),
           function(r) {
               univ <- geneIdUniverse(r)
-              ans <- sapply(univ)
+              ans <- listLen(univ)
               names(ans) <- names(univ)
               ans
           })
