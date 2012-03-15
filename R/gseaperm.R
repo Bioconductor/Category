@@ -5,7 +5,7 @@ qRequire <- function(pkg) {
 
 pvalFromPermMat <- function(obs, perms) {
     N <- ncol(perms)
-    pvals <- matrix(as.double(NA), nr=nrow(perms), ncol=2)
+    pvals <- matrix(as.double(NA), nrow=nrow(perms), ncol=2)
     dimnames(pvals) <- list(rownames(perms), c("Lower", "Upper"))
 
     tempObs <- rep(obs, ncol(perms))

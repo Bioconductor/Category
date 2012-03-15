@@ -43,13 +43,17 @@ setClass("GOHyperGParams",
          representation(ontology="character",
                         conditional="logical"),
          contains="HyperGParams",
-         prototype=prototype(categoryName="GO",
-           conditional=FALSE))
+         prototype=prototype(
+           categoryName="GO",
+           conditional=FALSE,
+           annotation="GO"))
 
 
 setClass("KEGGHyperGParams",
          contains="HyperGParams",
-         prototype=prototype(categoryName="KEGG"))
+         prototype=prototype(
+           categoryName="KEGG",
+           annotation="KEGG"))
 
 setClass("PFAMHyperGParams",
          contains="HyperGParams",

@@ -139,7 +139,8 @@ plotCytoband2 <- function(chromosome,
         cytoband <- cytoband[cytoband[, "chrom"] == chromosome, ]
     }
     rownames(cytoband) <- as.character(cytoband[, "name"])
-    if(missing(xlim)) xlim <- c(0, chromosomeSize(unique(cytoband$chrom)))
+    if(missing(xlim))
+        xlim <- c(0, SNPchip:::chromosomeSize(unique(cytoband$chrom)))
     cytoband_p <- cytoband[grep("^p", rownames(cytoband), value=TRUE), ]
     cytoband_q <- cytoband[grep("^q", rownames(cytoband), value=TRUE), ]
 
