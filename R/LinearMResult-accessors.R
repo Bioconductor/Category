@@ -74,6 +74,12 @@ setMethod("isConditional", "LinearMResultBase",
 setMethod("condGeneIdUniverse", signature(r="LinearMResultBase"),
           function(r) geneIdUniverse(r, cond=TRUE))
 
+setMethod("geneIdUniverse", signature(r="LinearMResultBase"),
+          function(r, cond=TRUE) {
+            im <- addHierarchyToIncidenceMatrix(incidence(r@gsc), r@graph)
+            split(colnames(im)[col(im)[as.logical(im)]],
+                  factor(rownames(im)[row(im)[as.logical(im)]], nodes(r@graph)))
+          })
 
 ### Accessor methods for LinearMResult class
 
@@ -82,6 +88,3 @@ setMethod("pvalues", signature(r="LinearMResult"),
 
 setMethod("effectSize", signature(r="LinearMResult"),
           function(r) r@effectSize)
-
-setMethod("geneIdUniverse", signature(r="LinearMResult"),
-          function(r, cond=TRUE) geneIds(r@gsc)[names(r@pvalues)])
