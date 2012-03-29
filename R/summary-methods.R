@@ -98,6 +98,27 @@ setMethod("summary", signature(object="PFAMHyperGResult"),
               df
           })
 
+setMethod("summary", signature(object="LinearMResult"),
+          function(object, pvalue = pvalueCutoff(object),
+                   categorySize = NULL)
+          {
+            wanted <- getWantedResults(object, pvalue, categorySize)
+            if (!any(wanted)) {
+              warning("No results met the specified criteria.  ",
+                      "Returning 0-row data.frame", call.=FALSE)
+            }
+            df <- data.frame(ID = names(pvalues(object)),
+                             Pvalue = pvalues(object),
+                             Effect = effectSize(object),
+                             Size = universeCounts(object),
+                             Conditional = conditional(object),
+                             TestDirection = testDirection(object),
+                             stringsAsFactors = FALSE,
+                             row.names = NULL)[wanted,]
+            names(df)[1] <- paste(paste(testName(object), collapse=""),
+                                  "ID", sep="")
+            df
+          })
 
 htmlReportFromDf <- function(r, caption, file="", append=FALSE, digits=3)
 {
@@ -170,42 +191,3 @@ setMethod("htmlReport", signature(r="PFAMHyperGResult"),
                              label=label, digits=digits,
                              summary.args=summary.args)
           })
-
-
-
-setMethod("summary", signature(object="LinearMResultBase"),
-          function(object,
-                   pvalue = pvalueCutoff(object),
-                   categorySize = NULL,
-                   ...)
-      {
-          ##               ## FIXME: should do this in a better way
-          ##               object@pvalues <- p.adjust(pvalues(object), method = adjust.pvalues)
-
-          ## Filter based on p-value and category size
-          wanted <- getWantedResults(object, pvalue, categorySize)
-          pvals <- pvalues(object)
-          esize <- effectSize(object)
-          ucounts <- universeCounts(object)
-          if (!any(wanted)) {
-              warning("No results met the specified criteria.  ",
-                      "Returning 0-row data.frame", call.=FALSE)
-              catIds <- character(0)
-              pvals <- numeric(0)
-              esize <- numeric(0)
-              ucounts <- integer(0)
-          } else {
-              pvals <- pvals[wanted]
-              esize <- esize[wanted]
-              ucounts <- ucounts[wanted]
-              catIds <- names(pvals)
-          }
-          df <- data.frame(ID=catIds, Pvalue=pvals,
-                           Effect=esize,
-                           Size=ucounts,
-                           stringsAsFactors=FALSE, row.names=NULL)
-          names(df)[1] <- paste(paste(testName(object), collapse=""),
-                                "ID", sep="")
-          df
-      })
-
