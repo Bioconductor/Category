@@ -2,7 +2,7 @@
 \docType{class}
 \alias{LinearMResult-class}
 \alias{effectSize,LinearMResult-method}
-\alias{geneIdUniverse,LinearMResult-method}
+\alias{summary,LinearMResult-method}
 \alias{pvalues,LinearMResult-method}
 
 \title{Class "LinearMResult" }
@@ -49,8 +49,14 @@ Class \code{"\linkS4class{LinearMResultBase}"}, directly.
 \section{Methods}{
   \describe{
     \item{effectSize}{\code{signature(r = "LinearMResult")}: ... }
-    \item{geneIdUniverse}{\code{signature(r = "LinearMResult")}: ... }
     \item{pvalues}{\code{signature(r = "LinearMResult")}: ... }
+    \item{summary}{\code{signature(r = "LinearMResult")}: returns
+      a \code{data.frame} with a row for each gene set tested the
+      following columns: \code{ID}, \code{Pvalue}, \code{Effect} size, 
+      \code{Size} (number of members), \code{Conditional} (whether the
+      test used the conditional test), and \code{TestDirection} (for up
+      or down).
+    }
   }
 }
 

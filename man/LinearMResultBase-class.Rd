@@ -7,6 +7,7 @@
 \alias{description,LinearMResultBase-method}
 \alias{geneIdsByCategory,LinearMResultBase-method}
 \alias{geneIds,LinearMResultBase-method}
+\alias{geneIdUniverse,LinearMResultBase-method}
 \alias{geneMappedCount,LinearMResultBase-method}
 \alias{isConditional,LinearMResultBase-method}
 \alias{pvalueCutoff,LinearMResultBase-method}
@@ -54,6 +55,7 @@
     \item{description}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneIdsByCategory}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneIds}{\code{signature(object = "LinearMResultBase")}: ... }
+    \item{geneIdUniverse}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{geneMappedCount}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{isConditional}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{pvalueCutoff}{\code{signature(r = "LinearMResultBase")}: ... }
