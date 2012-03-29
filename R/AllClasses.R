@@ -122,6 +122,11 @@ setClass("ChrBandTree",
 ### formal for something that can be so arbitrary. Every type of
 ### category (GO, KEGG, chromosome bands, ...) fits into a graph.
 
+### ML: Current thoughts are that every Params object should have a
+### GeneSetCollection that refers (through its CollectionType) to an
+### ontology. From that, a graph can be automatically derived. This
+### favors composition over inheritance.
+
 setClass("LinearMParams",
          representation =
          representation(geneStats="numeric", # this needs to be named
@@ -133,6 +138,8 @@ setClass("LinearMParams",
                         pvalueCutoff="numeric",
                         minSize="integer",
                         testDirection="character",## less, greater, two-sided?
+#### FIXME: could the graph be derived from the 'CollectionType's in the
+#### 'GeneSetCollection', using info from e.g. GO.db?
                         graph = "graph",
                         conditional="logical",
                         ## instead of putting attributes on graph
@@ -143,7 +150,12 @@ setClass("LinearMParams",
                    minSize=5L,
                    datPkg=DatPkgFactory(),
                    conditional = FALSE,
-                   graph = new("graphNEL", edgemode = "directed")))
+                   graph = new("graphNEL", edgemode = "directed")),
+         validity = function(object) {
+           if (length(object@geneStats) && is.null(names(object@geneStats)))
+             "'geneStats' must have names that match those in the gene sets"
+           else NULL
+         })
 
 setClass("ChrMapLinearMParams",
          contains="LinearMParams",
@@ -156,7 +168,7 @@ setClass("ChrMapLinearMParams",
 
 setClass("LinearMResultBase",
          representation(annotation="character",
-                        geneIds="ANY",
+                        geneIds="ANY", # FIXME: should this be universeGeneIds?
                         testName="character",
                         pvalueCutoff="numeric",
                         minSize="integer",
