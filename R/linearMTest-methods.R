@@ -18,19 +18,28 @@ setMethod("linearMTest",
                        global = TRUE,
                        min.genes = p@minSize,
                        conditional = conditional(p))
+    
+    ## 'NA' introduced when minimum size violated
+    g <- p@graph
+    pvals <- if (p@conditional) ans$conditional.pvals else ans$marginal.pvals
+    ans_pvals <- setNames(rep(NA, numNodes(g)), nodes(g))
+    ans_pvals[names(pvals)] <- pvals
+
+    effects <- if (p@conditional) ans$conditional.effects
+               else ans$marginal.effects
+    ans_effects <- setNames(rep(NA, numNodes(g)), nodes(g))
+    ans_effects[names(effects)] <- effects
+    
     new(className,
-        pvalues = if (p@conditional) ans$conditional.pvals
-                  else ans$marginal.pvals,
-        effectSize = if (p@conditional) ans$conditional.effects
-                     else ans$marginal.effects,
+        pvalues = ans_pvals,
+        effectSize = ans_effects,
         annotation = p@annotation,
         geneIds = p@universeGeneIds,
         testName = p@categoryName,
         pvalueCutoff = p@pvalueCutoff,
         testDirection = p@testDirection,
         minSize = p@minSize,
-        pvalue.order = order(if (p@conditional) ans$conditional.pvals
-                             else ans$marginal.pvals),
+        pvalue.order = order(ans_pvals),
         conditional = p@conditional,
         graph = p@graph,
         gsc = p@gsc)
@@ -133,14 +142,16 @@ linearMEffectSizeMarginal <- function(stats, x)
 {
     ## print(system.time(
     ## inc.mat <- t(MAPAmat(chip, univ = names(stats)))
-    inc.mat <- t(incidence(gsc))
+    inc.mat <- t(addHierarchyToIncidenceMatrix(incidence(gsc), g))
     ## ))
     common.genes <- intersect(names(stats), rownames(inc.mat))
     inc.mat <- inc.mat[common.genes,]
+    ## leave out nodes that contain every gene
     ## leave out nodes that have no genes (or rather, too few genes)
     cb.names <- colnames(inc.mat)
     cb.names <- cb.names[ (colSums(inc.mat) >= min.genes) &
-                         (cb.names %in% nodes(g)) ]
+                          (colSums(inc.mat) < nrow(inc.mat)) &
+                          (cb.names %in% nodes(g)) ]
     ## cb.names <- cb.names[grep("^[1-9XY]", cb.names)]
     g <- subGraph(cb.names, g)
     inc.mat <- inc.mat[, cb.names]
@@ -156,16 +167,16 @@ linearMEffectSizeMarginal <- function(stats, x)
 
     ## set up vectors to track quantities of interest
     marginal.pvals <-
-        sapply(cb.names,
-               function(n) {
-                   linearMTestMarginal(stats, inc.mat[, n],
-                                       upreg = upreg)
-               })
+        as.numeric(sapply(cb.names,
+                          function(n) {
+                            linearMTestMarginal(stats, inc.mat[, n],
+                                                upreg = upreg)
+                          }))
     marginal.effects <-
-        sapply(cb.names,
-               function(n) {
-                   linearMEffectSizeMarginal(stats, inc.mat[, n])
-               })
+        as.numeric(sapply(cb.names,
+                          function(n) {
+                            linearMEffectSizeMarginal(stats, inc.mat[, n])
+                          }))
     names(marginal.pvals) <- names(marginal.effects) <- cb.names
     marginal <- marginal.pvals < cutoff
     if (!conditional)
@@ -254,4 +265,16 @@ linearMEffectSizeMarginal <- function(stats, x)
          conditional.effects = conditional.effects)
 }
 
-
+addHierarchyToIncidenceMatrix <- function(x, g) {
+  nodes <- rev(tsort(g))
+  new_nodes <- setdiff(nodes, rownames(x))
+  new_x <- matrix(0L, nrow = length(new_nodes), ncol = ncol(x),
+                  dimnames = list(new_nodes, colnames(x)))
+  x <- rbind(x, new_x)
+  edges_g <- edges(g)
+  for (node in setdiff(nodes, leaves(g, "out"))) {
+    children <- edges_g[[node, exact=TRUE]]
+    x[node,] <- x[node,] | (colSums(x[children,,drop=FALSE]) > 0)
+  }
+  x
+}
