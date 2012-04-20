@@ -1,6 +1,5 @@
 \name{cb_parse_band_Hs}
 \alias{cb_parse_band_Hs}
-\alias{cb_parse_band_hsa}
 
 
 \title{Parse Homo Sapiens Chromosome Band Annotations}

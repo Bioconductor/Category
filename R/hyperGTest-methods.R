@@ -150,31 +150,7 @@ setMethod("hyperGTest",
           })
 
 
-geneGoHyperGeoTest <- function(entrezGeneIds, lib, ontology, universe=NULL)
-{
-    .Defunct("hyperGTest")
-    if (missing(universe) || is.null(universe))
-      universe <- character(0)
-    params <- new("GOHyperGParams",
-                  geneIds=entrezGeneIds,
-                  universeGeneIds=universe,
-                  annotation=lib,
-                  ontology=ontology)
-    hyperGTest(params)
-}
 
-
-geneKeggHyperGeoTest <- function(entrezGeneIds, lib, universe=NULL)
-{
-    .Defunct("hyperGTest")
-    if (missing(universe) || is.null(universe))
-      universe <- character(0)
-    params <- new("KEGGHyperGParams",
-                  geneIds=entrezGeneIds,
-                  universeGeneIds=universe,
-                  annotation=lib)
-    hyperGTest(params)
-}
 
 .doHyperGInternal <- function(numW, numB, numDrawn, numWdrawn, over) {
     n21 <- numW - numWdrawn

@@ -122,7 +122,6 @@ setMethod("conditional", "GOHyperGParams", function(r) r@conditional)
 setReplaceMethod("conditional", c("GOHyperGParams", "logical"), function(r, value) .replaceGOConditional(r, value))
 
 
-setMethod("isConditional", "GOHyperGParams", function(r) conditional(r))
 
 
 setMethod("ontology", "HyperGParams", function(object) NA)

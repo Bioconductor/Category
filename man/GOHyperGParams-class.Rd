@@ -6,8 +6,6 @@
 
 \alias{annotation,GOHyperGParams-method}
 
-\alias{isConditional,GOHyperGParams-method}
-
 \alias{conditional,GOHyperGParams-method}
 \alias{conditional<-,GOHyperGParams,logical-method}
 
@@ -88,7 +86,6 @@ Class \code{"HyperGParams"}, directly.
     value}}{Accessors for the conditional flag.  When setting,
   \code{value} must be \code{TRUE} or \code{FALSE}.}
 
-   \item{\code{isConditional(p)}}{An alias for \code{conditional}.}
   }
 }
 
@@ -97,7 +94,6 @@ Class \code{"HyperGParams"}, directly.
 \seealso{
   \code{\link{HyperGResult-class}}
   \code{\link{GOHyperGParams-class}}
-  \code{\link{geneKeggHyperGeoTest}}
   \code{\link{hyperGTest}}
 }
 

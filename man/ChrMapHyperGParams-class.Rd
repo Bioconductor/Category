@@ -2,8 +2,6 @@
 \docType{class}
 \alias{ChrMapHyperGParams-class}
 
-\alias{isConditional,ChrMapHyperGParams-method}
-
 \alias{conditional,ChrMapHyperGParams-method}
 \alias{conditional<-,ChrMapHyperGParams,logical-method}
 

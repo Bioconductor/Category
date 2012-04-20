@@ -2,14 +2,12 @@
 \docType{class}
 \alias{LinearMResultBase-class}
 \alias{annotation,LinearMResultBase-method}
-\alias{condGeneIdUniverse,LinearMResultBase-method}
 \alias{conditional,LinearMResultBase-method}
 \alias{description,LinearMResultBase-method}
 \alias{geneIdsByCategory,LinearMResultBase-method}
 \alias{geneIds,LinearMResultBase-method}
 \alias{geneIdUniverse,LinearMResultBase-method}
 \alias{geneMappedCount,LinearMResultBase-method}
-\alias{isConditional,LinearMResultBase-method}
 \alias{pvalueCutoff,LinearMResultBase-method}
 \alias{show,LinearMResultBase-method}
 \alias{sigCategories,LinearMResultBase-method}
@@ -50,14 +48,12 @@
 \section{Methods}{
   \describe{
     \item{annotation}{\code{signature(object = "LinearMResultBase")}: ... }
-    \item{condGeneIdUniverse}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{conditional}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{description}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneIdsByCategory}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneIds}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{geneIdUniverse}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{geneMappedCount}{\code{signature(r = "LinearMResultBase")}: ... }
-    \item{isConditional}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{pvalueCutoff}{\code{signature(r = "LinearMResultBase")}: ... }
     \item{show}{\code{signature(object = "LinearMResultBase")}: ... }
     \item{sigCategories}{\code{signature(r = "LinearMResultBase")}: ... }

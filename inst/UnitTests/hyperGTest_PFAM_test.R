@@ -1,15 +1,13 @@
 library("Category")
-library("YEAST")
+library("org.Sc.sgd.db")
 
 test_PFAM1 <- function() {
     set.seed(434)    
-    allYeast <- ls(YEASTCHR)
+    allYeast <- ls(org.Sc.sgdCHR)
     selGenes <- sample(allYeast, 80)
     pp <- new("PFAMHyperGParams",
               geneIds=selGenes,
-              annotation="YEAST")
+              annotation="org.Sc.sgd")
     ans <- hyperGTest(pp)
     checkEquals("PFAM", testName(ans))
-    checkEquals(38, length(geneIds(ans)))
-    checkEquals(50, length(universeCounts(ans)))
 }

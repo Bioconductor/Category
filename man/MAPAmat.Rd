@@ -1,7 +1,6 @@
 \name{MAPAmat}
 
 \alias{MAPAmat}
-\alias{chrBandInciMat}
 \alias{makeChrBandInciMat}
 \alias{makeChrBandGSC}
 
@@ -19,7 +18,6 @@
 
 \usage{
 MAPAmat(chip, univ = NULL, minCount = 0)
-chrBandInciMat(chip, univ = NULL, minCount = 0)
 makeChrBandInciMat(chrGraph)
 makeChrBandGSC(chrGraph)
 }
@@ -42,9 +40,6 @@ makeChrBandGSC(chrGraph)
     no bands will be removed, this is the default.}
 }
 
-\details{
-  \code{chrBandInciMat} is a DEPRECATED alias for \code{MAPAmat}.
-}
 
 \value{
 

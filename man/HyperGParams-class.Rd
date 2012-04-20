@@ -5,7 +5,6 @@
 \alias{conditional}
 \alias{conditional<-}
 \alias{geneIds<-}
-\alias{isConditional}
 \alias{ontology}
 \alias{ontology<-}
 \alias{pvalueCutoff<-}
@@ -30,8 +29,6 @@
 \alias{testDirection,HyperGParams-method}
 \alias{testDirection<-,HyperGParams-method}
 \alias{universeGeneIds,HyperGParams-method}
-
-\alias{isConditional,HyperGParams-method}
 
 \alias{categoryName}
 \alias{categoryName,HyperGParams-method}
@@ -111,9 +108,6 @@ Objects of this class cannot be instantiated directly.
     \item{\code{universeGeneIds(r)}}{accessor for vector of gene
         identifiers.}
 
-    \item{\code{isConditional(r)}}{Returns \code{TRUE} if the instance
-      has its conditional flag set}
-
     
   }
 }
@@ -124,7 +118,6 @@ Objects of this class cannot be instantiated directly.
   \code{\link{HyperGResult-class}}
   \code{\link{GOHyperGParams-class}}
   \code{\link{KEGGHyperGParams-class}}
-  \code{\link{geneKeggHyperGeoTest}}
   \code{\link{hyperGTest}}
 }
 

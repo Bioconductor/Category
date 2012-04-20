@@ -33,9 +33,6 @@
 \alias{geneIdUniverse,HyperGResult-method}
 \alias{geneIdUniverse,ChrMapHyperGResult-method}
 
-\alias{condGeneIdUniverse}
-\alias{condGeneIdUniverse,HyperGResultBase-method}
-\alias{condGeneIdUniverse,ChrMapHyperGResult-method}
 
 \alias{geneIdsByCategory}
 \alias{geneIdsByCategory,HyperGResultBase-method}
@@ -48,9 +45,6 @@
 
 \alias{testName}
 \alias{testName,HyperGResultBase-method}
-
-\alias{isConditional,HyperGResultBase-method}
-\alias{isConditional,ChrMapHyperGResult-method}
 
 \alias{pvalueCutoff}
 \alias{pvalueCutoff,HyperGResultBase-method}
@@ -100,7 +94,6 @@ geneMappedCount(r)
 
 geneIds(object, ...)
 geneIdUniverse(r, cond = TRUE)
-condGeneIdUniverse(r)
 geneIdsByCategory(r, catids = NULL)
 sigCategories(r, p)
 
@@ -198,9 +191,6 @@ chrGraph(r)
     \item{testName}{returns a string
       describing the testing method used.}
 
-    \item{isConditional}{returns \code{TRUE} if the
-      result was obtained using a conditional algorithm.}
-
     \item{summary}{returns
       a \code{data.frame} summarizing the test result.  Optional
       arguments \code{pvalue} and \code{categorySize} allow
@@ -258,14 +248,14 @@ hasPFAM <- sapply(mget(probids, hgu95av2PFAM), function(ids)
                   if(!is.na(ids) && length(ids) > 1) TRUE else FALSE)
 probids <- probids[hasPFAM]
 ## get unique Entrez Gene IDs
-probids <- unique(getLL(probids, "hgu95av2"))
+probids <- unique(getEG(probids, "hgu95av2"))
 ## Now do the same for the universe
 univ <- ls(hgu95av2GENENAME)
 univHasPFAM <- sapply(mget(univ, hgu95av2PFAM), function(ids)
                       if(!is.na(ids) && length(ids) > 1) TRUE else
                          FALSE)
 univ <- univ[univHasPFAM]
-univ <- unique(getLL(univ, "hgu95av2"))
+univ <- unique(getEG(univ, "hgu95av2"))
 
 p <- new("PFAMHyperGParams", geneIds=probids, universeGeneIds=univ,
          annotation="hgu95av2")

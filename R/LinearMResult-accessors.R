@@ -67,12 +67,6 @@ setMethod("conditional", "LinearMResultBase",
                   r@conditional
           })
 
-setMethod("isConditional", "LinearMResultBase",
-          function(r) conditional(r))
-
-
-setMethod("condGeneIdUniverse", signature(r="LinearMResultBase"),
-          function(r) geneIdUniverse(r, cond=TRUE))
 
 setMethod("geneIdUniverse", signature(r="LinearMResultBase"),
           function(r, cond=TRUE) {

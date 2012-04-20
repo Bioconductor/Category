@@ -201,10 +201,6 @@ makeChrMapToEntrez <- function(datPkg, univ) {
     m2eg
 }
 
-cb_parse_band_hsa <- function(x) {
-    .Defunct("cb_parse_band_Hs")
-    cb_parse_band_Hs(x)
-}
 
 cb_parse_band_Hs <- function(x) {
     ## Given a chromosome band annotation (see examples below),
@@ -353,11 +349,6 @@ MAPAmat <- function(chip, univ=NULL, minCount=0) {
         m <- m[rs >= minCount, ]
     }
     m
-}
-
-chrBandInciMat <- function(chip, univ=NULL, minCount=0) {
-    .Defunct("MAPAmat")
-    MAPAmat(chip=chip, univ=univ, minCount=minCount)
 }
 
 ann_list_to_mat <- function(L) {

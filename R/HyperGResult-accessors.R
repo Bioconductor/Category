@@ -72,12 +72,6 @@ setMethod("conditional", "HyperGResultBase",
                 r@conditional
           })
 
-setMethod("isConditional", "HyperGResultBase",
-          function(r) conditional(r))
-
-
-setMethod("condGeneIdUniverse", signature(r="HyperGResultBase"),
-          function(r) geneIdUniverse(r, cond=TRUE))
 
 
 ### Accessor methods for HyperGResult class

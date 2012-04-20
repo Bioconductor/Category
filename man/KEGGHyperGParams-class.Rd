@@ -67,7 +67,6 @@ Class \code{"HyperGParams"}, directly.
 \seealso{
   \code{\link{HyperGResult-class}}
   \code{\link{GOHyperGParams-class}}
-  \code{\link{geneKeggHyperGeoTest}}
   \code{\link{hyperGTest}}
 }
 

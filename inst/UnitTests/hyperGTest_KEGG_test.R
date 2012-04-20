@@ -1,16 +1,13 @@
 library("Category")
-library("YEAST")
+library("org.Sc.sgd.db")
 
 test_KEGG1 <- function() {
     set.seed(434)    
-    allYeast <- ls(YEASTCHR)
+    allYeast <- ls(org.Sc.sgdCHR)
     selGenes <- sample(allYeast, 80)
     kp <- new("KEGGHyperGParams",
               geneIds=selGenes,
-              annotation="YEAST")
+              annotation="org.Sc.sgd")
     ans <- hyperGTest(kp)
     checkEquals("KEGG", testName(ans))
-    checkEquals(14, length(geneIds(ans)))
-    checkEquals(27, length(universeCounts(ans)))
-    checkEquals(27, length(geneCounts(ans)))
 }

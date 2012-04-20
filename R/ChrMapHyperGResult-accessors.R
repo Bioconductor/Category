@@ -34,13 +34,3 @@ setMethod("geneIdUniverse", signature(r="ChrMapHyperGResult"),
               else
                 entrezGeneUniverse(r)
           })
-
-
-setMethod("condGeneIdUniverse", signature(r="ChrMapHyperGResult"),
-          function(r) {
-              geneIdUniverse(r, cond=TRUE)
-          })
-
-
-setMethod("isConditional", signature(r="ChrMapHyperGResult"),
-          function(r) conditional(r))

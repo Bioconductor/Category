@@ -34,13 +34,6 @@ setGeneric("chrGraph",
 setGeneric("geneIdUniverse", signature="r",
            function(r, cond=TRUE) standardGeneric("geneIdUniverse"))
 
-setGeneric("condGeneIdUniverse",
-           function(r) {
-               .Defunct(msg=paste("use unconditional version with",
-                             "'cond' argument"))
-               standardGeneric("condGeneIdUniverse")
-           })
-
 ## generic "annotation" defined in Biobase
 
 #setGeneric("geneIds", function(r, ...) standardGeneric("geneIds"))
@@ -88,11 +81,6 @@ setGeneric("conditional<-", function(r, value) standardGeneric("conditional<-"))
 setGeneric("categorySubsetIds", function(r) standardGeneric("categorySubsetIds"))
 
 setGeneric("categorySubsetIds<-", function(r, value) standardGeneric("categorySubsetIds<-"))
-
-setGeneric("isConditional", function(r) {
-    .Defunct("conditional")
-    standardGeneric("isConditional")
-    })
 
 setGeneric("htmlReport", function(r, file="", append=FALSE, label="",
                                   digits=3, summary.args=NULL)
