@@ -111,214 +111,6 @@ library("graph")
 @ 
 
 
-<<Setup2, echo=FALSE, results=hide>>=
-options(width=80)
-
-
-## FIXME: this needs to go somewhere, not sure where
-##        it is a _slightly_ modified version from SNPchip
-##  RG asks if the slight mod might not be taken up  by the SNPchip
-##        folks? Otherwise, geneplotter is the obvious place
-
-plotCytoband2 <- function(chromosome,
-                         cytoband,
-                         xlim,
-                         xaxs="r",
-                         new=TRUE,
-                         label.cytoband=TRUE,
-                         cex.axis=1,
-                         outer=FALSE,
-                         ...){
-    def.par <- par(no.readonly=TRUE, mar=c(4.1, 0.1, 3.1, 2.1))
-    on.exit(def.par)
-    if(missing(cytoband)) data(cytoband, package="SNPchip", envir=environment())
-    if(missing(chromosome)){
-        if(length(unique(cytoband[, "chrom"])) > 1) stop("Must specify chromosome")
-    }
-    if(length(unique(cytoband$chrom)) > 1){
-        cytoband <- cytoband[cytoband[, "chrom"] == chromosome, ]
-    }
-    rownames(cytoband) <- as.character(cytoband[, "name"])
-    if(missing(xlim))
-        xlim <- c(0, SNPchip:::chromosomeSize(unique(cytoband$chrom)))
-    cytoband_p <- cytoband[grep("^p", rownames(cytoband), value=TRUE), ]
-    cytoband_q <- cytoband[grep("^q", rownames(cytoband), value=TRUE), ]
-
-    p.bands <- nrow(cytoband_p)
-    cut.left  <- c()
-    cut.right <- c()
-    ##  1st  band of arm or 1st  band after  "stalk"
-    ##  last band of arm or last band before "stalk"
-    for (i in 1:nrow(cytoband)) {
-        if (i == 1) { cut.left[i] <- TRUE; cut.right[i] <- FALSE} else
-        if (i == p.bands) { cut.left[i] <- FALSE; cut.right[i] <- TRUE} else
-        if (i == (p.bands+1)) { cut.left[i] <- TRUE; cut.right[i] <- FALSE} else
-        if (i == nrow(cytoband)) { cut.left[i] <- FALSE; cut.right[i] <- TRUE} else{
-            cut.left[i] <- FALSE; cut.right[i] <- FALSE
-        }
-    }
-    for (i in 1:nrow(cytoband)) {
-        if (as.character(cytoband[i, "gieStain"]) == "stalk") {
-            cut.right[i-1] <- TRUE
-            cut.left[i] <- NA
-            cut.right[i] <- NA
-            cut.left[i+1] <- TRUE
-        }
-    }
-    ##When plotting subregions of a chromosome, this prevents the cytobands from extending beyond the subsetted object
-    ##exclude cytobands that end before the minimum plotting limits
-    include <- cytoband[, "chromEnd"] > xlim[1] & cytoband[, "chromStart"] < xlim[2]            
-    cytoband <- cytoband[include, ]
-    cut.left <- cut.left[include]
-    cut.right <- cut.right[include]
-    if(new){
-        plot(c(0, cytoband[nrow(cytoband), "chromEnd"]),
-             c(0, 2),
-             xlim=xlim,
-             type="n",
-             xlab="",
-             ylab="",
-             axes=FALSE,
-             xaxs=xaxs,
-             ...)
-    }
-    for (i in 1:nrow(cytoband)) {
-        start <- cytoband[i, "chromStart"]
-        last   <- cytoband[i, "chromEnd"]
-        delta = (last-start)/4
-        getStain <- function(stain){
-            switch(stain,
-                   gneg="grey100",
-                   gpos25="grey90",
-                   gpos50="grey70",
-                   gpos75="grey40",
-                   gpos100="grey0",
-                   gvar="grey100",
-                   stalk="brown3",
-                   acen="brown4",
-                   "white")
-        }
-        color <- getStain(as.character(cytoband[i, "gieStain"]))
-        if (is.na(cut.left[i]) & is.na(cut.right[i])) {
-            ## this is a "stalk", do not draw box. Draw two vertical lines instead
-            delta <- (last-start)/3
-            lines(c(start+delta, start+delta), c(0,2), col=color)
-            lines(c(last-delta, last-delta), c(0,2), col=color)
-        } else if (cut.left[i] & cut.right[i]) {      # cut both lasts
-            polygon(c(start, start+delta, last-delta, last, last, last-delta, start+delta, start),
-                    c(0.3, 0, 0, 0.3, 1.7, 2, 2, 1.7), col=color)
-        } else if (cut.left[i]) {              # cut left last only
-            polygon(c(start, start+delta, last, last, start+delta, start),
-                    c(0.3, 0, 0, 2, 2, 1.7), col=color)
-        } else if (cut.right[i]) {             # cut right last only
-            polygon(c(start, last-delta, last, last, last-delta, start),
-                    c(0, 0, 0.3, 1.7, 2, 2),col=color)
-        } else {
-            polygon(c(start, last, last, start),
-                    c(0, 0, 2, 2), col=color)
-        }
-    }
-    my.x <- (cytoband$chromStart+cytoband$chromEnd)/2
-    if(label.cytoband){
-        axis(1, at=my.x,
-             labels=rownames(cytoband),
-             outer=outer,
-             cex.axis=cex.axis,
-             line=1, las=3, tick=FALSE)
-        axis(1, at=cytoband$chromStart,
-             outer=outer,
-             cex.axis=cex.axis,
-             line=1, las=3, label=FALSE)
-
-    }
-}
-
-## inducedSubGraph <- function(n, g) {
-##     inducedNodes <- unlist(lapply(acc(g, n), names))
-##     inducedNodes <- unique(c(n, inducedNodes))
-##     subGraph(inducedNodes, g)
-## }
-
-## FIXME: where doe these belong? Should they go in a package? 
-
-## sortBands <- function(bands) {
-##     chrs <- sub("([^pq]+).*$", "\\1", bands)
-##     xyIdx <- match(c("X", "Y"), chrs, 0)
-##     xy <- NULL
-##     if (any(xyIdx)) {
-##         chrs <- chrs[-xyIdx]
-##         xy <- bands[xyIdx]
-##         df <- bands[-xyIdx]
-##     }
-##     ord <- order(as.integer(chrs), bands)
-##     bands <- bands[ord]
-##     if (!is.null(xy))
-##       bands <- c(bands, xy)
-##     bands
-## }
-
-
-## Note: Seth's old code had assumed that eset would (1) only have
-## the genes that pass the t-test p-value threshold and (2) have 
-## gene symbols as featureNames().  (1) seems unreasonable, and we 
-## decided to include all genes. (2) seems like a convenience to 
-## have nice strip labels; we will do this another way.
-
-## subsetByBand <- function(eset, ct, band) {
-##     ## eset - ExpressionSet (featureNames assumed to be probe id)
-##     ## ct   - ChrBandTree object
-##     ## band - String giving the desired band
-##     ##
-##     ## RETURN: a new ExpressionSet with only those genes found in the
-##     ## specified band.
-
-##     ##     syms <- unlist(mget(featureNames(pvalFiltered), symbolMap))
-##     ##     entrez2sym <- syms
-##     ##     names(entrez2sym) <- selectedEntrezIds
-##     ##     featureNames(pvalFiltered) <- syms
-    
-##     egIDs <- unlist(nodeData(ct@toChildGraph, n=band, 
-##                              attr="geneIds"), use.names=FALSE)
-##     wantedProbes <- affyUniverse[as.character(egIDs)]
-##     ## print(wantedProbes)
-##     ## FIXME: shouldn't get any NA's... should investigate
-##     ##     wantedSyms <- wantedSyms[!is.na(wantedSyms)]
-##     ##     tmpSet <- eset[wantedSyms, ]
-##     ##     tmpSet
-##     eset[intersect(wantedProbes, featureNames(eset)), ]
-## }
-
-
-## gseaTstatStripplot <- function(bands, g, ..., include.all = FALSE)
-## {
-##     ## hack to get all top-level stuff. FIXME: more robust solution
-##     chroms <- c(1:22, "X", "Y")
-##     chromArms <- c(paste(chroms, "p", sep=""),
-##                    paste(chroms, "q", sep=""))
-
-##     egid <- lapply(nodeData(g, bands), "[[", "geneIds")
-##     affyid <-
-##         lapply(egid,
-##                function(x) {
-##                    affyUniverse[as.character(x)]
-##                })
-##     if (include.all)
-##     {
-##         affyid$All <- 
-##             affyUniverse[unique(unlist(lapply(nodeData(g)[chromArms], "[[", "geneIds")))]
-##     }
-##     tdf <- 
-##         do.call(make.groups,
-##                 lapply(affyid,
-##                        function(x) {
-##                            ttests[x, "statistic"]
-##                        }))
-##     stripplot(which ~ data, tdf, jitter = TRUE,
-##               ...)
-## }
-
-##
-@
 
 
 %
@@ -326,14 +118,18 @@ plotCytoband2 <- function(chromosome,
 \begin{center}
 %
 <<chr12ideogram, fig=TRUE, include=FALSE, prefix=FALSE, echo=FALSE, width=9, height=1.75>>=
-data(cytoband, package="SNPchip")
-cyt2 <- cytoband
+build <- "hg19" ## or hg18
+cyt2 <- getCytoband(build=build)
 cyt2$gieStain <- "foo"
 c12p12_idx <- intersect(grep("^q21", cyt2$name),
                         which(cyt2$chrom == "12"))
 cyt2[c12p12_idx, "gieStain"] <- rep(c("gpos50", "gpos75"),
                                     length=length(c12p12_idx))
-plotCytoband2(chromosome="12", cyt2, outer=FALSE,
+
+
+plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,  ## From SNPchip
+    cex.axis=0.6, main="Human chromosome 12")
+plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,
               cex.axis=0.6,
               main="Human chromosome 12")
 @ 

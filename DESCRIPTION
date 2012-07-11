@@ -1,13 +1,13 @@
 Package: Category
 Title: Category Analysis
-Version: 2.23.2
+Version: 2.23.3
 Author: R. Gentleman with contributions from S. Falcon and D.Sarkar
 Description: A collection of tools for performing category analysis.
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 License: Artistic-2.0
 Depends: AnnotationDbi (>= 0.1.15), Biobase (>= 1.15.29), methods
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-6),
-          hgu95av2.db, Matrix, KEGG.db, GO.db, SNPchip, geneplotter, 
+          hgu95av2.db, Matrix, KEGG.db, GO.db, SNPchip (>= 2.3.11), geneplotter, 
           limma, lattice, graph, Biobase, genefilter, methods, RUnit,
           org.Sc.sgd.db, GOstats
 Imports: graph, methods, Biobase (>= 1.15.29), AnnotationDbi (>= 0.1.15), RBGL, 
