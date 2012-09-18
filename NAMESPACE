@@ -1,3 +1,7 @@
+importFrom(BiocGenerics,
+           annotation,
+           "annotation<-")
+
 importClassesFrom(graph,
                   graph)
 
