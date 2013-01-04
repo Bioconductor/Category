@@ -91,7 +91,6 @@ importFrom(graph,
 
 importFrom(methods,
            .valueClassTest,
-           "@<-",
            as,
            callNextMethod,
            is,
