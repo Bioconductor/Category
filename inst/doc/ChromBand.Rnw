@@ -238,7 +238,6 @@ fm1 <- lmFit(nsFiltered, design)
 fm2 <- contrasts.fit(fm1, contr)
 fm3 <- eBayes(fm2)
 ttestLimma <- topTable(fm3, number = nrow(fm3), adjust.method = "none")
-rownames(ttestLimma) <- as.character(ttestLimma$ID)
 ttestLimma <- ttestLimma[featureNames(nsFiltered), ]
 
 tstats <- ttestLimma$t
