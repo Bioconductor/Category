@@ -47,7 +47,7 @@ cateGOry(x, categ, sparse=FALSE)
 \seealso{\code{\link{applyByCategory}}}
 \examples{
   g = cateGOry(c("CG2671", "CG2671", "CG2950"),
-               c("GO:0090079", "GO:0001738", "GO:0003676"))
+               c("GO:0090079", "GO:0001738", "GO:0003676"), sparse=TRUE)
   g
 
   rowSums(g)   ## number of genes in each category
