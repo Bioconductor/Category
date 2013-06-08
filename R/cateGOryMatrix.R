@@ -1,4 +1,4 @@
-## x: a vector of GO categories
+## x: a character vector of GO category IDs
 augmentByAncestors = function(x) {
    ## NOTE: this function implicitly does require("GO.db")
    s1 = x %in% ls(getAnnMap("MFANCESTOR", "GO", load=TRUE))
@@ -58,10 +58,10 @@ cateGOry  = function(x, categ, sparse=FALSE) {
   gocats = sort(unique(unlist(categAnc)))
   genes  = sort(unique(unlist(x)))
 
-  ## res = do.call(if(sparse) "Matrix" else "matrix",
-  ##  list(FALSE, nrow=length(gocats), ncol=length(genes)))
+  res = do.call(if(sparse) Matrix::Matrix else base::matrix,
+    list(FALSE, nrow=length(gocats), ncol=length(genes)))
   
-  res = matrix(FALSE, nrow=length(gocats), ncol=length(genes))
+  ## res = matrix(FALSE, nrow=length(gocats), ncol=length(genes))
   
   rownames(res) = gocats
   colnames(res) = genes

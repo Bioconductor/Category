@@ -22,14 +22,13 @@ cateGOry(x, categ, sparse=FALSE)
     with GO annotations for the genes in \code{x}. If a
     gene has multiple GO annotations, it is expected to occur multiple
     times in \code{x}, once for each different annotation.}
-  \item{sparse}{Logical. Currently, this is ignored. 
-    This argument might be used in future versions of the function to
-    result in returning a sparse matrix representation.}
+  \item{sparse}{Logical. If \code{TRUE}, the resulting matrix is constructed using \code{\link[Matrix:Matrix]{Matrix}}, 
+   otherwise, R's base \code{matrix} is used.}
 }
 \details{
-  Requires the \code{\link[GO.db:GOBASE]{GO}} package.
+  The function requires the \code{\link[GO.db:GOBASE]{GO}} package.
 
-  For some subsequent analyses, it is useful to remove categories that
+  For subsequent analyses, it is often useful to remove categories that
   have only a small number of members. Use the normal matrix subsetting
   syntax for this, see example.
 
@@ -43,23 +42,21 @@ cateGOry(x, categ, sparse=FALSE)
   rows are categories and columns genes.
 }
 
-\author{W. Huber}
+\author{Wolfgang Huber}
 
 \seealso{\code{\link{applyByCategory}}}
 \examples{
   g = cateGOry(c("CG2671", "CG2671", "CG2950"),
-               c("GO:0000074", "GO:0001738", "GO:0003676"))
+               c("GO:0090079", "GO:0001738", "GO:0003676"))
   g
 
-  rownames(g)
-  colnames(g)
   rowSums(g)   ## number of genes in each category
 
-  ## Filter out categories with less than minMem members.
-  ## This is toy data, in real applications, a number higher
+  ## Filter out categories with less than minMem and more than maxMem members.
+  ## This is toy data, in real applications, a choice of minMem higher
   ## than 2 will be more appropriate.
-  minMemb = 2
-  g[rowSums(g)>=minMemb,,drop=FALSE ]
+  filter = function(x, minMemb = 2, maxMemb = 35) ((x>=minMemb) & (x<=maxMemb))
+  g[filter(rowSums(g)),,drop=FALSE ]
 }
 
 \keyword{manip}
