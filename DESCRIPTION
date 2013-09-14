@@ -1,6 +1,6 @@
 Package: Category
 Title: Category Analysis
-Version: 2.27.2
+Version: 2.27.3
 Author: R. Gentleman with contributions from S. Falcon and D.Sarkar
 Description: A collection of tools for performing category analysis.
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
@@ -14,7 +14,8 @@ Imports: BiocGenerics, graph, methods, Biobase, AnnotationDbi, RBGL,
          GSEABase (>= 1.19.3), genefilter, annotate (>= 1.15.6), stats, utils
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R
-         categoryName-methods.R hyperGTest-methods.R linearMTest-methods.R
+         categoryName-methods.R hyperg-methods.R hyperGTest-methods.R
+         linearMTest-methods.R
          DatPkg-accessors.R
          ChrBandTree.R
          tree_visitor.R

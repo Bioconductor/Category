@@ -120,8 +120,6 @@ removeSigKidGenes <-
     curCat2Entrez
 }
 
-
-
 setMethod("hyperGTest",
           signature(p="ChrMapHyperGParams"),
           function(p) {
@@ -148,9 +146,6 @@ setMethod("hyperGTest",
                   conditional=p@conditional,
                   pvalue.order=pvord)
           })
-
-
-
 
 .doHyperGInternal <- function(numW, numB, numDrawn, numWdrawn, over) {
     n21 <- numW - numWdrawn

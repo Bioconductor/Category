@@ -1,3 +1,8 @@
+setGeneric("hyperg", function(assayed, significant, universe,
+                              representation=c("over", "under"), ...)
+           standardGeneric("hyperg"),
+           signature="assayed")
+
 setGeneric("hyperGTest", 
            function(p) standardGeneric("hyperGTest"),
            valueClass="HyperGResultBase")
