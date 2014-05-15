@@ -25,8 +25,7 @@ importMethodsFrom(AnnotationDbi,
                   ncol,
                   nrow,
                   revmap,
-                  sample,
-                  tail)
+                  sample)
 
 importMethodsFrom(Biobase,
                   annotation,
@@ -106,9 +105,7 @@ importFrom(stats,
            pnorm,
            runif)
 
-importFrom(utils,
-           find)
-
+importFrom(utils, find, tail)
 
 export(
        ".doHyperGTest",
