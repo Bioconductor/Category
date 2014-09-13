@@ -1,17 +1,14 @@
+import(methods)
+importFrom(utils, find, tail)
+importFrom(stats, chisq.test, coef, formula, lm, phyper, pnorm, runif)
+importFrom(stats4, summary)
+
 importFrom(BiocGenerics,
            annotation,
            "annotation<-")
 
 importClassesFrom(graph,
                   graph)
-
-importClassesFrom(methods,
-                  ANY,
-                  character,
-                  integer,
-                  list,
-                  logical,
-                  numeric)
 
 importMethodsFrom(AnnotationDbi,
                   as.list,
@@ -54,12 +51,7 @@ importMethodsFrom(graph,
                   numNodes,
                   subGraph)
 
-importMethodsFrom(methods,
-                  initialize,
-                  show)
-
 importFrom(AnnotationDbi,
-           summary,
            toSQLStringSet)
 
 importFrom(Biobase,
@@ -87,25 +79,6 @@ importFrom(annotate,
 importFrom(graph,
            ftM2graphNEL,
            reverseEdgeDirections)
-
-importFrom(methods,
-           .valueClassTest,
-           as,
-           callNextMethod,
-           is,
-           new,
-           slotNames)
-
-importFrom(stats,
-           chisq.test,
-           coef,
-           formula,
-           lm,
-           phyper,
-           pnorm,
-           runif)
-
-importFrom(utils, find, tail)
 
 export(
        ".doHyperGTest",
