@@ -117,6 +117,7 @@ getKeggToEntrezMap <- function(p) {
 }
 
 
+## basically this function returns a list of PFAM IDs (names) where each element contains a vector of the entrez gene IDs that go with thos PFAM IDs.
 getPfamToEntrezMap <- function(p) {
     keep.all <- switch(testDirection(p),
                        over=FALSE,

@@ -242,22 +242,19 @@ chrGraph(r)
 library("hgu95av2.db")
 library("annotate")
 
-probids <- ls(hgu95av2GENENAME)[1:300]
-## Select for probeids that have PFAM ids
-hasPFAM <- sapply(mget(probids, hgu95av2PFAM), function(ids)
-                  if(!is.na(ids) && length(ids) > 1) TRUE else FALSE)
-probids <- probids[hasPFAM]
-## get unique Entrez Gene IDs
-probids <- unique(getEG(probids, "hgu95av2"))
-## Now do the same for the universe
-univ <- ls(hgu95av2GENENAME)
-univHasPFAM <- sapply(mget(univ, hgu95av2PFAM), function(ids)
-                      if(!is.na(ids) && length(ids) > 1) TRUE else
-                         FALSE)
-univ <- univ[univHasPFAM]
-univ <- unique(getEG(univ, "hgu95av2"))
+## Retrieve 300 probeids that have PFAM ids
+probids <- keys(hgu95av2.db,keytype="PROBEID",column="PFAM")[1:300]
 
-p <- new("PFAMHyperGParams", geneIds=probids, universeGeneIds=univ,
+## get unique Entrez Gene IDs
+geneids <- select(hgu95av2.db, probids, 'ENTREZID', 'PROBEID')
+geneids <- unique(geneids[['ENTREZID']])
+
+## Now do the same for the universe
+univ <- keys(hgu95av2.db,keytype="PROBEID",column="PFAM")
+univ <- select(hgu95av2.db, univ, 'ENTREZID', 'PROBEID')
+univ <- unique(univ[['ENTREZID']])
+
+p <- new("PFAMHyperGParams", geneIds=geneids, universeGeneIds=univ,
          annotation="hgu95av2")
 ## this takes a while...
 if(interactive()){
