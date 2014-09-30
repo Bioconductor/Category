@@ -123,9 +123,11 @@ getPfamToEntrezMap <- function(p) {
                        over=FALSE,
                        under=TRUE,
                        stop("Bad testDirection slot"))
-    probe2pfam <- getDataEnv("PFAM", annotation(p))
-    pfam2allprobes <- splitOrfByPfam(probe2pfam)
-    probeAnnot <- getPfamToProbeMap(pfam2allprobes)
+    ##alteration:
+    obj <- get(paste0(annotation(p),'.db'))
+    probes <- keys(obj, keytype='PROBEID', column='PFAM')
+    tab <- select(obj, keys=probes, columns='PFAM',keytype='PROBEID')
+    probeAnnot <- split(tab$PROBEID, f=as.factor(tab$PFAM))
     probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
 }

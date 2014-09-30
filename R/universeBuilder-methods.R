@@ -99,23 +99,12 @@ getUniverseViaPfam_db <- function(p) {
 }
 
 
-## ## type = keytype to extract for (other value assumed to be PROBEID)
-## ## lib = library short name IOW 'hgu95av2'
-## .getDataList <- function(type, lib, keytype){
-##     obj <- get(paste0(lib, '.db'))
-##     keys <- keys(obj, keytype=keytype, columns=type)
-##     tab <- select(obj, keys=keys, type, keytype=keytype)
-##     ## Then convert to a list?  Wait do we need to really do this crap?
-## }
 
-
-## basically this returns a character vector of entrez gene IDs that had a PFAM ID associated (IOW I can replace it with a call to keys where keytype='ENTREZID' ??? - not quite it... must also do some filtering so look closer.
+## modified to do the same thing as before (but another way)
 getUniverseViaPfam <- function(p) {
     entrezIds <- universeGeneIds(p)
-    probe2pfam <- as.list(getDataEnv("PFAM", annotation(p)))
-    notNA <- sapply(probe2pfam, function(x) !(length(x) == 1 && is.na(x)))
-    probe2pfam <- probe2pfam[notNA]
-    probes <- names(probe2pfam)
+    obj <- get(paste0(annotation(p),'.db'))
+    probes <- keys(obj, keytype='PROBEID', column='PFAM')
     getUniverseHelper(probes, p@datPkg, entrezIds)
 }
 
