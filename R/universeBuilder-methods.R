@@ -104,7 +104,8 @@ getUniverseViaPfam_db <- function(p) {
 getUniverseViaPfam <- function(p) {
     entrezIds <- universeGeneIds(p)
     obj <- get(paste0(annotation(p),'.db'))
-    probes <- keys(obj, keytype='PROBEID', column='PFAM')
+    keytype <- .setKeytype(p)
+    probes <- keys(obj, keytype=keytype, column='PFAM')
     getUniverseHelper(probes, p@datPkg, entrezIds)
 }
 

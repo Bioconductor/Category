@@ -116,6 +116,14 @@ getKeggToEntrezMap <- function(p) {
                            keep.all=keep.all)
 }
 
+.setKeytype <- function(p){
+    if(class(p@datPkg)=='YeastDatPkg'){
+        keytype <- 'ORF'
+    }else{
+        keytype <- 'PROBEID'
+    }
+    keytype
+}
 
 ## basically this function returns a list of PFAM IDs (names) where each element contains a vector of the entrez gene IDs that go with thos PFAM IDs.
 getPfamToEntrezMap <- function(p) {
@@ -123,11 +131,13 @@ getPfamToEntrezMap <- function(p) {
                        over=FALSE,
                        under=TRUE,
                        stop("Bad testDirection slot"))
+    keytype <- .setKeytype(p)
     ##alteration:
     obj <- get(paste0(annotation(p),'.db'))
-    probes <- keys(obj, keytype='PROBEID', column='PFAM')
-    tab <- select(obj, keys=probes, columns='PFAM',keytype='PROBEID')
-    probeAnnot <- split(tab$PROBEID, f=as.factor(tab$PFAM))
+    probes <- keys(obj, keytype=keytype, column='PFAM')
+    suppressWarnings(
+       tab <- select(obj, keys=probes, columns='PFAM',keytype=keytype))
+    probeAnnot <- split(tab[[keytype]], f=as.factor(tab$PFAM))
     probeToEntrezMapHelper(probeAnnot, geneIds(p), p@datPkg, universeGeneIds(p),
                            keep.all=keep.all)
 }
