@@ -149,6 +149,8 @@ exportMethods("hyperGTest",
               "categoryName",
               "makeValidParams",
 
+              "organism",
+
               ## accessors for HyperGResult and LinearMResult
               "chrGraph",
               "pvalues",
