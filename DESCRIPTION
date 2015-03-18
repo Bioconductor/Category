@@ -1,11 +1,12 @@
 Package: Category
 Title: Category Analysis
-Version: 2.33.0
+Version: 2.33.1
 Author: R. Gentleman with contributions from S. Falcon and D.Sarkar
 Description: A collection of tools for performing category analysis.
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 License: Artistic-2.0
-Depends: methods, stats4, Matrix, BiocGenerics, AnnotationDbi, Biobase, GO.db,
+Depends: methods, stats4, Matrix, BiocGenerics (>= 0.13.8), AnnotationDbi,
+         Biobase, GO.db
 Imports: methods, utils, stats, stats4, BiocGenerics, graph, Biobase,
          AnnotationDbi, RBGL, GSEABase (>= 1.19.3), genefilter,
          annotate (>= 1.15.6)

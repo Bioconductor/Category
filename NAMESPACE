@@ -5,7 +5,8 @@ importFrom(stats4, summary)
 
 importFrom(BiocGenerics,
            annotation,
-           "annotation<-")
+           "annotation<-",
+           organism)
 
 importClassesFrom(graph,
                   graph)
@@ -37,6 +38,9 @@ importMethodsFrom(GSEABase,
                   incidence,
                   GeneSetCollection,
                   GeneSet)
+
+importMethodsFrom(annotate,
+                  organism)
 
 importMethodsFrom(genefilter,
                   rowttests)
@@ -73,8 +77,7 @@ importFrom(annotate,
            allValidKeys,
            aqListGOIDs,
            filterGOByOntology,
-           getAnnMap,
-           organism)
+           getAnnMap)
 
 importFrom(graph,
            ftM2graphNEL,
