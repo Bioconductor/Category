@@ -117,12 +117,11 @@ getKeggToEntrezMap <- function(p) {
 }
 
 .setKeytype <- function(p){
-    if(class(p@datPkg)=='YeastDatPkg'){
-        keytype <- 'ORF'
-    }else{
-        keytype <- 'PROBEID'
-    }
-    keytype
+    keytype <- switch(class(p@datPkg),
+                      YeastDatPkg = "ORF",
+                      Org.XX.egDatPkg = "ENTREZID",
+                      "PROBEID")
+     keytype
 }
 
 ## basically this function returns a list of PFAM IDs (names) where each element contains a vector of the entrez gene IDs that go with thos PFAM IDs.
