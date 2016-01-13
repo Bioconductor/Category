@@ -13,28 +13,6 @@ setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
                 getUniverseViaPfam(p)
           })
 
-##The _db versions of these seem to never have been finished or been used.
-XXXgetUniverseViaGo_db <- function(p) {
-    datPkg <- p@datPkg
-    ontology <- ontology(p)
-    entrezIds <- universeGeneIds(p)
-    ## Return all Entrez Gene Ids that are annotated at one or more
-    ## GO terms belonging to the specified GO ontology.
-    ## If 'entrezIds' is given, return the intersection of 'entrezIds'
-    ## and the normal return value.
-    ontology <- match.arg(ontology, c("BP", "CC", "MF"))
-    ## FIXME: this might be faster as full-column pull and in-memory join
-    SQL <- "select distinct gene_id from genes, go_XX where genes._id = go_XX._id"
-    SQL <- gsub("XX", ontology, SQL)
-    univ <- dbGetQuery(p@datPkg@getdb(), SQL)[[1]]
-    if (!is.null(entrezIds) && length(entrezIds) > 0)
-      univ <- intersect(univ, unlist(entrezIds))
-    if (length(univ) < 1)
-      stop("No Entrez Gene ids left in universe")
-    univ
-}
-
-
 getUniverseViaGo <- function(p) {
     datPkg <- p@datPkg
     ontology <- ontology(p)

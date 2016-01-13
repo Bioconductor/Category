@@ -2,6 +2,7 @@ import(methods)
 importFrom(utils, find, tail)
 importFrom(stats, chisq.test, coef, formula, lm, phyper, pnorm, runif)
 importFrom(stats4, summary)
+importFrom(Matrix, Matrix)
 
 importFrom(BiocGenerics,
            annotation,
@@ -23,7 +24,9 @@ importMethodsFrom(AnnotationDbi,
                   ncol,
                   nrow,
                   revmap,
-                  sample)
+                  sample,
+                  keys,
+                  select)
 
 importMethodsFrom(Biobase,
                   annotation,
@@ -54,6 +57,14 @@ importMethodsFrom(graph,
                   nodes,
                   numNodes,
                   subGraph)
+
+importMethodsFrom(RSQLite, dbGetQuery)
+
+importMethodsFrom(Matrix,
+                  as.vector,
+                  "%*%",
+                  dimnames,
+                  "[<-")
 
 importFrom(AnnotationDbi,
            toSQLStringSet)

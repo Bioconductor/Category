@@ -123,7 +123,7 @@ setMethod("summary", signature(object="LinearMResult"),
 htmlReportFromDf <- function(r, caption, file="", append=FALSE, digits=3)
 {
     have_xtable <- suppressWarnings({
-        require("xtable", quietly=TRUE, warn.conflicts=FALSE)
+        requireNamespace("xtable", quietly=TRUE)
     })
     if (!have_xtable)
       stop("htmlReport needs the xtable package and it is not",
@@ -135,8 +135,7 @@ htmlReportFromDf <- function(r, caption, file="", append=FALSE, digits=3)
     ## XXX: Hard-coded column formatting here
     dig <- rep(digits, ncol(r)+1)  ## need +1 for xtable row name
     dig[5:7] <- 0
-    xt <- xtable(r, caption=caption,
-                 digits=dig)
+    xt <- xtable::xtable(r, caption=caption, digits=dig)
     print(xt, type="html", file=file, append=append,
           caption.placement="top",
           sanitize.text.function=function(x) x,

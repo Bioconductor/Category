@@ -58,7 +58,8 @@ WHERE %s IN (%s)"
     ##basically, the "gene universe" at this point, is only those genes that
     ##have representation for on this ontology, and none of your genes were in
     ##THAT list, so there are not going to be any GO terms to find in this query.
-    if(inClause1==""){stop("The genes you are testing do not have any corresponding GO terms for the ontology you are searching.")}
+    if(inClause1=="")
+        stop("genes being tested do not have corresponding GO terms")
     wantedGO <- dbGetQuery(db, SQL)[[1]]
     ## Now collect the Entrez IDs annotated at our wantedGO IDs making
     ## sure to only keep those that are in the gene ID universe

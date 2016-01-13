@@ -51,6 +51,7 @@
 \alias{testDirection}
 \alias{testDirection,HyperGResultBase-method}
 
+\alias{organism,HyperGResult-method}
 
 \alias{oddsRatios}
 \alias{oddsRatios,HyperGResult-method}
@@ -124,7 +125,10 @@ chrGraph(r)
 }
 
 \section{Accessor Methods (Generic Functions)}{
- \describe{
+  \describe{
+
+   \item{organism}{returns a \code{"character"} vector describing the
+     organism for which the results were calculated.}
    
    \item{geneCounts}{returns an \code{"integer"}
     vector: for each category term tested, the number of genes from

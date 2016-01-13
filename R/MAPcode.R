@@ -252,7 +252,7 @@ cb_parse_band_Hs <- function(x) {
 makeChrBandGraph <- function(chip, univ=NULL) {
     if(class(chip) == "character"){
         ##chip must be a datPkg (of correct type)
-        chip = Category:::DatPkgFactory(chip)
+        chip = DatPkgFactory(chip)
     }
     
     org <- getOrganism(chip@name)

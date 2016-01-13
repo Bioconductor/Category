@@ -33,6 +33,8 @@
 \alias{categoryName}
 \alias{categoryName,HyperGParams-method}
 
+\alias{organism,HyperGParams-method}
+
 \alias{makeValidParams,HyperGParams-method}
 \alias{show,HyperGParams-method}
 
@@ -97,6 +99,9 @@ Objects of this class cannot be instantiated directly.
     replacement form.}
     
   \item{\code{ontology(object)}}{Accessor for GO ontology.}
+
+  \item{\code{organism(object)}}{Accessor for the organism character
+    string used as an identifier in \code{DatPkg}.}
     
   \item{\code{pvalueCutoff(r)}, \code{pvalueCutoff(r) <-
         value}}{Accessor for the p-value cutoff.  When setting,
@@ -108,7 +113,6 @@ Objects of this class cannot be instantiated directly.
     \item{\code{universeGeneIds(r)}}{accessor for vector of gene
         identifiers.}
 
-    
   }
 }
 

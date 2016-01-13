@@ -1,5 +1,7 @@
 ## x: a character vector of GO category IDs
 augmentByAncestors = function(x) {
+    if (!requireNamespace("GO.db"))
+        stop("use 'biocLite(\"GO.db\")' to install the GO.db package")
    ## NOTE: this function implicitly does require("GO.db")
    s1 = x %in% ls(getAnnMap("MFANCESTOR", "GO", load=TRUE))
    s2 = x %in% ls(getAnnMap("BPANCESTOR", "GO"))
@@ -23,9 +25,9 @@ augmentByAncestors = function(x) {
    }
    
    res = vector(length=length(x), mode="list")
-   res[s1] = mget(x[s1], GOMFANCESTOR)
-   res[s2] = mget(x[s2], GOBPANCESTOR)
-   res[s3] = mget(x[s3], GOCCANCESTOR)
+   res[s1] = mget(x[s1], GO.db::GOMFANCESTOR)
+   res[s2] = mget(x[s2], GO.db::GOBPANCESTOR)
+   res[s3] = mget(x[s3], GO.db::GOCCANCESTOR)
    res[s4] = NULL
    ## the genes in x itself are not their own ancestors,
    ## so we need to add them explicitely

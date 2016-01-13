@@ -16,12 +16,8 @@ pvalFromPermMat <- function(obs, perms) {
 }
 
 gseattperm <- function(eset, fac, mat, nperm) {
-    usingMatrix <- qRequire("Matrix")
     mkSparseMat <-
-      if (usingMatrix)
-        function(x) Matrix(x, sparse=TRUE)
-      else
-        function(x) x
+        function(x) Matrix::Matrix(x, sparse=TRUE)
 
     geneNames <- colnames(mat)
     if (is.null(geneNames))
@@ -30,16 +26,12 @@ gseattperm <- function(eset, fac, mat, nperm) {
     if (nrow(eset) != ncol(mat))
       warning("'eset' and 'mat' genes not identical")
     if (nrow(eset) < 2)
-      stop("need at two genes in common between 'eset' and 'mat'")
+      stop("need at least two genes in common between 'eset' and 'mat'")
     cAmat <- mkSparseMat(mat)
 
     obs <- rowttests(eset, fac, tstatOnly=TRUE)[["statistic"]]
     obs <- cAmat %*% obs
-    obs <-
-      if (usingMatrix)
-        Matrix::as.vector(obs)
-      else
-        as.vector(obs)
+    obs <- as.vector(obs)
 
     permMat <- matrix(0, nrow=nrow(eset), ncol=nperm)
     i <- 1L
@@ -48,8 +40,6 @@ gseattperm <- function(eset, fac, mat, nperm) {
         permMat[ , i] <- rowttests(eset, p1, tstatOnly=TRUE)[["statistic"]]
         i <- i + 1L
     }
-    permMat <- cAmat %*% permMat
-    if (usingMatrix)
-      permMat <- as.matrix(permMat)
+    permMat <- as.matrix(cAmat %*% permMat)
     pvalFromPermMat(obs, permMat)
 }

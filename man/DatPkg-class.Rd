@@ -33,6 +33,8 @@
 \alias{KEGG2AllProbes,GeneSetCollectionDatPkg-method}
 \alias{isDBDatPkg,DatPkg-method}
 \alias{isDBDatPkg,GeneSetCollectionDatPkg-method}
+\alias{organism,DatPkg-method}
+\alias{organism,GeneSetCollectionDatPkg-method}
 
 
 \title{Class "DatPkg"}
