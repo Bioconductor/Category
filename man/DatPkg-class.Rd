@@ -5,9 +5,12 @@
 \alias{YeastDatPkg-class}
 \alias{Org.XX.egDatPkg-class}
 \alias{GeneSetCollectionDatPkg}
+\alias{OBOCollectionDatPkg-class}
+\alias{OBOCollectionDatPkg}
 
 \alias{DatPkgFactory}
 \alias{DatPkgFactory,character-method}
+\alias{DatPkgFactory,OBOCollection,GeneSetCollection-method}
 
 
 \alias{ID2GO}
@@ -54,6 +57,9 @@
   \code{Org.XX.egDatPkg} is a subclass of \code{DatPkg} used to
   represent the \code{org.*.eg.db} organism-level Entez Gene based
   annotation data packages.
+  
+  \code{OBOCollectionDatPkg} is a subclass of \code{DatPkg} used to
+  represent the \code{OBO} based annotation data packages.
   
   \code{GeneSetCollectionDatPkg} is a subclass of \code{DatPkg} used to
   represent annotations in the form of \code{GeneSetCollection} objects

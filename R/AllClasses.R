@@ -14,6 +14,13 @@ setClass("GeneSetCollectionDatPkg", contains="DatPkg",
          representation=representation(
            geneSetCollection="GeneSetCollection"))
 
+## OBO gene set collection DatPkgs
+setClass("OBOCollectionDatPkg", contains="DatPkg",
+         representation=representation(
+           oboCollection="OBOCollection",
+           oboGraph="graph",
+           geneSetCollection="GeneSetCollection"))
+
 ## These generics needed for AllClasses
 setGeneric("configureDatPkg",
            function(annotation, ...) standardGeneric("configureDatPkg"))
@@ -41,11 +48,17 @@ setClass("HyperGParams",
 
 setClass("GOHyperGParams",
          representation(ontology="character",
-                        conditional="logical"),
+                        conditional="logical",
+                        orCutoff="numeric",
+                        minSizeCutoff="numeric",
+                        maxSizeCutoff="numeric"),
          contains="HyperGParams",
          prototype=prototype(
            categoryName="GO",
            conditional=FALSE,
+           orCutoff=1,
+           minSizeCutoff=0,
+           maxSizeCutoff=Inf,
            annotation="GO"))
 
 
@@ -58,6 +71,27 @@ setClass("KEGGHyperGParams",
 setClass("PFAMHyperGParams",
          contains="HyperGParams",
          prototype=prototype(categoryName="PFAM"))
+
+## this probably should not go here
+setClass("GeneSetCollectionAnnotation", contains="character")
+
+.GeneSetCollectionAnnotation <- function(annotation)
+      new("GeneSetCollectionAnnotation", annotation)
+
+## class for OBO gene set testing
+setClass("OBOHyperGParams",
+         contains="HyperGParams",
+         representation(conditional="logical",
+                        orCutoff="numeric",
+                        minSizeCutoff="numeric",
+                        maxSizeCutoff="numeric"),
+         prototype=prototype(
+           categoryName="OBO",
+           conditional=FALSE,
+           orCutoff=1,
+           minSizeCutoff=0,
+           maxSizeCutoff=Inf,
+           annotation=.GeneSetCollectionAnnotation("OBO")))
 
 setClass("ChrMapHyperGParams",
          contains="HyperGParams",
@@ -109,6 +143,18 @@ setClass("ChrBandTree",
            root="character",
            level2nodes="list"))
 
+## this is for OBO
+setClass("OBOHyperGResult",
+         contains="HyperGResultBase",
+         representation=representation(
+           goDag="graph",
+           gscDescriptions="character",
+           pvalue.order="integer",
+           conditional="logical"),
+         prototype=prototype(
+           testName="GO",
+           pvalueCutoff=0.01,
+           goDag=new("graphNEL")))
 
 
 

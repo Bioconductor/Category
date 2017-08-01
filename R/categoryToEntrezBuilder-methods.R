@@ -19,6 +19,15 @@ setMethod("categoryToEntrezBuilder",
               getPfamToEntrezMap(p)
           })
 
+## this is for OBO
+setMethod("categoryToEntrezBuilder", "OBOHyperGParams",
+    function(p)
+{
+    geneids <- geneIds(p@datPkg@geneSetCollection)
+    genesByGS <- lapply(geneids, intersect, universeGeneIds(p))
+    genesByGS[lengths(genesByGS) > 0]
+})
+
 getGoToEntrezMap_db <- function(p) {
     keep.all <- switch(testDirection(p),
                        over=FALSE,

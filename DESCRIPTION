@@ -1,9 +1,15 @@
 Package: Category
 Title: Category Analysis
-Version: 2.43.1
-Author: R. Gentleman with contributions from S. Falcon and D.Sarkar
-Description: A collection of tools for performing category analysis.
-Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
+Version: 2.43.2
+Authors@R: c(
+    person("Robert", "Gentleman", role="aut"),
+    person("Seth", "Falcon", role="ctb"),
+    person("Deepayan", "Sarkar", role="ctb"),
+    person("Robert", "Castelo", role="ctb"),
+    person("Bioconductor Package Maintainer",
+        email = "maintainer@bioconductor.org", role="cre"))
+Description: A collection of tools for performing category (gene set
+    enrichment) analysis.
 License: Artistic-2.0
 Depends: methods, stats4, BiocGenerics, AnnotationDbi, Biobase,
          Matrix

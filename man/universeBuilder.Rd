@@ -4,6 +4,7 @@
 \alias{universeBuilder,GOHyperGParams-method}
 \alias{universeBuilder,KEGGHyperGParams-method}
 \alias{universeBuilder,PFAMHyperGParams-method}
+\alias{universeBuilder,OBOHyperGParams-method}
 
 \title{Return a vector of gene identifiers with category annotations}
 \description{

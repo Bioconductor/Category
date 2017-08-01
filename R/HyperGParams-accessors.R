@@ -121,8 +121,18 @@ setMethod("conditional", "GOHyperGParams", function(r) r@conditional)
 }
 setReplaceMethod("conditional", c("GOHyperGParams", "logical"), function(r, value) .replaceGOConditional(r, value))
 
+## this is for OBO
+setMethod("conditional", "OBOHyperGParams", function(r) r@conditional)
 
-
+setReplaceMethod(
+    "conditional", c("OBOHyperGParams", "logical"),
+    function(r, value)
+{
+    if (length(value) != 1 || is.na(value))
+        stop("'value' must be logical(1) and not NA")
+    r@conditional <- value
+    r
+})
 
 setMethod("ontology", "HyperGParams", function(object) NA)
 

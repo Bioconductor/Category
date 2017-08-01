@@ -5,6 +5,7 @@
 \alias{categoryToEntrezBuilder,GOHyperGParams-method}
 \alias{categoryToEntrezBuilder,KEGGHyperGParams-method}
 \alias{categoryToEntrezBuilder,PFAMHyperGParams-method}
+\alias{categoryToEntrezBuilder,OBOHyperGParams-method}
 
 
 \title{Return a list mapping category ids to Entrez Gene ids}

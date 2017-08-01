@@ -1,6 +1,7 @@
 import(methods)
 importFrom(utils, find, tail)
-importFrom(stats, chisq.test, coef, formula, lm, phyper, pnorm, runif)
+importFrom(stats, chisq.test, coef, formula, lm, phyper, pnorm, runif,
+           setNames)
 importFrom(stats4, summary)
 importFrom(Matrix, Matrix)
 
@@ -11,6 +12,9 @@ importFrom(BiocGenerics,
 
 importClassesFrom(graph,
                   graph)
+
+importClassesFrom(GSEABase,
+                  OBOCollection)
 
 importMethodsFrom(AnnotationDbi,
                   as.list,
@@ -123,6 +127,8 @@ export(
        "probes2MAP",
        "probes2Path",
        "ttperm",
+       "OBOCollectionDatPkg",
+       "OBOHyperGParams",
        "GSEAGOHyperGParams",
        "GSEAKEGGHyperGParams")
 
@@ -130,7 +136,7 @@ exportClasses("DatPkg",
               "AffyDatPkg",
               "YeastDatPkg",
               "Org.XX.egDatPkg",
-
+              "OBOCollectionDatPkg",
               "HyperGParams",
               "GOHyperGParams",
               "KEGGHyperGParams",

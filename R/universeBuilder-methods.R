@@ -13,6 +13,14 @@ setMethod("universeBuilder", signature(p="PFAMHyperGParams"),
                 getUniverseViaPfam(p)
           })
 
+## this is for OBO
+setMethod("universeBuilder", "OBOHyperGParams",
+    function(p)
+{
+    allAnnotatedGenes <- unique(unlist(geneIds(p@datPkg@geneSetCollection)))
+    intersect(unlist(universeGeneIds(p)), allAnnotatedGenes)
+})
+
 getUniverseViaGo <- function(p) {
     datPkg <- p@datPkg
     ontology <- ontology(p)

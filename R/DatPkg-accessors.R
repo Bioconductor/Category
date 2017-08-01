@@ -255,6 +255,16 @@ setMethod("DatPkgFactory", "character", function(chip) {
         new("Org.XX.egDatPkg", name=chip)
 })
 
+## this is for OBO
+OBOCollectionDatPkg <- function(oboCollection, geneSetCollection) {
+  new("OBOCollectionDatPkg", oboCollection=oboCollection,
+      oboGraph=as(oboCollection, "graphNEL"),
+      geneSetCollection=geneSetCollection)
+}
+                                       
+OBOHyperGParams <- function(...)
+    new("OBOHyperGParams", ...)
+
 ####################################################################
 ## Classes and constructors to support use of GSEABase objects inside
 ## of GOstats:
