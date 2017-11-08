@@ -3,6 +3,7 @@
 \alias{DatPkg-class}
 \alias{AffyDatPkg-class}
 \alias{YeastDatPkg-class}
+\alias{ArabidopsisDatPkg-class}
 \alias{Org.XX.egDatPkg-class}
 \alias{GeneSetCollectionDatPkg}
 \alias{OBOCollectionDatPkg-class}
@@ -10,6 +11,8 @@
 
 \alias{DatPkgFactory}
 \alias{DatPkgFactory,character-method}
+\alias{DatPkgFactory,OrgDb-method}
+\alias{DatPkgFactory,ChipDb-method}
 \alias{DatPkgFactory,OBOCollection,GeneSetCollection-method}
 
 
@@ -51,8 +54,13 @@
 
   \code{YeastDatPkg} is a subclass of \code{DatPkg} used to represent
   the annotation data packages for yeast.  The yeast chip packages are
-  based on sgd and are internally different from the \code{AffyDataPkg}
+  based on sgd and are internally different from the \code{AffyDatPkg}
   conforming packages.
+
+  \code{ArabidopsisDatPkg} is a subclass of \code{DatPkg} used to
+  represent the annotation packages for Arabidopsis. These packages are
+  internally slightly different from the \code{AffyDatPkg} conforming
+  packages.
 
   \code{Org.XX.egDatPkg} is a subclass of \code{DatPkg} used to
   represent the \code{org.*.eg.db} organism-level Entez Gene based
@@ -64,7 +72,12 @@
   \code{GeneSetCollectionDatPkg} is a subclass of \code{DatPkg} used to
   represent annotations in the form of \code{GeneSetCollection} objects
   which are not based on any annotation packages but are instead derived
-  from custom (user supplied) annotations.  
+  from custom (user supplied) annotations.
+
+  These methods have been extended to accommodate uninstalled annotation
+  objects, primarily those available from the AnnotationHub
+  package. See below for an example.
+  
 }
 \section{Objects from the Class}{
   A virtual Class: No objects may be created from it.
@@ -74,7 +87,11 @@
 }
 \section{Slots}{
   \describe{
-    \item{name}{A string giving the name of the annotation data package.}
+    \item{name}{A string giving the name of the annotation data
+      package.}
+    \item{db}{The underlying AnnotationDbi database object.}
+    \item{installed}{Boolean. Distinguishes between conventional
+  installed annotation packages, and those from AnnotationHub.}
   }
 }
 
@@ -95,6 +112,12 @@ DatPkgFactory("hgu95av2")
 DatPkgFactory("org.Sc.sgd")
 DatPkgFactory("org.Hs.eg.db")
 DatPkgFactory("ag")
+library(AnnotationHub)
+hub <- AnnotationHub()
+## get an OrgDb for Atlantic salmon
+query(hub, c("salmo salar","orgdb"))
+salmodb <- hub[["AH58003"]]
+DatPkgFactory(salmodb)
 }
 }
 \keyword{classes}

@@ -30,7 +30,9 @@ importMethodsFrom(AnnotationDbi,
                   revmap,
                   sample,
                   keys,
-                  select)
+                  select,
+                  dbconn,
+                  columns)
 
 importMethodsFrom(Biobase,
                   annotation,
@@ -62,7 +64,7 @@ importMethodsFrom(graph,
                   numNodes,
                   subGraph)
 
-importMethodsFrom(DBI, dbGetQuery)
+importMethodsFrom(DBI, dbGetQuery, dbListFields)
 
 importMethodsFrom(Matrix,
                   as.vector,

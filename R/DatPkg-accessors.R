@@ -12,23 +12,38 @@
     return(collList)
 }
 
+getDbAnnMap <- function(col, db){
+    if(col %in% columns(db))
+        return(AnnotationDbi:::makeFlatBimapUsingSelect(db, col))
+    else
+        stop(paste("The database", db, "you are using has no", col, "data."), call. = FALSE)
+}
+
+annMapChooser <- function(col, datpkg){
+    if(datpkg@installed)
+        getAnnMap(col, datpkg@name)
+    else
+        getDbAnnMap(col, datpkg@db)
+}
+
 setMethod("ID2GO", "DatPkg",
-          function(p) getAnnMap("GO", p@name))
+          function(p) annMapChooser("GO", p))
 
 setMethod("ID2GO", "GeneSetCollectionDatPkg",
           function(p) list2env(.geneSetParamListFlip(p)))
 
-
 setMethod("ID2KEGG", "DatPkg",
-          function(p) getAnnMap("PATH", p@name))
+          function(p) annMapChooser("PATH", p))
 
 setMethod("ID2KEGG", "GeneSetCollectionDatPkg",
           function(p) list2env(.geneSetParamListFlip(p)))
 
 
 
+
 setMethod("ID2EntrezID", "AffyDatPkg",
-          function(p) getAnnMap("ENTREZID", p@name))
+          function(p) annMapChooser("ENTREZID", p))
+
 
 ##FIXME: this is seriously slow - try list2env to speed up a bit
 .createIdentityMap <- function(keys) {
@@ -48,24 +63,30 @@ setMethod("ID2EntrezID", "YeastDatPkg",
               bname = p@name 
               if( exists( paste(bname, "ORF", sep="")) ) 
 	        return(getAnnMap("ORF", p@name))
+              else if(p@installed)
+                  return(.createIdentityMap(allValidKeys(p@name)))
               else
-              .createIdentityMap(allValidKeys(p@name))
-          })
+                  .createIdentityMap(allValidKeys(p@db))
+})
 
 setMethod("ID2EntrezID", "ArabidopsisDatPkg",
           function(p) {
               bname = p@name 
               if( exists( paste(bname, "ACCNUM", sep="")) ) 
 	        return(getAnnMap("ACCNUM", p@name))
+              else if(p@installed)
+                  return(.createIdentityMap(allValidKeys(p@name)))
               else
-              .createIdentityMap(allValidKeys(p@name))
-          })
+                  .createIdentityMap(allValidKeys(p@db))
+})
 
 setMethod("ID2EntrezID", "Org.XX.egDatPkg",
           function(p) {
-              .createIdentityMap(allValidKeys(p@name))
-          })
-
+    if(p@installed)
+        return(.createIdentityMap(allValidKeys(p@name)))
+    else
+        .createIdentityMap(allValidKeys(p@db))
+})
 
 
 setMethod("ID2EntrezID", "GeneSetCollectionDatPkg", function(p) {
@@ -81,32 +102,38 @@ setMethod("ID2EntrezID", "GeneSetCollectionDatPkg", function(p) {
 
 setMethod("GO2AllProbes", "DatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
-              ontIds <- aqListGOIDs(ontology)
-              go2all <- getAnnMap("GO2ALLPROBES", p@name)
-              ontIds <- intersect(ontIds, ls(go2all))
-              go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
-              go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
-              list2env(go2allOnt)
-          })
+    ontIds <- aqListGOIDs(ontology)
+    if(p@installed)
+        go2all <- getAnnMap("GO2ALLPROBES", p@name)
+    else
+        go2all <- getDbAnnMap("GOALL", p@db)
+    ontIds <- intersect(ontIds, ls(go2all))
+    go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
+    go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
+    list2env(go2allOnt)
+})
 
 
 setMethod("GO2AllProbes", "YeastDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
-              conn <- do.call(paste(p@name, "_dbconn", sep=""), list())
-              schema <- dbmeta(conn, "DBSCHEMA")
-              env = environment()
-              if(schema == "YEASTCHIP_DB"){
-                  env = callNextMethod()
-                  return(env)
-              }
-              ontIds <- aqListGOIDs(ontology)
-              go2all <- getAnnMap("GO2ALLORFS", p@name)
-              ontIds <- intersect(ontIds, ls(go2all))
-              go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
-              go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
-              env = list2env(go2allOnt)
-              return(env)
-          })
+    conn <- dbconn(p@db)
+    schema <- dbmeta(conn, "DBSCHEMA")
+    env = environment()
+    if(schema == "YEASTCHIP_DB"){
+        env = callNextMethod()
+        return(env)
+    }
+    ontIds <- aqListGOIDs(ontology)
+    if(p@installed)
+        go2all <- getAnnMap("GO2ALLORFS", p@name)
+    else
+        go2all <- getDbAnnMap("GOALL", p@db)
+    ontIds <- intersect(ontIds, ls(go2all))
+    go2allOnt <- mget(ontIds, go2all, ifnotfound=NA)
+    go2allOnt <- removeLengthZeroAndMissing(go2allOnt)
+    env = list2env(go2allOnt)
+    return(env)
+})
 
 
 
@@ -116,7 +143,7 @@ setMethod("GO2AllProbes", "Org.XX.egDatPkg",
           function(p, ontology=c("BP", "CC", "MF")) {
 
               #db <- get("db_conn", paste("package:", p@name, sep=""))
-              db <- do.call(paste(p@name, "dbconn", sep="_"), list())
+              db <- dbconn(p@db)
               sqlQ <- "SELECT DISTINCT gene_id, go_id
               FROM genes INNER JOIN go_%s USING (_id)"
               sqlQ <- sprintf(sqlQ, tolower(ontology))
@@ -174,9 +201,7 @@ setMethod("GO2AllProbes", "GeneSetCollectionDatPkg",
 
 
 setMethod("KEGG2AllProbes", "DatPkg",
-          function(p) {
-            revmap(getDataEnv("PATH", p@name))
-          })
+          function(p) revmap(annMapChooser("PATH", p)))
 
 setMethod("KEGG2AllProbes", "GeneSetCollectionDatPkg",  
           function(p) {
@@ -201,14 +226,7 @@ setMethod("KEGG2AllProbes", "GeneSetCollectionDatPkg",
 
 
 setMethod("isDBDatPkg","DatPkg",
-          function(d){
-            ##If there is a connection object then it's a db package.
-            require(paste(d@name, ".db", sep=""), character.only=TRUE)
-            exists(paste(d@name, "_dbconn", sep=""), mode="function")
-          })
-
-
-setMethod("isDBDatPkg","GeneSetCollectionDatPkg", function(d){return(FALSE)})
+          function(d) length(d@db) > 0)
 
 
 
@@ -241,19 +259,58 @@ setMethod("DatPkgFactory", "character", function(chip) {
     pkg <- paste(chip,".db",sep="")    
     if(!require(pkg, character.only = TRUE))
         stop("annotation package '", pkg, "' not available")
-
+    
     ## Use standardized schema names to decide
-    conn <- do.call(paste(chip, "_dbconn", sep=""), list())
+    db <- get(pkg)
+    conn <- dbconn(db)
     schema <- dbmeta(conn, "DBSCHEMA")
     if (schema == "YEAST_DB" || schema == "YEASTCHIP_DB")
-        new("YeastDatPkg", name=chip)
+        new("YeastDatPkg", name=chip, db=db, installed=TRUE)
     else if( schema == "ARABIDOPSIS_DB" || schema == "ARABIDOPSISCHIP_DB" )
-        new("ArabidopsisDatPkg", name=chip)
+        new("ArabidopsisDatPkg", name=chip, db=db, installed=TRUE)
     else if( .strMatch("CHIP_DB$", schema))
-        new("AffyDatPkg", name=chip)
+        new("AffyDatPkg", name=chip, db=db, installed=TRUE)
     else ## Otherwise its an ordinary org package
-        new("Org.XX.egDatPkg", name=chip)
+        new("Org.XX.egDatPkg", name=chip, db=db, installed=TRUE)
 })
+
+setMethod("DatPkgFactory", "OrgDb", function(chip) {
+    ## don't act like installed package is from AnnotationHub
+    pkName <- get("packageName", chip@.xData)
+    if(length(pkName) > 0)
+        return(DatPkgFactory(pkName))
+    conn <- dbconn(chip)
+    schema <- dbmeta(conn, "DBSCHEMA")
+    orgn <- dbmeta(conn, "ORGANISM")
+    chiptype <- dbmeta(conn, "Db type")
+    name <- paste(chiptype, "for", orgn)
+    if (schema == "YEAST_DB")
+        new("YeastDatPkg", name=name, db=chip, installed=FALSE)
+    else if( schema == "ARABIDOPSIS_DB")
+        new("ArabidopsisDatPkg", name=name, db=chip, installed=FALSE)
+    else ## Otherwise its an ordinary org package
+        new("Org.XX.egDatPkg", name=name, db=chip, installed=FALSE)
+})
+
+setMethod("DatPkgFactory", "ChipDb", function(chip) {
+    ## don't act like installed package is from AnnotationHub
+    pkName <- get("packageName", chip@.xData)
+    if(length(pkName) > 0)
+        return(DatPkgFactory(pkName))
+    conn <- dbconn(chip)
+    schema <- dbmeta(conn, "DBSCHEMA")
+    orgn <- dbmeta(conn, "ORGANISM")
+    chiptype <- dbmeta(conn, "Db type")
+    name <- paste(chiptype, "for", orgn)
+    if (schema == "YEASTCHIP_DB")
+        new("YeastDatPkg", name=name, db=chip, installed=FALSE)
+    else if(schema == "ARABIDOPSISCHIP_DB" )
+        new("ArabidopsisDatPkg", name=name, db=chip, installed=FALSE)
+    else
+        new("AffyDatPkg", name=name, db=chip, installed=FALSE)
+})
+
+
 
 ## this is for OBO
 OBOCollectionDatPkg <- function(oboCollection, geneSetCollection) {
@@ -340,6 +397,8 @@ setMethod("configureDatPkg", "character",
 setMethod("configureDatPkg", "GeneSetCollectionAnnotation",
           function(annotation, object, ...) object@datPkg)
 
+setMethod("configureDatPkg", "OrgDb",
+          function(annotation, ...) DatPkgFactory(annotation))
 
 
 
@@ -354,7 +413,8 @@ setMethod("organism", "GeneSetCollectionDatPkg",
           function(object) organism(object@geneSetCollection[[1]]) )
 
 setMethod("organism", "DatPkg",
-          function(object) organism(object@name) )
+          function(object)
+    if(object@installed) organism(object@name) else dbmeta(dbconn(object@db), "ORGANISM"))
 
 
 setMethod("organism", "HyperGResult",

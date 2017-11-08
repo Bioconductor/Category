@@ -59,8 +59,10 @@ Objects of this class cannot be instantiated directly.
       universe for the hypergeometric calculation.  If this is
       \code{NULL} or has length zero, then all gene ids on the chip will
       be used.}
-    \item{\code{annotation}:}{A string giving the name of the
-      annotation data package for the chip used to generate the data.}
+    \item{\code{annotation}:}{Object of class
+      \code{"ANY"}. Functionally, this is either a string giving the name of the
+      annotation data package for the chip used to generate the data, or
+      the name of an annotation object downloaded using AnnotationHub.}
     \item{\code{categorySubsetIds}:}{Object of class \code{"ANY"}:
       If the test method supports it, can be used to specify a subset of
       category ids to include in the test instead of all possible

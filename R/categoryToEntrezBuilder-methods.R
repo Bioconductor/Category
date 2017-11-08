@@ -28,6 +28,7 @@ setMethod("categoryToEntrezBuilder", "OBOHyperGParams",
     genesByGS[lengths(genesByGS) > 0]
 })
 
+
 getGoToEntrezMap_db <- function(p) {
     keep.all <- switch(testDirection(p),
                        over=FALSE,
@@ -35,7 +36,11 @@ getGoToEntrezMap_db <- function(p) {
                        stop("Bad testDirection slot"))
     #annPkgNS <- getNamespace(annotation(p))
     #db <- get("db_conn", annPkgNS)
-    db <- do.call(paste(p@annotation, "dbconn", sep="_"), list())
+    datPkg <- p@datPkg
+    if(datPkg@installed)
+        db <- do.call(paste0(datPkg@name, "_dbconn"), list())
+    else
+        db <- dbconn(datPkg@db)
     univ <- unlist(universeGeneIds(p), use.names=FALSE)
 
     ## For over representation:
@@ -48,21 +53,35 @@ getGoToEntrezMap_db <- function(p) {
     ##
     ## These are the GO IDs that form the keys in our GO_to_Entrez map.
     ## First we need to handle the fact that different species have different
-    ## mappings for their names.
-    if( is(p@datPkg, "YeastDatPkg") || is(p@datPkg, "Org.Sc.sgdDatPkg") ) {
-       TABLENAME = "sgd"; GENEIDS="systematic_name"
+    ## mappings for their names. And treat installed vs bare OrgDbs differently
+    if(datPkg@installed){
+         if (is(datPkg, "YeastDatPkg") || is(datPkg, "Org.Sc.sgdDatPkg")) {
+             TABLENAME = "sgd"
+             GENEIDS = "systematic_name"
+         } else {
+             TABLENAME = "genes"
+             GENEIDS = "gene_id"
+         }
+         goColNames <- c("go_id","ontology")
     } else {
-       TABLENAME = "genes"; GENEIDS="gene_id"
+        if( is(datPkg, "YeastDatPkg") || is(datPkg, "Org.Sc.sgdDatPkg") ) {
+            TABLENAME = "sgd"
+        } else {
+            TABLENAME = "genes"
+        }
+        GENEIDS <- dbListFields(db, TABLENAME)[2]
+        goColNames <- dbListFields(db, "go_all")[c(2,4)]
     }
-    SQL <- "SELECT DISTINCT go_id
-FROM %s INNER JOIN go_%s_all USING (_id)
-WHERE %s IN (%s)"
+     ## Not all DBs have e.g. go_bp_all, so we just get from go_all
+    SQL <- "SELECT DISTINCT %s
+FROM go_all INNER JOIN %s USING (_id)
+WHERE %s IN (%s) AND %s=%s"
     inClause1 <- if (!keep.all)
       geneIds(p)
     else
       univ
     inClause1 <- toSQLStringSet(inClause1) # may get reused below
-    SQL <- sprintf(SQL, TABLENAME, ontology(p), GENEIDS, inClause1)
+    SQL <- sprintf(SQL, goColNames[1], TABLENAME, GENEIDS, inClause1, goColNames[2], toSQLStringSet(ontology(p)))
     ##Check to make sure that we have some geneIds(p) to actually get GO terms FOR...
     ##basically, the "gene universe" at this point, is only those genes that
     ##have representation for on this ontology, and none of your genes were in
@@ -73,19 +92,19 @@ WHERE %s IN (%s)"
     ## Now collect the Entrez IDs annotated at our wantedGO IDs making
     ## sure to only keep those that are in the gene ID universe
     ## specified in p.
-    SQL <- "SELECT DISTINCT %s, go_id
-FROM %s INNER JOIN go_%s_all USING (_id)
-WHERE %s IN (%s) AND go_id IN (%s)"
+    SQL <- "SELECT DISTINCT %s, %s
+FROM go_all INNER JOIN %s USING (_id)
+WHERE %s IN (%s) AND %s IN (%s)"
     inClauseGO <- toSQLStringSet(wantedGO)
     if (!keep.all)                      # avoid recomputing
       inClause1 <- toSQLStringSet(univ)
-    SQL <- sprintf(SQL, GENEIDS, TABLENAME, ontology(p), GENEIDS, inClause1, 
-                   inClauseGO)
+    SQL <- sprintf(SQL, GENEIDS, goColNames[1], TABLENAME, GENEIDS, inClause1, 
+                   goColNames[1], inClauseGO)
     ans <- dbGetQuery(db, SQL)
     if (nrow(ans) == 0)
         list()
     else 
-        split(ans[[GENEIDS]], ans[["go_id"]])
+        split(ans[[GENEIDS]], ans[[goColNames[1]]])
 }
 
 getGoToEntrezMap <- function(p) {

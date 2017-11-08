@@ -1,13 +1,16 @@
 setClass("DatPkg",
          contains="VIRTUAL",
          representation=representation(
-           name="character"))
+             name="character",
+             db="ANY",
+             installed="logical"))
 
 ##Annotion package DatPkgs
 setClass("AffyDatPkg", contains="DatPkg")
 setClass("YeastDatPkg", contains="DatPkg")
 setClass("ArabidopsisDatPkg", contains="DatPkg")
 setClass("Org.XX.egDatPkg", contains="DatPkg")
+
 
 ## Other types of DatPkgs
 setClass("GeneSetCollectionDatPkg", contains="DatPkg",
@@ -21,6 +24,7 @@ setClass("OBOCollectionDatPkg", contains="DatPkg",
            oboGraph="graph",
            geneSetCollection="GeneSetCollection"))
 
+
 ## These generics needed for AllClasses
 setGeneric("configureDatPkg",
            function(annotation, ...) standardGeneric("configureDatPkg"))
@@ -29,11 +33,12 @@ setGeneric("DatPkgFactory",
            function(chip) standardGeneric("DatPkgFactory"),
            useAsDefault=function(chip) new("AffyDatPkg", name="UNKNOWN"))
 
+
 setClass("HyperGParams",
          contains="VIRTUAL",
          representation=representation(geneIds="ANY",
            universeGeneIds="ANY",
-           annotation="character",
+           annotation="ANY",
            datPkg="DatPkg",
            categorySubsetIds="ANY",
            categoryName="character",
