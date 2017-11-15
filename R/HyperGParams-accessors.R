@@ -3,20 +3,22 @@
     ## If we can fix it, we do (and issue a warning)
     ## Return a more valid instance or error
     datPkg <- object@datPkg
-    if (class(datPkg) !="GeneSetCollectionDatPkg" && datPkg@installed) {
-        ## Check if annotation is installed but instantiated using the OrgDb
-        ## rather than the name of the OrgDb
-        if(is(annotation(object), "OrgDb")) annotation(object) <- datPkg@name
-        ## Check if annotation has been written "long form". If it is,
-        ## then shorten the name appropriately.
-        ann <- annotation(object)
-        if (length(ann) != 1)
-            stop("'annotation' must be character(1)", .Call=FALSE)
-        if (grepl(".db$", ann))
-            annotation(object) <- sub("\\.db$", "", ann)
-    } else if(!datPkg@installed) {
-        ## use direct access so we don't rebuild the datPkg
-        object@annotation <- datPkg@name
+    if (class(datPkg) !="GeneSetCollectionDatPkg") {
+        if(!datPkg@installed && class(datPkg) !="OBOCollectionDatPkg") {
+           ## use direct access so we don't rebuild the datPkg
+            object@annotation <- datPkg@name
+        } else {
+            ## Check if annotation is installed but instantiated using the OrgDb
+            ## rather than the name of the OrgDb
+            if(is(annotation(object), "OrgDb")) annotation(object) <- datPkg@name
+            ## Check if annotation has been written "long form". If it is,
+            ## then shorten the name appropriately.
+            ann <- annotation(object)
+            if (length(ann) != 1)
+                stop("'annotation' must be character(1)", .Call=FALSE)
+            if (grepl(".db$", ann))
+                annotation(object) <- sub("\\.db$", "", ann)
+        }
     }
     sel <- geneIds(object)
     if (is.list(sel)) {

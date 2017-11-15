@@ -316,7 +316,8 @@ setMethod("DatPkgFactory", "ChipDb", function(chip) {
 OBOCollectionDatPkg <- function(oboCollection, geneSetCollection) {
   new("OBOCollectionDatPkg", oboCollection=oboCollection,
       oboGraph=as(oboCollection, "graphNEL"),
-      geneSetCollection=geneSetCollection)
+      geneSetCollection=geneSetCollection,
+      installed = FALSE)
 }
                                        
 OBOHyperGParams <- function(...)
@@ -335,7 +336,7 @@ setClass("GeneSetCollectionAnnotation", contains="character")
 GeneSetCollectionDatPkg <- function(geneSetCollection) 
 {
     new("GeneSetCollectionDatPkg",
-        geneSetCollection=geneSetCollection)
+        geneSetCollection=geneSetCollection, installed = FALSE)
 }
 
 
