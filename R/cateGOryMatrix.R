@@ -1,7 +1,7 @@
 ## x: a character vector of GO category IDs
 augmentByAncestors = function(x) {
     if (!requireNamespace("GO.db"))
-        stop("use 'biocLite(\"GO.db\")' to install the GO.db package")
+        stop("Use 'BiocManager::install(\"GO.db\")' to install the GO.db package")
    ## NOTE: this function implicitly does require("GO.db")
    s1 = x %in% ls(getAnnMap("MFANCESTOR", "GO", load=TRUE))
    s2 = x %in% ls(getAnnMap("BPANCESTOR", "GO"))
@@ -23,7 +23,7 @@ augmentByAncestors = function(x) {
        sprintf("cateGOry: GO terms %s were mentioned in 'x' but were not found in the GO package.\n", got)
      })
    }
-   
+
    res = vector(length=length(x), mode="list")
    res[s1] = mget(x[s1], GO.db::GOMFANCESTOR)
    res[s2] = mget(x[s2], GO.db::GOBPANCESTOR)
@@ -31,7 +31,7 @@ augmentByAncestors = function(x) {
    res[s4] = NULL
    ## the genes in x itself are not their own ancestors,
    ## so we need to add them explicitely
-   res     = mapply(c, res, x) 
+   res     = mapply(c, res, x)
    names(res) = x
    return(res)
 }
@@ -54,7 +54,7 @@ cateGOry  = function(x, categ, sparse=FALSE) {
     stop("'categ' must be a character vector")
   if(length(x)!=length(categ))
     stop("length of 'x' and 'categ' must be the same")
-  
+
   categAnc = augmentByAncestorsSmart(categ)
 
   gocats = sort(unique(unlist(categAnc)))
@@ -62,13 +62,13 @@ cateGOry  = function(x, categ, sparse=FALSE) {
 
   res = do.call(if(sparse) Matrix::Matrix else base::matrix,
     list(FALSE, nrow=length(gocats), ncol=length(genes)))
-  
+
   ## res = matrix(FALSE, nrow=length(gocats), ncol=length(genes))
-  
+
   rownames(res) = gocats
   colnames(res) = genes
   for(j in seq(along=x))
     res[categAnc[[j]], x[j]] = TRUE
-  
+
   return(res)
 }
