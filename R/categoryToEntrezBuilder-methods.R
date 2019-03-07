@@ -54,15 +54,23 @@ getGoToEntrezMap_db <- function(p) {
     ## These are the GO IDs that form the keys in our GO_to_Entrez map.
     ## First we need to handle the fact that different species have different
     ## mappings for their names. And treat installed vs bare OrgDbs differently
+    ## also need to account for different names for NOSCHEMA OrgDbs
     if(datPkg@installed){
          if (is(datPkg, "YeastDatPkg") || is(datPkg, "Org.Sc.sgdDatPkg")) {
              TABLENAME = "sgd"
              GENEIDS = "systematic_name"
+             goColNames <- c("go_id","ontology")
          } else {
              TABLENAME = "genes"
-             GENEIDS = "gene_id"
+             if(dbmeta(db, "DBSCHEMA") == "NOSCHEMA_DB") {
+                 GENEIDS <- dbListFields(db, TABLENAME)[2]
+                 goColNames <- dbListFields(db, "go_all")[c(2,4)]
+                 } else {
+                     GENEIDS = "gene_id"
+                     goColNames <- c("go_id","ontology")
+                 }
          }
-         goColNames <- c("go_id","ontology")
+
     } else {
         if( is(datPkg, "YeastDatPkg") || is(datPkg, "Org.Sc.sgdDatPkg") ) {
             TABLENAME = "sgd"
