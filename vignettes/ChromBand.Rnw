@@ -103,7 +103,8 @@ library("ALL")
 library("hgu95av2.db")
 library("annotate")
 library("genefilter")
-library("SNPchip")
+##library("SNPchip")
+library("karyoploteR")
 library("geneplotter")
 library("limma")
 library("lattice")
@@ -117,21 +118,22 @@ library("graph")
 \begin{figure}[tb]
 \begin{center}
 %
-<<chr12ideogram, fig=TRUE, include=FALSE, prefix=FALSE, echo=FALSE, width=9, height=1.75>>=
+<<chr12ideogram, fig=TRUE, include=FALSE, prefix=FALSE, echo=FALSE, width=9, height=3>>=
 build <- "hg19" ## or hg18
-cyt2 <- getCytoband(build=build)
-cyt2$gieStain <- "foo"
-c12p12_idx <- intersect(grep("^q21", cyt2$name),
-                        which(cyt2$chrom == "12"))
-cyt2[c12p12_idx, "gieStain"] <- rep(c("gpos50", "gpos75"),
-                                    length=length(c12p12_idx))
-
-
-plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,  ## From SNPchip
-    cex.axis=0.6, main="Human chromosome 12")
-plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,
-              cex.axis=0.6,
-              main="Human chromosome 12")
+kp <- plotKaryotype(genome=build, chromosomes="chr12", main="Human chromosome 12")
+## cyt2 <- getCytoband(build=build)
+## cyt2$gieStain <- "foo"
+## c12p12_idx <- intersect(grep("^q21", cyt2$name),
+##                         which(cyt2$chrom == "12"))
+## cyt2[c12p12_idx, "gieStain"] <- rep(c("gpos50", "gpos75"),
+##                                     length=length(c12p12_idx))
+##
+##
+## plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,  ## From SNPchip
+##     cex.axis=0.6, main="Human chromosome 12")
+## plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,
+##               cex.axis=0.6,
+##               main="Human chromosome 12")
 @ 
 \end{center}
 \includegraphics[width=.98\textwidth]{chr12ideogram}
