@@ -1,6 +1,6 @@
 Package: Category
 Title: Category Analysis
-Version: 2.53.1
+Version: 2.54.0
 Authors@R: c(
     person("Robert", "Gentleman", role="aut"),
     person("Seth", "Falcon", role="ctb"),
