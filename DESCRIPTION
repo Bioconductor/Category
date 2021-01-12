@@ -15,7 +15,7 @@ Depends: methods, stats4, BiocGenerics, AnnotationDbi, Biobase,
          Matrix
 Imports: utils, stats, graph, RBGL, GSEABase, genefilter, annotate, DBI 
 Suggests: EBarrays, ALL, Rgraphviz, RColorBrewer, xtable (>= 1.4-6),
-         hgu95av2.db, KEGG.db, karyoploteR, geneplotter, limma, lattice,
+         hgu95av2.db, KEGGREST, karyoploteR, geneplotter, limma, lattice,
          RUnit, org.Sc.sgd.db, GOstats, GO.db
 LazyLoad: Yes
 Collate: AllClasses.R AllGenerics.R categoryToEntrezBuilder-methods.R

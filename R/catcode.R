@@ -33,10 +33,13 @@ probes2Path = function(pids, data="hgu133plus2") {
     inPW[!is.na(inPW)]
 }
 
-getPathNames = function(iPW) {
-    ## implicit require("KEGG.db")
-    keggEnv = getAnnMap("PATHID2NAME", "KEGG", load=TRUE)
-    mget(iPW, keggEnv, ifnotfound = NA)
+getPathNames = function(iPW, organism = "hsa") {
+    klist <- KEGGREST::keggList("pathway", organism = organism)
+    knames <- paste0("path:", organism, iPW)
+    kind <- lapply(stats::setNames(nm = knames), match, names(klist))
+    kres <- vapply(kind, as.character, character(1L))
+    kres[!is.na(kind)] <- klist[unlist(kind[!is.na(kind)])]
+    lapply(strsplit(kres, " - "), `[`, 1L)
 }
 
 ttperm = function(x, fac, B=100, tsO=TRUE) {
