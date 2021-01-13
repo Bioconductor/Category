@@ -6,10 +6,11 @@
  pathway. 
 }
 \usage{
-getPathNames(iPW)
+getPathNames(iPW, organism = "hsa")
 }
 \arguments{
   \item{iPW}{A vector of KEGG pathway IDs. }
+  \item{organism}{A single character vector of the organism identifier, e.g., "hsa"}
 }
 \details{
   This function simply does a look up in \code{KEGGPATHID2NAME} and
