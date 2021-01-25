@@ -298,7 +298,7 @@ make use of the permutation approach to assess significance.
 @
 \includegraphics[width=1.25\smallfigwidth]{Category-KEGGmnplot}
 \caption{\label{fig:KEGGmn}
-The mean plot for the \Sexpr{KEGGPATHID2NAME[[byTT]]} pathway. Each
+The mean plot for the \Sexpr{getPathNames(byTT)[[1]]} pathway. Each
 point represents a gene in the pathway and the $x$-value is determined
 by the mean expression in the BCR/ABL group while the $y$-value is
 determined by the mean in the NEG group.}
@@ -489,7 +489,7 @@ differentially expressed using a permutation approach.}
 
 Unfortunately, as we can see from the visualizations none of these
 category plots are especially compelling. If we return to the category
-\Sexpr{KEGGPATHID2NAME[[byTT]]} then we see that the permutation
+\Sexpr{getPathNames(byTT)[[1]]} then we see that the permutation
 $p$-value is \Sexpr{pvals[byTT, 2]}.
 
 %%FIXME: this one is a heatmap so I needed to move it
