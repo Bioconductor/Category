@@ -71,7 +71,7 @@ kp <- plotKaryotype(genome=build, chromosomes="chr12", main="Human chromosome12"
 
 For illustration, we use a microarray dataset [@Chiaretti2005] from a clinical trial in acute lymphoblastic leukemia (ALL). The data are described in Chapter 2 of [@BiocCaseStudies]. For the analysis presented here, we consider the comparison of two subsets: patients identified as having a BCR/ABL gene fusion present, typically as a result of a translocation of chromosomes 9 and 22 (labeled BCR/ABL), and those that have no observed cytogenetic abnormalities (labeled NEG). The full dataset is available in the [ALL]{.sans-serif} package, and the relevant subset of the data can be obtained by
 
-```{r bcrAblOrNegSubset, cache=TRUE}
+```{r bcrAblOrNegSubset, cache=FALSE}
 
 data(ALL, package="ALL")
 
@@ -132,7 +132,7 @@ nsFiltered <- nsFiltered[hasSYM & hasMAP, ]
 
 We define the \textit{gene universe} to be the subset of genes that remain after this filtering. 
 
-```{r defineGeneUniverse, cache=TRUE}
+```{r defineGeneUniverse, cache=FALSE}
 
 affyUniverse <- featureNames(nsFiltered)
 
@@ -146,7 +146,7 @@ if (any(duplicated(entrezUniverse)))
 ```
 We assessed differential expression between the BCR/ABL and NEG groups using an empirical Bayes approach, as implemented in the software package limma [@limma], yielding an attenuated$t$-statistic for each gene. 
 
-```{r parametric1, cache=TRUE}
+```{r parametric1, cache=FALSE}
 
 design <- model.matrix(~ 0 + nsFiltered$mol.biol)
 
@@ -174,7 +174,7 @@ names(tstats) <- entrezUniverse [rownames(ttestLimma)]
 
 We used a $p$-value cutoff of $0.01$ to identify a list of potentially differentially expressed genes. 
 
-```{r selectedSubset, cache=TRUE}
+```{r selectedSubset, cache=FALSE}
 
 ttestCutoff <- 0.01
 
@@ -298,7 +298,7 @@ subsetByBand <- function(eset, ct, band) {
 
 We use a method similar to that described in @Falcon-GOstats to conditionally test for over-representation of chromosome bands in the selected gene list. A test is set up by creating a suitable object of class *"ChrMapHyperGParams"*. We first create an object to perform a standard Hypergeometric analysis, treating each chromosome band independently, and then modify a copy to represent a conditional Hypergeometric computation.
 
-```{r basicParams, cache=TRUE}
+```{r basicParams, cache=FALSE}
 
 params <- new("ChrMapHyperGParams",
               conditional=FALSE,
@@ -315,7 +315,7 @@ paramsCond@conditional <- TRUE
 ```
 
 The test computations are performed by
-```{r basicTest, cache=TRUE}
+```{r basicTest, cache=FALSE}
 
 hgans <- hyperGTest(params)
 
@@ -325,7 +325,7 @@ hgansCond <- hyperGTest(paramsCond)
 
 The results can be summarized by
 
-```{r result1, cache=TRUE}
+```{r result1, cache=FALSE}
 
 sumUn <- summary(hgans, categorySize=1)
 
@@ -379,7 +379,7 @@ We can fit ([$$eq:lm1$$](#eq:lm1){reference-type="ref" reference="eq:lm1"}) by l
 
 We apply this procedure to perform global tests using per-gene $t$-statistics as a measure of differential expression in BCR/ABL relative to NEG samples. As with the Hypergeometric tests, we start by creating objects of class *"ChrMapLinearMParams"*.
 
-```{r LMtestSetup,cache=TRUE}
+```{r LMtestSetup,cache=FALSE}
 
 params <- new("ChrMapLinearMParams",
               conditional = FALSE,
@@ -416,7 +416,7 @@ chrSortOrder(summary(lmansCond))
 
 ```{r echo=FALSE}
 tmpSet <- subsetByBand(nsFiltered, ct, "1p36.2")
-esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2.5, 8),
+esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
            par.strip.text = list(cex = 0.8))
 ```
 
