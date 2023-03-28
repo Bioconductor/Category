@@ -412,20 +412,26 @@ chrSortOrder(summary(lmansCond))
 ##
 ```
 
-These examples only test for consistently upregulated categories; similar calls with `testDirection = "down"` can be used to test for downregulation. As we see, the GSEA approach picks out many more bands as significant, but there is some concordance with the Hypergeometric approach. For example, 7q31, 8p22, and 14q22.2 come up in both analyses. Figure [3](#fig:dotplot1p362){reference-type="ref" reference="fig:dotplot1p362"} shows box-and-whisker plots of genes in one category (1p36.2) that is declared as significant by the Hypergeometric test, but not by GSEA. It is produced by
-
 <figure class="center" id="fig:dotplot1p362">
-```{r fig=TRUE, fig.align="center",width=9, height=6}
+
+```{r echo=FALSE}
 tmpSet <- subsetByBand(nsFiltered, ct, "1p36.2")
-esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
+esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2.5, 8),
            par.strip.text = list(cex = 0.8))
-```
-```{r dotplot1p362, fig=TRUE, fig.align="center",include=FALSE, prefix=FALSE, echo=FALSE, prefix=FALSE, width=9, height=6}
-plot(trellis.last.object())
 ```
 
 <figcaption>Expression values for the BCR/ABL and NEG samples for the genes located within 1p36.2, which is declared as significant by the Hypergeometric test, but not by GSEA. Genes in the selected list are highlighted with a shaded background. For these genes, The NEG samples, those with no known cytogenetic abnormalities, have significantly lower expression than the BCR/ABL samples. However, the direction is reversed (albeit mildly) for many of the other genes.</figcaption>
 
 </figure>
 
+These examples only test for consistently upregulated categories; similar calls with `testDirection = "down"` can be used to test for downregulation. As we see, the GSEA approach picks out many more bands as significant, but there is some concordance with the Hypergeometric approach. For example, 7q31, 8p22, and 14q22.2 come up in both analyses. Figure [3](#fig:dotplot1p362){reference-type="ref" reference="fig:dotplot1p362"} shows box-and-whisker plots of genes in one category (1p36.2) that is declared as significant by the Hypergeometric test, but not by GSEA. It is produced by
+
+```{r eval=FALSE}
+tmpSet <- subsetByBand(nsFiltered, ct, "1p36.2")
+esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
+           par.strip.text = list(cex = 0.8))
+```
+```{r dotplot1p362, fig=TRUE, include=FALSE, prefix=FALSE, echo=FALSE, prefix=FALSE, width=9, height=6}
+plot(trellis.last.object())
+```
 # References:
