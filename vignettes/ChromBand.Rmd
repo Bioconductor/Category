@@ -5,7 +5,8 @@ author:
    - name: S. Falcon
    - name: R. Gentleman
    - name: Kemmy MO Jones
-     affiliation: [ Chromosome Bands Vignette translation from Sweave to R Markdown / HTML ]
+     affiliation: [ Chromosome Bands Vignette translation from Sweave to R 
+     Markdown / HTML ]
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 package: Category
 vignette: >
@@ -14,8 +15,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 output:
   BiocStyle::html_document:
-    toc: false
-    theme: journal
+             toc: false
 bibliography: 
     - cat.bib
 link-citations: true
@@ -23,13 +23,11 @@ link-citations: true
 
 # Chromosome bands
 
-Typically, in higher organisms, each chromosome has a centromere and two arms. The short arm is called the p arm and the longer arm the q arm. Chromosome bands (see Figure [1](#fig:chr12ideogram){reference-type="ref" reference="fig:chr12ideogram"}) are identified by differential staining, usually with Giemsa-based stains, and many disease-related defects have been mapped to these bands; such mappings have played an important role in classical cytogenetics. With the availability of complete sequences for several genomes, there have been efforts to link these bands with specific sequence locations [@FureyHaussler]. The estimated location of the bands in the reference genomes can be obtained from the UCSC genome browser, and data linking genes to particular bands can be obtained from a variety of sources such as the NCBI. This vignette demonstrates tools that allow the use of categories derived from chromosome bands, that is, the relevant categories are determined *a priori* by a mapping of genes to chromosome bands.
+Typically, in higher organisms, each chromosome has a centromere and two arms. The short arm is called the p arm and the longer arm the q arm. Chromosome bands (see <a href="#fig:chr12ideogram">Figure 1</a>) are identified by differential staining, usually with Giemsa-based stains, and many disease-related defects have been mapped to these bands; such mappings have played an important role in classical cytogenetics. With the availability of complete sequences for several genomes, there have been efforts to link these bands with specific sequence locations [@FureyHaussler]. The estimated location of the bands in the reference genomes can be obtained from the UCSC genome browser, and data linking genes to particular bands can be obtained from a variety of sources such as the NCBI. This vignette demonstrates tools that allow the use of categories derived from chromosome bands, that is, the relevant categories are determined *a priori* by a mapping of genes to chromosome bands.
 
-Figure [1](#fig:chr12ideogram){reference-type="ref" reference="fig:chr12ideogram"} shows an ideogram of human chromosome 12, with the band 12q21 shaded. As shown in the figure, 12q21 can be divided into more granular levels 12q21.1, 12q21.2, and 12q21.3. 12q21.3 can itself be divided at an even finer level of resolution into 12q21.31, 12q21.32, and 12q21.33. Moving towards less granular bands, 12q21 is a part of 12q2 which is again a part of 12q. We take advantage of this nested structure of the bands in our analysis.
-
+<a href="#fig:chr12ideogram">Figure 1</a> shows an ideogram of human chromosome 12, with the band 12q21 shaded. As shown in the figure, 12q21 can be divided into more granular levels 12q21.1, 12q21.2, and 12q21.3. 12q21.3 can itself be divided at an even finer level of resolution into 12q21.31, 12q21.32, and 12q21.33. Moving towards less granular bands, 12q21 is a part of 12q2 which is again a part of 12q. We take advantage of this nested structure of the bands in our analysis.
 
 ```{r Category, message=FALSE}
-
 library("Category") 
 library("ALL") 
 library("hgu95av2.db")
@@ -41,11 +39,15 @@ library("geneplotter")
 library("limma") 
 library("lattice")
 library("graph")
-
 ```
 
-<figure class="center" id="fig:chr12ideogram">
-```{r chr12ideogram, fig=TRUE, fig.align="center", echo=FALSE, prefix=FALSE, width=9, height=3}
+# Data Preparation
+
+For illustration, we use a microarray dataset [@Chiaretti2005] from a clinical trial in acute lymphoblastic leukemia (ALL). The data are described in Chapter 2 of [@BiocCaseStudies].
+
+<figure id="fig:chr12ideogram">
+
+```{r chr12ideogram, echo=FALSE, fig.align="center", fig.width=9, fig.height=3}
 
 build <- "hg19" ## or "hg18"
 kp <- plotKaryotype(genome=build, chromosomes="chr12", main="Human chromosome12" )
@@ -62,130 +64,89 @@ kp <- plotKaryotype(genome=build, chromosomes="chr12", main="Human chromosome12"
 ## plotCytoband2(chromosome="12", build=build, cytoband=cyt2, outer=FALSE,
 ##               cex.axis=0.6,
 ##               main="Human chromosome 12")
-
 ```
-<figcaption>Ideogram for human chromosome 12. The p arm is on the left, the q arm is on the right, and the centromere is indicated by a notch. The shaded bands together represent 12q21. This band is composed of three sub-bands: 12q21.1, 12q21.2, and 12q21.3. The last of these is composed of sub-sub-bands 12q21.31, 12q21.32, and 12q21.33.</figcaption>
+
+<figcaption>Figure 1: Ideogram for human chromosome 12. The p arm is on the left, the q arm is on the right, and the centromere is indicated by a notch. The shaded bands together represent 12q21. This band is composed of three sub-bands: 12q21.1, 12q21.2, and 12q21.3. The last of these is composed of sub-sub-bands 12q21.31, 12q21.32, and 12q21.33.</figcaption>
+
 </figure>
 
-# Data Preparation
+For the analysis presented here, we consider the comparison of two subsets: patients identified as having a BCR/ABL gene fusion present, typically as a result of a translocation of chromosomes 9 and 22 (labeled BCR/ABL), and those that have no observed cytogenetic abnormalities (labeled NEG). The full dataset is available in the [ALL]{.sans-serif} package, and the relevant subset of the data can be obtained by
 
-For illustration, we use a microarray dataset [@Chiaretti2005] from a clinical trial in acute lymphoblastic leukemia (ALL). The data are described in Chapter 2 of [@BiocCaseStudies]. For the analysis presented here, we consider the comparison of two subsets: patients identified as having a BCR/ABL gene fusion present, typically as a result of a translocation of chromosomes 9 and 22 (labeled BCR/ABL), and those that have no observed cytogenetic abnormalities (labeled NEG). The full dataset is available in the [ALL]{.sans-serif} package, and the relevant subset of the data can be obtained by
-
-```{r bcrAblOrNegSubset, cache=FALSE}
-
+```{r bcrAblOrNegSubset}
 data(ALL, package="ALL")
-
 subsetType <- "BCR/ABL"
-
 Bcell <- grep("^B", as.character(ALL$BT) )
-
 bcrAblOrNegIdx <- which(as.character(ALL$mol.biol) %in% c("NEG", subsetType) )
-
 bcrAblOrNeg <- ALL [, intersect(Bcell, bcrAblOrNegIdx) ]
-
 bcrAblOrNeg$mol.biol <- factor(bcrAblOrNeg$mol.biol)
-
 ```
 
 We also create relevant annotation maps to go from feature names to Entrez ID, gene symbol, and chromosome band.
 
-```{r annMaps, cache=FALSE}
-
+```{r annMaps}
 annType <- c("db", "env")
-
 entrezMap <- getAnnMap("ENTREZID", annotation(bcrAblOrNeg),
                        type=annType, load=TRUE)
-
 symbolMap <- getAnnMap("SYMBOL", annotation(bcrAblOrNeg),
                        type=annType, load=TRUE)
-
 bandMap <- getAnnMap("MAP", annotation(bcrAblOrNeg),
                      type=annType, load=TRUE)
-
 ```
 
 We applied a non-specific filter to the dataset to remove probesets lacking the desired annotation as well as those with an interquartile range (IQR) below the median IQR, as probesets with little variation across samples are uninformative. We also ensured that each Entrez Gene identifier maps to exactly one probeset by selecting the probeset with the largest IQR when two or more probesets map to the same Entrez Gene ID.
 
 ```{r nsFiltering}
-
 filterAns <- nsFilter(bcrAblOrNeg,
-                     require.entrez = TRUE,
-                     remove.dupEntrez = TRUE,
-                     var.func = IQR, var.cutoff = 0.5)
-
+                      require.entrez = TRUE,
+                      remove.dupEntrez = TRUE,
+                      var.func = IQR, var.cutoff = 0.5)
 nsFiltered <- filterAns$eset
-
 ```
 
-We also remove probesets with no gene symbol, as well as those with no mapping to a chromosome band. 
-```{r}
+We also remove probesets with no gene symbol, as well as those with no mapping to a chromosome band.
 
+```{r}
 hasSYM <- sapply(mget(featureNames(nsFiltered), symbolMap, ifnotfound=NA),
                  function(x) length(x) > 0 && !is.na(x[1] ) )
-
 hasMAP <- sapply(mget(featureNames(nsFiltered), bandMap, ifnotfound=NA),
                  function(x) length(x) > 0 && !is.na(x[1] ) )
-
 nsFiltered <- nsFiltered[hasSYM & hasMAP, ]
-
 ```
 
-We define the \textit{gene universe} to be the subset of genes that remain after this filtering. 
+We define the *gene universe* to be the subset of genes that remain after this filtering.
 
-```{r defineGeneUniverse, cache=FALSE}
-
+```{r defineGeneUniverse}
 affyUniverse <- featureNames(nsFiltered)
-
 entrezUniverse <- unlist(mget(affyUniverse, entrezMap))
-
 names(affyUniverse) <- entrezUniverse
-
 if (any(duplicated(entrezUniverse)))
     stop("error in gene universe: can't have duplicate Entrez Gene Ids")
-
 ```
-We assessed differential expression between the BCR/ABL and NEG groups using an empirical Bayes approach, as implemented in the software package limma [@limma], yielding an attenuated$t$-statistic for each gene. 
 
-```{r parametric1, cache=FALSE}
+We assessed differential expression between the BCR/ABL and NEG groups using an empirical Bayes approach, as implemented in the software package limma [@limma], yielding an attenuated$t$-statistic for each gene.
 
+```{r parametric1}
 design <- model.matrix(~ 0 + nsFiltered$mol.biol)
-
 colnames(design) <- c("BCR/ABL", "NEG")
-
 contr <- c(1, -1)   ## NOTE: we thus have BCR/ABL w.r.t NEG
-
 fm1 <- lmFit(nsFiltered, design)
-
 fm2 <-contrasts.fit(fm1, contr)
-
 fm3 <- eBayes(fm2)
-
 ttestLimma <- topTable(fm3, number = nrow(fm3), adjust.method = "none")
-
 ttestLimma <- ttestLimma [featureNames(nsFiltered), ]
-
 tstats <- ttestLimma$t
-
 names(tstats) <- entrezUniverse [rownames(ttestLimma)]
-
 ##
-
 ```
 
-We used a $p$-value cutoff of $0.01$ to identify a list of potentially differentially expressed genes. 
+We used a $p$-value cutoff of $0.01$ to identify a list of potentially differentially expressed genes.
 
-```{r selectedSubset, cache=FALSE}
-
+```{r selectedSubset}
 ttestCutoff <- 0.01
-
 smPV <- ttestLimma$P.Value < ttestCutoff
-
 pvalFiltered <- nsFiltered [smPV, ]
-
 selectedEntrezIds <- unlist(mget(featureNames(pvalFiltered), entrezMap))
-
 ##
-
 ```
 
 # Methods
@@ -196,7 +157,7 @@ There are two important features of gene sets based on chromosome bands: (1) the
 
    The bottom-up approach differs in that we begin at the most granular level and move upward, amalgamating adjacent bands at each level. The bottom-up approach is easier to put into a conditional hypothesis testing framework. Our initial null hypotheses involve the smallest, or most granular bands, and if there is evidence that these are unusual (i.e., we reject the null hypothesis) then moving to a larger, or less granular, band requires additional information to declare it significant, over and above what we have used to identify the smaller band. In our example, we would first test 12q21.31, 12q21.32, and 12q21.33, and then move up and test 12q21.3. If one or more of the three sub-bands had been declared significant, we would exclude the evidence from genes annotated in those sub-bands when testing the coarser band.
 
-   It is important to note that the top-down versus bottom-up approaches represent a fundamental trade-off between false positive and false negative errors. The bottom-up approach necessarily involves performing a larger number of tests, yielding a correspondingly larger absolute number of false positives for a given false positive rate at which each individual test is controlled. The top-down approach cuts down on the number of false positives by starting with fewer top-level tests, and performing further tests at sublevels only when a top-level test is rejected. The disadvantage to this approach is loss of power to detect real departures that are localized to a sub-level, a phenomenon commonly illustrated using Simpson's paradox [see, e.g., @Simpson1982].
+   It is important to note that the top-down versus bottom-up approaches represent a fundamental trade-off between false positive and false negative errors. The bottom-up approach necessarily involves performing a larger number of tests, yielding a correspondingly larger absolute number of false positives for a given false positive rate at which each individual test is controlled. The top-down approach cuts down on the number of false positives by starting with fewer top-level tests, and performing further tests at sub-levels only when a top-level test is rejected. The disadvantage to this approach is loss of power to detect real departures that are localized to a sub-level, a phenomenon commonly illustrated using Simpson's paradox [see, e.g., @Simpson1982].
 
    Whether a test is local or global is a different question, orthogonal to that of top-down or bottom-up. There are two distinct but potentially relevant questions that may be of interest. The first is whether genes in a particular gene set are "different" relative to all other genes under consideration. For a Hypergeometric test, this question may be formalized as whether the proportion of interesting genes in 12q21 is different from the proportion of interesting genes in the rest of the genome, or equivalently, whether membership in 12q21 is independent of being selected. Such tests are *global* in the sense that all genes in the gene universe are used to determine whether or not genes at a location are unusual or not. An alternative is to ask whether genes in a genomic location are different relative to other genes in some meaningfully defined neighbourhood. Such a test can be performed simply by restricting the gene universe to a suitable subset; for example, when testing 12q21, we may only consider genes in 12q. A more natural approach is to use a $2 \times 3$ contingency table to test the hypothesis that the proportion of interesting genes is the same in 12q21, 12q22, and 12q23. Both these tests are *local* in the sense that only nearby genes are used.
 
@@ -207,7 +168,6 @@ There are two important features of gene sets based on chromosome bands: (1) the
 We first define a few utility functions that we subsequently use in presentation. The `chrSortOrder()` function reorders rows of data frame for display in a natural order.
 
 ```{r chrSortOrder}
- 
 chrSortOrder <- function(df) {
       chrs <- sub("([^pq]+).*$", "\\1", rownames(df))
       xyIdx <- chrs %in% c("X", "Y")
@@ -223,13 +183,11 @@ chrSortOrder <- function(df) {
       df <- rbind(df, xydf)
     df
  }
- 
 ```
 
 The `gseaTstatStripplot()` function creates a comparative strip plot of the $t$-statistics for specified bands.
 
-``` {r gseaTstatStripplot}
-
+```{r gseaTstatStripplot}
 gseaTstatStripplot <- function(bands, g, ..., include.all = FALSE) {
      chroms <- c(1:22, "X", "Y")
      chromArms <- c(paste(chroms, "p", sep=""), paste(chroms, "q", sep=""))
@@ -241,13 +199,11 @@ gseaTstatStripplot <- function(bands, g, ..., include.all = FALSE) {
      tdf <- do.call(make.groups, lapply(egid, function(x) tstats[x]))
      stripplot(which ~ data, tdf, jitter = TRUE, ...)
 }
-
 ```
 
 The `esetBWPlot()` function creates box-and-whisker plots for every gene in an *"ExpressionSet"*.
 
-``` {r esetBWPlot}
-
+```{r esetBWPlot}
 esetBWPlot <- function(tmpSet, ..., layout=c(1, nrow(emat))) 
 {
   emat <- exprs(tmpSet)
@@ -291,15 +247,13 @@ subsetByBand <- function(eset, ct, band) {
   wantedProbes <- affyUniverse[as.character(egIDs)]
   eset[intersect(wantedProbes, featureNames(eset)), ]
 }
-
 ```
 
 # Hypergeometric Testing
 
 We use a method similar to that described in @Falcon-GOstats to conditionally test for over-representation of chromosome bands in the selected gene list. A test is set up by creating a suitable object of class *"ChrMapHyperGParams"*. We first create an object to perform a standard Hypergeometric analysis, treating each chromosome band independently, and then modify a copy to represent a conditional Hypergeometric computation.
 
-```{r basicParams, cache=FALSE}
-
+```{r basicParams}
 params <- new("ChrMapHyperGParams",
               conditional=FALSE,
               testDirection="over",
@@ -307,35 +261,25 @@ params <- new("ChrMapHyperGParams",
               geneIds=selectedEntrezIds,
               annotation="hgu95av2",
               pvalueCutoff=0.05)
-
 paramsCond <- params
-
 paramsCond@conditional <- TRUE
-
 ```
 
 The test computations are performed by
-```{r basicTest, cache=FALSE}
 
+```{r basicTest}
 hgans <- hyperGTest(params)
-
 hgansCond <- hyperGTest(paramsCond)
-
 ```
 
 The results can be summarized by
 
-```{r result1, cache=FALSE}
-
+```{r result1}
 sumUn <- summary(hgans, categorySize=1)
-
 chrSortOrder(sumUn)
 
-
 sumCond <- summary(hgansCond, categorySize=1)
-
 chrSortOrder(sumCond)
-
 ```
 
 For the standard test, the structure of the chromosome band graph is ignored and a Hypergeometric test is applied to each band independently. For the conditional test, the hierarchical relationship among the bands as represented by the graph is used in the computation. The highest-resolution bands (those with no children in the graph) are tested first. Testing proceeds with the bands whose children (sub-bands) have already been tested. For these bands, the gene annotations that are inherited from significant child nodes (children with $p$-value smaller than the specified cutoff) are removed prior to testing to yield a conditional test.
@@ -344,9 +288,9 @@ The effect of the conditional test is illustrated by examining the results for 1
 
 # GSEA using linear models
 
-GSEA is a popular method that can be used to assess whether or not particular gene sets are associated with a phenotype of interest [@Subramanian2005; @Tian2005; @JiangGent2007]. Most applications of this method do not explicitly deal with structure of the gene sets, but when analyzing chromosomal location such methods are desirable. We present a simple approach that is similar in spirit to traditional GSEA, and generalizes nicely to accommodate nested categories. Consider the situation where gene $i$ has an associated measure of differential expression $y_i$; for example, an attenuated $t$-statistic derived from a differential expression analysis such as [limma]{.sans-serif} [@limma]. Given a particular category, GSEA asks whether the distribution of $y_i$-s restricted to the category of interest is "unusual". Thus, in Figure [2](#fig:gseaStripplot){reference-type="ref" reference="fig:gseaStripplot"}, we might be interested in knowing whether the distribution of $y_i$ values for genes in 12q21 is different from that of the genes in 12q (for a local test) or of all genes in the gene universe (for a global test). Figure  [2](#fig:gseaStripplot){reference-type="ref" reference="fig:gseaStripplot"} is produced by
+GSEA is a popular method that can be used to assess whether or not particular gene sets are associated with a phenotype of interest [@Subramanian2005; @Tian2005; @JiangGent2007]. Most applications of this method do not explicitly deal with structure of the gene sets, but when analyzing chromosomal location such methods are desirable. We present a simple approach that is similar in spirit to traditional GSEA, and generalizes nicely to accommodate nested categories. Consider the situation where gene $i$ has an associated measure of differential expression $y_i$; for example, an attenuated $t$-statistic derived from a differential expression analysis such as [limma]{.sans-serif} [@limma]. Given a particular category, GSEA asks whether the distribution of $y_i$-s restricted to the category of interest is "unusual". Thus, in<span><a href="#fig:gseaStripplot"> Figure 2</a><span>, we might be interested in knowing whether the distribution of $y_i$ values for genes in 12q21 is different from that of the genes in 12q (for a local test) or of all genes in the gene universe (for a global test).<a href="#fig:gseaStripplot"> Figure 2</a> is produced by
 
-<figure class="center" id="fig:gseaStripplot">
+<figure id="fig:gseaStripplot">
 ```{r fig=TRUE, fig.align="center",width=9, height=4}
 gseaTstatStripplot(c("12q21.1", "12q21", "12q2", "12q"),
                    include.all = TRUE, 
@@ -364,22 +308,24 @@ gseaTstatStripplot(c("12q21.1", "12q21", "12q2", "12q"),
                        panel.average(..., fun = mean, lwd = 3)
                    })
 ```
+
 ```{r gseaStripplot, fig=TRUE, fig.align="center",include=FALSE, prefix=FALSE, echo=FALSE, prefix=FALSE, width=9, height=4}
 plot(trellis.last.object())
 ```
 
-<figcaption>Per-gene [<em>t</em>]{.math .inline}-statistics, as computed by [limma]{.sans-serif}, for selected chromosome bands. The points are jittered vertically to alleviate overlap. A thick grey line joins the mean value within each group. A GSEA test would compare the genes in 12q21 with those in 12q, or the entire gene universe, by fitting a linear model with per-gene [<em>t</em>]{.math .inline}-statistics as the response, and a term indicating membership in 12q21 as the predictor. If 12q21.1 is declared as significant, a conditional GSEA test would include an additional term for 12q21.1.</figcaption>
+<figcaption>Figure 2: Per-gene [<em>t</em>]{.math .inline}-statistics, as computed by [limma]{.sans-serif}, for selected chromosome bands. The points are jittered vertically to alleviate overlap. A thick grey line joins the mean value within each group. A GSEA test would compare the genes in 12q21 with those in 12q, or the entire gene universe, by fitting a linear model with per-gene [<em>t</em>]{.math .inline}-statistics as the response, and a term indicating membership in 12q21 as the predictor. If 12q21.1 is declared as significant, a conditional GSEA test would include an additional term for 12q21.1.</figcaption>
+
 </figure>
 
-We fit a factorial model to see whether the distribution of $y_i$ is associated with category membership. Specifically, for category $j$, we fit the model $$\label{eq:lm1}
-  y_i = \beta_0 + \beta_1 a_{ij} + \varepsilon_{i}$$ where $a_{ij} = 1$ if gene $i$ belongs to category $j$, and $0$ otherwise. The index $i$ may range over the full gene universe, or a subset, depending on whether one wishes to perform global or local tests. The null hypothesis of no association is represented by $H_0: \beta_1 = 0$. The model nominally assumes that the $y_i$-s are Normally distributed with equal variance, but in practice the results are robust against mild deviations. The presence of an intercept term allows nonzero overall mean, which can be important in many situations, especially for local tests. We expect the test to be fairly insensitive to distributional assumptions on the $y_i$-s.
+We fit a factorial model to see whether the distribution of $y_i$ is associated with category membership. Specifically, for category $j$, we fit the model $$\label{eq:lm1}  y_i = \beta_0 + \beta_1 a_{ij} +\varepsilon_{i}$$
+where $a_{ij} = 1$ if gene $i$ belongs to category $j$, and $0$ otherwise. The index $i$ may range over the full gene universe, or a subset, depending on whether one wishes to perform global or local tests. The null hypothesis of no association is represented by $H_0: \beta_1 = 0$. The model nominally assumes that the $y_i$-s are Normally distributed with equal variance, but in practice the results are robust against mild deviations. The presence of an intercept term allows nonzero overall mean, which can be important in many situations, especially for local tests. We expect the test to be fairly insensitive to distributional assumptions on the $y_i$-s.
 
-We can fit ([$$eq:lm1$$](#eq:lm1){reference-type="ref" reference="eq:lm1"}) by least squares and test $H_0: \beta_1 = 0$ to obtain a marginal test for each category $j$; in this case, each chromosome band. The procedure also generalizes to incorporate the nesting structure of chromosome bands. Specifically, if band $j_2$ (e.g., 12q21.1) is nested within a coarser band $j_1$ (e.g., 12q21) and the more granular band $j_2$ is significant, then the effect of membership in $j_1$ over and above the effect attributable to membership in $j_2$ can be tested by fitting the model $$\label{eq:lm2}
+We can fit (1) by least squares and test $H_0: \beta_1 = 0$ to obtain a marginal test for each category $j$; in this case, each chromosome band. The procedure also generalizes to incorporate the nesting structure of chromosome bands. Specifically, if band $j_2$ (e.g., 12q21.1) is nested within a coarser band $j_1$ (e.g., 12q21) and the more granular band $j_2$ is significant, then the effect of membership in $j_1$ over and above the effect attributable to membership in $j_2$ can be tested by fitting the model $$\label{eq:lm2}
   y_i = \beta_0 + \beta_1 a_{ij_1} + \beta_2 a_{ij_2} + \varepsilon_{i}$$ and testing the null hypothesis $H_0: \beta_1 = 0$. Multiple significant sub-bands and multiple levels of nesting can be incorporated by including further terms in the model. The complete process can be summarized as follows: Start by marginally testing each band which has no sub-bands. For all other bands, first test all sub-bands, then test the current band using a linear model that includes a term for each *significant* sub-band.
 
 We apply this procedure to perform global tests using per-gene $t$-statistics as a measure of differential expression in BCR/ABL relative to NEG samples. As with the Hypergeometric tests, we start by creating objects of class *"ChrMapLinearMParams"*.
 
-```{r LMtestSetup,cache=FALSE}
+```{r LMtestSetup}
 
 params <- new("ChrMapLinearMParams",
               conditional = FALSE,
@@ -391,28 +337,23 @@ params <- new("ChrMapLinearMParams",
               minSize = 4L)
 
 params@graph <- makeChrBandGraph(params@annotation, params@universeGeneIds)
-
 params@gsc <- makeChrBandGSC(params@graph)
-
 paramsCond <- params
-
 paramsCond@conditional <- TRUE
 ```
 
 The tests are performed, and the results summarized by
 
 ```{r LMtest}
-
 lmans <- linearMTest(params)
 lmansCond <- linearMTest(paramsCond)
 chrSortOrder(summary(lmans))
 
 chrSortOrder(summary(lmansCond))
-
 ##
 ```
 
-<figure class="center" id="fig:dotplot1p362">
+<figure id="fig:dotplot1p362">
 
 ```{r echo=FALSE}
 tmpSet <- subsetByBand(nsFiltered, ct, "1p36.2")
@@ -420,18 +361,19 @@ esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
            par.strip.text = list(cex = 0.8))
 ```
 
-<figcaption>Expression values for the BCR/ABL and NEG samples for the genes located within 1p36.2, which is declared as significant by the Hypergeometric test, but not by GSEA. Genes in the selected list are highlighted with a shaded background. For these genes, The NEG samples, those with no known cytogenetic abnormalities, have significantly lower expression than the BCR/ABL samples. However, the direction is reversed (albeit mildly) for many of the other genes.</figcaption>
-
+<figcaption>Figure 3: Expression values for the BCR/ABL and NEG samples for the genes located within 1p36.2, which is declared as significant by the Hypergeometric test, but not by GSEA. Genes in the selected list are highlighted with a shaded background. For these genes, The NEG samples, those with no known cytogenetic abnormalities, have significantly lower expression than the BCR/ABL samples. However, the direction is reversed (albeit mildly) for many of the other genes.</figcaption>
 </figure>
 
-These examples only test for consistently upregulated categories; similar calls with `testDirection = "down"` can be used to test for downregulation. As we see, the GSEA approach picks out many more bands as significant, but there is some concordance with the Hypergeometric approach. For example, 7q31, 8p22, and 14q22.2 come up in both analyses. Figure [3](#fig:dotplot1p362){reference-type="ref" reference="fig:dotplot1p362"} shows box-and-whisker plots of genes in one category (1p36.2) that is declared as significant by the Hypergeometric test, but not by GSEA. It is produced by
+These examples only test for consistently upregulated categories; similar calls with `testDirection = "down"` can be used to test for downregulation. As we see, the GSEA approach picks out many more bands as significant, but there is some concordance with the Hypergeometric approach. For example, 7q31, 8p22, and 14q22.2 come up in both analyses. <span><a href="#fig:dotplot1p362"> Figure 3</a><span> shows box-and-whisker plots of genes in one category (1p36.2) that is declared as significant by the Hypergeometric test, but not by GSEA. It is produced by
 
 ```{r eval=FALSE}
 tmpSet <- subsetByBand(nsFiltered, ct, "1p36.2")
 esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
            par.strip.text = list(cex = 0.8))
 ```
+
 ```{r dotplot1p362, fig=TRUE, include=FALSE, prefix=FALSE, echo=FALSE, prefix=FALSE, width=9, height=6}
 plot(trellis.last.object())
 ```
+
 # References:
