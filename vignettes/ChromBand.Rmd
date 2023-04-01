@@ -43,7 +43,11 @@ library("graph")
 
 # Data Preparation
 
+<<<<<<< HEAD
 For illustration, we use a microarray dataset [@Chiaretti2005] from a clinical trial in acute lymphoblastic leukemia (ALL). The data are described in Chapter 2 of [@BiocCaseStudies].
+=======
+For illustration, we use a microarray dataset [@Chiaretti2005] from a clinical trial in acute lymphoblastic leukemia `r Biocpkg("ALL")`. The data are described in Chapter 2 of [@BiocCaseStudies].
+>>>>>>> ffa83a9 (git add)
 
 <figure id="fig:chr12ideogram">
 
@@ -67,10 +71,16 @@ kp <- plotKaryotype(genome=build, chromosomes="chr12", main="Human chromosome12"
 ```
 
 <figcaption>Figure 1: Ideogram for human chromosome 12. The p arm is on the left, the q arm is on the right, and the centromere is indicated by a notch. The shaded bands together represent 12q21. This band is composed of three sub-bands: 12q21.1, 12q21.2, and 12q21.3. The last of these is composed of sub-sub-bands 12q21.31, 12q21.32, and 12q21.33.</figcaption>
+<<<<<<< HEAD
 
 </figure>
 
 For the analysis presented here, we consider the comparison of two subsets: patients identified as having a BCR/ABL gene fusion present, typically as a result of a translocation of chromosomes 9 and 22 (labeled BCR/ABL), and those that have no observed cytogenetic abnormalities (labeled NEG). The full dataset is available in the [ALL]{.sans-serif} package, and the relevant subset of the data can be obtained by
+=======
+</figure>
+
+For the analysis presented here, we consider the comparison of two subsets: patients identified as having a BCR/ABL gene fusion present, typically as a result of a translocation of chromosomes 9 and 22 (labeled BCR/ABL), and those that have no observed cytogenetic abnormalities (labeled NEG). The full dataset is available in the `r Biocpkg("ALL")` package, and the relevant subset of the data can be obtained by
+>>>>>>> ffa83a9 (git add)
 
 ```{r bcrAblOrNegSubset}
 data(ALL, package="ALL")
@@ -123,7 +133,11 @@ if (any(duplicated(entrezUniverse)))
     stop("error in gene universe: can't have duplicate Entrez Gene Ids")
 ```
 
+<<<<<<< HEAD
 We assessed differential expression between the BCR/ABL and NEG groups using an empirical Bayes approach, as implemented in the software package limma [@limma], yielding an attenuated$t$-statistic for each gene.
+=======
+We assessed differential expression between the BCR/ABL and NEG groups using an empirical Bayes approach, as implemented in the software package `rBiocpkg ("limma")` [@limma], yielding an attenuated$t$-statistic for each gene.
+>>>>>>> ffa83a9 (git add)
 
 ```{r parametric1}
 design <- model.matrix(~ 0 + nsFiltered$mol.biol)
@@ -288,7 +302,11 @@ The effect of the conditional test is illustrated by examining the results for 1
 
 # GSEA using linear models
 
+<<<<<<< HEAD
 GSEA is a popular method that can be used to assess whether or not particular gene sets are associated with a phenotype of interest [@Subramanian2005; @Tian2005; @JiangGent2007]. Most applications of this method do not explicitly deal with structure of the gene sets, but when analyzing chromosomal location such methods are desirable. We present a simple approach that is similar in spirit to traditional GSEA, and generalizes nicely to accommodate nested categories. Consider the situation where gene $i$ has an associated measure of differential expression $y_i$; for example, an attenuated $t$-statistic derived from a differential expression analysis such as [limma]{.sans-serif} [@limma]. Given a particular category, GSEA asks whether the distribution of $y_i$-s restricted to the category of interest is "unusual". Thus, in<span><a href="#fig:gseaStripplot"> Figure 2</a><span>, we might be interested in knowing whether the distribution of $y_i$ values for genes in 12q21 is different from that of the genes in 12q (for a local test) or of all genes in the gene universe (for a global test).<a href="#fig:gseaStripplot"> Figure 2</a> is produced by
+=======
+GSEA is a popular method that can be used to assess whether or not particular gene sets are associated with a phenotype of interest [@Subramanian2005; @Tian2005; @JiangGent2007]. Most applications of this method do not explicitly deal with structure of the gene sets, but when analyzing chromosomal location such methods are desirable. We present a simple approach that is similar in spirit to traditional GSEA, and generalizes nicely to accommodate nested categories. Consider the situation where gene $i$ has an associated measure of differential expression $y_i$; for example, an attenuated $t$-statistic derived from a differential expression analysis such as `r Biocpkg("limma")` [@limma]. Given a particular category, GSEA asks whether the distribution of $y_i$-s restricted to the category of interest is "unusual". Thus, in<span><a href="#fig:gseaStripplot"> Figure 2</a><span>, we might be interested in knowing whether the distribution of $y_i$ values for genes in 12q21 is different from that of the genes in 12q (for a local test) or of all genes in the gene universe (for a global test).<a href="#fig:gseaStripplot"> Figure 2</a> is produced by
+>>>>>>> ffa83a9 (git add)
 
 <figure id="fig:gseaStripplot">
 ```{r fig=TRUE, fig.align="center",width=9, height=4}
@@ -313,7 +331,11 @@ gseaTstatStripplot(c("12q21.1", "12q21", "12q2", "12q"),
 plot(trellis.last.object())
 ```
 
+<<<<<<< HEAD
 <figcaption>Figure 2: Per-gene [<em>t</em>]{.math .inline}-statistics, as computed by [limma]{.sans-serif}, for selected chromosome bands. The points are jittered vertically to alleviate overlap. A thick grey line joins the mean value within each group. A GSEA test would compare the genes in 12q21 with those in 12q, or the entire gene universe, by fitting a linear model with per-gene [<em>t</em>]{.math .inline}-statistics as the response, and a term indicating membership in 12q21 as the predictor. If 12q21.1 is declared as significant, a conditional GSEA test would include an additional term for 12q21.1.</figcaption>
+=======
+<figcaption>Figure 2: Per-gene $t$-statistics, as computed by limma, for selected chromosome bands. The points are jittered vertically to alleviate overlap. A thick grey line joins the mean value within each group. A GSEA test would compare the genes in 12q21 with those in 12q, or the entire gene universe, by fitting a linear model with per-gene $t$-statistics as the response, and a term indicating membership in 12q21 as the predictor. If 12q21.1 is declared as significant, a conditional GSEA test would include an additional term for 12q21.1.</figcaption>
+>>>>>>> ffa83a9 (git add)
 
 </figure>
 
@@ -326,7 +348,10 @@ We can fit (1) by least squares and test $H_0: \beta_1 = 0$ to obtain a marginal
 We apply this procedure to perform global tests using per-gene $t$-statistics as a measure of differential expression in BCR/ABL relative to NEG samples. As with the Hypergeometric tests, we start by creating objects of class *"ChrMapLinearMParams"*.
 
 ```{r LMtestSetup}
+<<<<<<< HEAD
 
+=======
+>>>>>>> ffa83a9 (git add)
 params <- new("ChrMapLinearMParams",
               conditional = FALSE,
               testDirection = "up",
@@ -348,7 +373,6 @@ The tests are performed, and the results summarized by
 lmans <- linearMTest(params)
 lmansCond <- linearMTest(paramsCond)
 chrSortOrder(summary(lmans))
-
 chrSortOrder(summary(lmansCond))
 ##
 ```
@@ -376,4 +400,8 @@ esetBWPlot(tmpSet, ylab="1p36.2", layout = c(2, 8),
 plot(trellis.last.object())
 ```
 
+<<<<<<< HEAD
 # References:
+=======
+# References
+>>>>>>> ffa83a9 (git add)
